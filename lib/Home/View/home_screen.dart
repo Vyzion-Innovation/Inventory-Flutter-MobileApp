@@ -37,10 +37,10 @@ class HomePage extends StatelessWidget {
                 crossAxisCount: sidePanelController.isVisible.value? 1 : 2,
                 crossAxisSpacing: 2.0,
                 mainAxisSpacing: 10.0,
-                children: [
+                children: const [
                   CommonCard(
                     title: Strings.cardTitle,
-                    subtitle: 'Subtitle for card 1',
+                    subtitle: '300000',
                   ),
                   CommonCard(
                     title: 'Total stock value',
@@ -76,6 +76,7 @@ class HomePage extends StatelessWidget {
         children: [
           // Profile Section
           Container(
+             width: 150,
             color: AppColors.gradientOne,
             padding: EdgeInsets.all(5.0),
             child: const Column(
@@ -88,7 +89,7 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'John Doe', // Dynamic user name
+                  'Pawan Ginti', // Dynamic user name
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -96,7 +97,7 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  'johndoe@example.com', // Dynamic email
+                  'Pg@yopmail.com', // Dynamic email
                   style: TextStyle(color: Colors.white),
                 ),
               ],
@@ -105,12 +106,12 @@ class HomePage extends StatelessWidget {
           Divider(), // Separator line
           // Options
           ListTile(
-            leading: Icon(Icons.account_circle),
+            // leading: Icon(Icons.account_circle),
             title: Text('Profile Info'),
             onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.info),
+            // leading: Icon(Icons.info),
             title: Text('About App'),
             onTap: () {},
           ),

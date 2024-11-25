@@ -29,49 +29,42 @@ class CommonCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.0), // Rounded corners
       ),
       elevation: 4, // Elevation for shadow effect
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12.0),
-        onTap: onTap, // Execute onTap callback when card is tapped
-        child: Padding(
-          padding: padding,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              if (leadingIcon != null) ...[
-                Icon(
-                  leadingIcon,
-                  size: 32,
-                  color: Colors.blue, // Customize icon color
-                ),
-                const SizedBox(width: 12), // Add space between icon and text
-              ],
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+      child: Padding(
+        padding: padding,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
                       title,
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    if (subtitle != null) ...[
-                      const SizedBox(height: 4), // Space between title and subtitle
-                      Text(
+                  ),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 4), // Space between title and subtitle
+                    Expanded(
+                      child: Text(
                         subtitle!,
                         style: const TextStyle(
                           fontSize: 14.0,
                           color: Colors.grey, // Customize subtitle color
                         ),
                       ),
-                    ],
+                    ),
                   ],
-                ),
+                ],
               ),
-              if (trailing != null) trailing!,
-            ],
-          ),
+            ),
+            if (trailing != null) trailing!,
+          ],
         ),
       ),
     );
