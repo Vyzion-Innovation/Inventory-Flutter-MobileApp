@@ -15,7 +15,7 @@ class LoginController extends GetxController {
   void login() {
     if (formKey.currentState!.validate()) {
       // Navigate to Dashboard
-      // Get.to(() => HomePage());
+      Get.to(() => HomePage());
     }
   }
 }

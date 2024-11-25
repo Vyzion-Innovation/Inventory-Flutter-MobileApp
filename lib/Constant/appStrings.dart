@@ -1,40 +1,22 @@
-const back = "Back";
+class Strings {
+  static const welcome = "Welcome";
+  static const back = "Back";
+  static const login = "Login";
+   static const labelEmail = "Enter email";
+  static const lablePassword = "Enter password";
+   static const emailHint = "e.g. abc@gmail.com";
+  static const strErrorEmptyPhone = "Enter email";
+  static const strInvalidPhone = 'Enter a valid email address';
+  static const passwordHint = "Password";
+   static const strInvalidPassword = 'Password must be at least 8 characters';
+  static const passwordRequired = "Password is required";
+  static const nameRequired = "Name is required";
+  static const nameHint = "Name";
+ 
+  static const oldpasswordHint = "Old Password";
+  static const newpasswordHint = "New Password";
+  static const confirmpasswordHint = "Confirm New Password";
+  static const newpasswordRequired = "New Password is required";
+  static const transId = "Transaction ID";
 
-const login = "Login";
-const strErrorEmptyPhone = "Enter phone number";
-const strInvalidPhone = 'Enter valid phone number';
-const passwordHint = "Password";
-const passwordRequired = "Password is required";
-const nameRequired = "Name is required";
-const nameHint = "Name";
-const salaryHint = "Daily Wages/Income";
-const add = "Add";
-const update = "Update";
-const yes = "Yes";
-const no = "No";
-const deletePopText = "Are you sure you want to delete?";
-const submit = "Submit";
-const payout = "Payout";
-const increSalary = "Incremented Salary";
-const previousSalary = "Previous Salary";
-const noOfDays = "Number of days";
-const paymentDate = "Payment Date";
-const save = "Save";
-const startDate = "Start Date";
-const endDate = "End Date";
-const payoutDate = "Payout Month";
-const oldpasswordHint = "Old Password";
-const newpasswordHint = "New Password";
-const confirmpasswordHint = "Confirm New Password";
-const newpasswordRequired = " New Password is required";
-
-const transId = "Transaction ID";
-const totalSalary = "Total Salary";
-const setNotiTime = "SET NOTIFICATION TIME";
-const logoutPop = "Are you sure you want to Log out?";
-const userNotFound = "Create the employees to mark the attendance.";
-const emplyeeSucess = "Employee has been created successfully.";
-const markAttendance = "Are you sure you want to mark the attendance?";
-const notificationAlert = "Notification time has been updated.";
-const advancePayment = "Advance payment";
-const overTimeHours = "Total Overtime Hours";
+}

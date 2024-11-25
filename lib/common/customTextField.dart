@@ -96,7 +96,7 @@ class _CustomTextFiledState extends State<CustomTextField> {
               validator: widget.validator,
               maxLength: widget.maxLength,
               // textAlignVertical: TextAlignVertical.top,
-              maxLines: widget.MaxLine,
+              maxLines: widget.obscureText ? 1 : widget.MaxLine,
               textInputAction: widget.inputAction,
               onTap: widget.onTap,
               controller: widget.controller,
@@ -105,7 +105,7 @@ class _CustomTextFiledState extends State<CustomTextField> {
               obscuringCharacter: '*',
               autovalidateMode: AutovalidateMode.onUserInteraction,
               style: const TextStyle(
-                  color: Colors.black, fontSize: 15, fontFamily: "poppoins"),
+                  color: AppColors.secondaryColor, fontSize: 15, fontFamily: "poppoins"),
               decoration: InputDecoration(
                   prefixIcon: widget.prefftext,
                   counterText: '',
@@ -130,7 +130,7 @@ class _CustomTextFiledState extends State<CustomTextField> {
                   floatingLabelStyle:
                       const TextStyle(color: AppColors.primaryColor),
                   hintStyle:
-                      const TextStyle(color: Color(0xffC7C7CC), fontSize: 14),
+                      const TextStyle(color: AppColors.secondaryColor, fontSize: 14),
                   border: OutlineInputBorder(
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
                       borderSide: widget.borderSide!),
