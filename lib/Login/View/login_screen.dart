@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventoryappflutter/controllers/login_controller.dart';
+import 'package:inventoryappflutter/Login/Controller/login_controller.dart';
 
 class LoginScreenPage extends StatelessWidget {
   final LoginController loginController = Get.put(LoginController());
@@ -94,8 +94,8 @@ class LoginScreenPage extends StatelessWidget {
                             },
                           )),
                       const SizedBox(height: 20),
-                      Container(
-                        child: SizedBox(
+                  
+                        SizedBox(
                           height: 50,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -115,7 +115,7 @@ class LoginScreenPage extends StatelessWidget {
                             onPressed: loginController.login,
                           ),
                         ),
-                      ),
+                      
                       const SizedBox(height: 40),
                     ],
                   ),

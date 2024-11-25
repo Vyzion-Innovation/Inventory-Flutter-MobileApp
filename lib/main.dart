@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/homescreen.dart';
-import 'package:inventoryappflutter/login_screen.dart';
+import 'package:inventoryappflutter/Login/View/login_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login',
       getPages: [
         GetPage(name: '/login', page: () => LoginScreenPage()),
-        GetPage(name: '/home', page: () => HomePage()),
+        // GetPage(name: '/home', page: () => HomePage()),
       ],
     );
   }
