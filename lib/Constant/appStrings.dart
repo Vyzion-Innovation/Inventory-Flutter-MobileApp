@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
+
 class Strings {
+  static const title = 'Vyzion Innovation';
+  static const cardTitle = 'Total stock count';
   static const welcome = "Welcome";
   static const back = "Back";
   static const login = "Login";

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventoryappflutter/homescreen.dart';
+import 'package:inventoryappflutter/BottomNavBar/View/navbar_screen.dart';
 
 class LoginController extends GetxController {
   final formKey = GlobalKey<FormState>(); // Form key for validation
@@ -15,7 +15,7 @@ class LoginController extends GetxController {
   void login() {
     if (formKey.currentState!.validate()) {
       // Navigate to Dashboard
-      Get.to(() => HomePage());
+     Get.offAll(() => NavBarScreen());
     }
   }
 }
