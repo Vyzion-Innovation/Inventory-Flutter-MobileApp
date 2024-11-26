@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
+import 'package:inventoryappflutter/Constant/app_logo.dart';
 import 'package:inventoryappflutter/Extension/Validator.dart';
 import 'package:inventoryappflutter/Login/Controller/login_controller.dart';
 import 'package:inventoryappflutter/Extension/constants.dart';
-import 'package:inventoryappflutter/common/common_text_button.dart';
+import 'package:inventoryappflutter/common/app_common_button.dart';
+import 'package:inventoryappflutter/common/app_text.dart';
+import 'package:inventoryappflutter/common/common_sizedbox.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
 
 class LoginScreenPage extends StatelessWidget {
@@ -14,7 +17,7 @@ class LoginScreenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -25,19 +28,30 @@ class LoginScreenPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  const Center(
-                    child: Text(
-                    Strings.welcome,
-                      style: TextStyle(fontSize: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: ClipOval(
+                      child: Image.asset(
+                        AppLogo.companyLogo,
+                        height: MediaQuery.of(context).size.height / 4,
+                        fit: BoxFit.scaleDown,
+                        matchTextDirection: true,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  // const Center(
+
+                  //   child:
+                  //   AppText(Strings.welcome, fontSize:20),
+                    
+                  // ),
+                  const CustomSizedBox(height: 30),
 
                   // Email Field
                   CustomTextField(
                     labelText: Strings.labelEmail,
                     hintText: Strings.labelEmail,
-                    controller: loginController.usernameController,
+                    controller: loginController.emailController,
                     input: TextInputType.emailAddress,
                     borderSide: const BorderSide(color:AppColors.primaryColor, width: 1.0),
                     validator: (value) {
@@ -50,7 +64,7 @@ class LoginScreenPage extends StatelessWidget {
                     },
                   ),
 
-                  const SizedBox(height: 20),
+                  const CustomSizedBox(height: 20),
 
                   // Password Field
                   Obx(
@@ -66,7 +80,7 @@ class LoginScreenPage extends StatelessWidget {
                           loginController.passwordVisible.value
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Colors.grey,
+                          color: AppColors.greyColor,
                         ),
                         onPressed: loginController.togglePasswordVisibility,
                       ),
@@ -81,23 +95,15 @@ class LoginScreenPage extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 20),
+                  const CustomSizedBox(height: 20),
 
-                  // Login Button
-                  SizedBox(
-                    height: 50,
-                    child: CustomTextButton(
-                    text: Strings.login,
-                    onPressed: loginController.login,
-                    backgroundColor: AppColors.primaryColor,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0.0),
-                  ),
+                 
+                  CustomButton(title: Strings.login, 
+                  onTap: () {
+                    loginController.login();
+                  },),
 
-                  ),
-
-                  const SizedBox(height: 40),
+                   const CustomSizedBox(height: 40),
                 ],
               ),
             ),

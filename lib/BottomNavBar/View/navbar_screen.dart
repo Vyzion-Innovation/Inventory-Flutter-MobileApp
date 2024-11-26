@@ -4,6 +4,7 @@ import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/BottomNavBar/Controller/navbar_controller.dart';
 import 'package:inventoryappflutter/Home/View/home_screen.dart';
+import 'package:inventoryappflutter/Inventory/view/inventory_screen.dart';
 
 class NavBarScreen extends StatelessWidget {
   // Get the controller instance
@@ -32,23 +33,23 @@ class NavBarScreen extends StatelessWidget {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home), // Home Icon
-              label: 'Home', // Label for Home tab
+              label: Strings.home, // Label for Home tab
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.inventory), // Inventory Icon
-              label: 'Inventory', // Label for Inventory tab
+              label: Strings.inventory, // Label for Inventory tab
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.build), // Repairs Icon
-              label: 'Repairs', // Label for Repairs tab
+              label: Strings.repair, // Label for Repairs tab
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.people), // Customer Icon
-              label: 'Customer', // Label for Customer tab
+              label: Strings.customer, // Label for Customer tab
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.store), // Supplier Icon
-              label: 'Supplier', // Label for Supplier tab
+              label: Strings.supplier, // Label for Supplier tab
             ),
           ],
         );
@@ -59,18 +60,18 @@ class NavBarScreen extends StatelessWidget {
   // Function to return content for each selected tab
   Widget _buildTabContent(String item) {
     switch (item) {
-      case 'home':
+      case Strings.home:
         return Center(child: HomePage());
-      case 'Inventory':
-        return const Center(child: Text('Inventory Screen'));
-      case 'Repairs':
+      case Strings.inventory:
+        return  Center(child: InventoriesScreen());
+      case Strings.repair:
         return const Center(child: Text('Repairs Screen'));
-      case 'Customer':
+      case Strings.customer:
         return const Center(child: Text('Customer Screen'));
-      case 'Supplier':
+      case Strings.supplier:
         return const Center(child: Text('Supplier Screen'));
       default:
-        return const Center(child: Text('Home Screen'));
+        return Center(child: HomePage());
     }
   }
 }

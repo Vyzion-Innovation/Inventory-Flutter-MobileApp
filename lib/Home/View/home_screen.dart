@@ -1,125 +1,170 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
+import 'package:inventoryappflutter/Constant/app_logo.dart';
 import 'package:inventoryappflutter/Home/Controller/home_controller.dart';
+import 'package:inventoryappflutter/Login/Controller/login_controller.dart';
 import 'package:inventoryappflutter/Login/View/login_screen.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
+import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
+import 'package:inventoryappflutter/common/common_text_button.dart';
 
 class HomePage extends StatelessWidget {
-  final SidePanelController sidePanelController =
-      Get.put(SidePanelController());
+  final SidePanelController sidePanelController = Get.put(SidePanelController());
+  final LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: Strings.title,
-        leading: IconButton(
-          icon: Icon(Icons.person), // Button to toggle the side panel
-          onPressed: sidePanelController.togglePanel,
-        ),
+      appBar: const CustomAppBar(
+        title: Strings.home,
       ),
-      body: Row(
-        children: [
-          // Side Panel
-          Obx(() {
-            return sidePanelController.isVisible.value
-                ? _buildSidePanel() // Display side panel if visible
-                : SizedBox.shrink(); // Otherwise, show nothing
-          }),
-          // Main Content
-          Expanded(
-            child:  Obx(() {
-              return
-            GridView.count(
-                crossAxisCount: sidePanelController.isVisible.value? 1 : 2,
-                crossAxisSpacing: 2.0,
-                mainAxisSpacing: 10.0,
+      drawer: SizedBox(
+        width: 250,
+        child: _buildDrawer(context),
+      ),
+      body: SingleChildScrollView(
+        child: Row(
+          children: [
+            // Main Content
+            Expanded(
+              child: StaggeredGrid.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 8.0,
                 children: const [
-                  CommonCard(
-                    title: Strings.cardTitle,
-                    subtitle: '300000',
+                   CommonCard(
+                    title: 'Card Title',
+                    subtitle: Text('This is an optional subtitle'),
+                    additionalWidgets: [
+                      Text('This is some additional text'),
+                   
+                    ],
                   ),
                   CommonCard(
-                    title: 'Total stock value',
-                    subtitle: 'Another subtitle here',
+                    title: 'Card Title',
+                    subtitle: Text('This is an optional subtitle'),
+                    additionalWidgets: [
+                      Text('This is some additional text'),
+                     
+                    ],
                   ),
                   CommonCard(
-                    title: 'Current month inv.',
-                    subtitle: 'Another subtitle here',
+                    title: 'Card Title',
+                    subtitle: Text('This is an optional subtitle'),
+                    additionalWidgets: [
+                      Text('This is some additional text'),
+                      CustomTextButton(title: 'Button'),
+                         CustomTextButton(title: 'Button'),
+                            CustomTextButton(title: 'Button'),
+                               CustomTextButton(title: 'Button'),
+                                  CustomTextButton(title: 'Button'),
+                                   CustomTextButton(title: 'Button'),
+                               CustomTextButton(title: 'Button'),
+                                  CustomTextButton(title: 'Button'),
+                    ],
                   ),
-                  CommonCard(
-                    title: 'Repair jobs',
-                    subtitle: 'Another subtitle here',
+                   CommonCard(
+                    title: 'Card Title',
+                    subtitle: Text('This is an optional subtitle'),
+                    additionalWidgets: [
+                      Text('This is some additional text'),
+                      Text('This is some additional text'),
+                      Text('This is some additional text'),
+                      Text('This is some additional text'),
+                      Text('This is some additional text'),Text('This is some additional text'),
+                      Text('This is some additional text'),
+                   
+                    ],
                   ),
-                  CommonCard(
-                    title: 'Current month repair',
-                    subtitle: 'Another subtitle here',
+                   CommonCard(
+                    title: 'Card Title',
+                    subtitle: Text('This is an optional subtitle'),
+                    additionalWidgets: [
+                      Text('This is some additional text'),
+                     
+                    ],
                   ),
-                ]);
-                  }),
-          )
-        ],
+        
+                ]
+                
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  // Side Panel Widget
-  Widget _buildSidePanel() {
-    return Container(
-      width: 150, // Fixed width for the side panel
-      color: Colors.grey[200], // Background color
+  // Drawer Widget
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Profile Section
           Container(
-             width: 150,
+            width: 250,
             color: AppColors.gradientOne,
-            padding: EdgeInsets.all(5.0),
-            child: const Column(
+            padding: const EdgeInsets.fromLTRB(40.0, 50, 0, 5),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
                   radius: 30,
-                  backgroundImage: NetworkImage(
-                      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'), // Profile Image
+                  child: Image.asset(
+                    AppLogo.companyLogo,
+                    height: MediaQuery.of(context).size.height / 4,
+                    fit: BoxFit.scaleDown,
+                  ),
                 ),
-                SizedBox(height: 10),
-                Text(
-                  'Pawan Ginti', // Dynamic user name
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
+                const SizedBox(height: 10),
+                const AppText(
+                  'Pawan Ginti',
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.colorWhite,
                 ),
-                SizedBox(height: 5),
-                Text(
-                  'Pg@yopmail.com', // Dynamic email
-                  style: TextStyle(color: Colors.white),
+                const SizedBox(height: 5),
+                const AppText(
+                  'P@p.com',
+                  fontSize: 15,
+                  color: AppColors.colorWhite,
                 ),
               ],
             ),
           ),
-          Divider(), // Separator line
-          // Options
+          const Divider(),
           ListTile(
-            // leading: Icon(Icons.account_circle),
-            title: Text('Profile Info'),
+            leading: const Icon(Icons.info),
+            title: const AppText(
+              'Profile Info',
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
             onTap: () {},
           ),
           ListTile(
-            // leading: Icon(Icons.info),
-            title: Text('About App'),
+            leading: const Icon(Icons.details_rounded),
+            title: const AppText(
+              'About App',
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
             onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
+            leading: const Icon(Icons.exit_to_app),
+            title: const AppText(
+              'Logout',
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
             onTap: () {
-              sidePanelController.logout();
+              loginController.logout();
+              Navigator.pop(context);
             },
           ),
         ],
