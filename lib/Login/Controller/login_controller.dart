@@ -9,11 +9,17 @@ class LoginController extends GetxController {
   final formKey = GlobalKey<FormState>(); // Form key for validation
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+   var rememberMe = false.obs;  // Add this line for remember me checkbox state
   
   var passwordVisible = false.obs; // Reactive variable for password visibility
 
   void togglePasswordVisibility() {
     passwordVisible.value = !passwordVisible.value; // Toggle visibility
+  }
+ 
+
+  void toggleRememberMe(bool value) {
+    rememberMe.value = value;  // Update the value when checkbox is toggled
   }
 
   Future<void> login() async {

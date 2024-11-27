@@ -33,7 +33,7 @@ class LoginScreenPage extends StatelessWidget {
                     child: ClipOval(
                       child: Image.asset(
                         AppLogo.companyLogo,
-                        height: MediaQuery.of(context).size.height / 4,
+                        height: MediaQuery.of(context).size.height / 6,
                         fit: BoxFit.scaleDown,
                         matchTextDirection: true,
                       ),
@@ -93,6 +93,19 @@ class LoginScreenPage extends StatelessWidget {
                         );
                       },
                     ),
+                  ),
+                   Row(
+                    children: [
+                      Obx(
+                        () => Checkbox(
+                          value: loginController.rememberMe.value,
+                          onChanged: (value) {
+                            loginController.toggleRememberMe(value ?? false);
+                          },
+                        ),
+                      ),
+                      const Text(Strings.rememberMe),
+                    ],
                   ),
 
                   const CustomSizedBox(height: 20),

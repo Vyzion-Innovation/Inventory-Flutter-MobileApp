@@ -7,6 +7,7 @@ import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/common_text_button.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
+import 'package:inventoryappflutter/common/filter_button.dart';
 
 import '../../common/app_common_appbar.dart';
 
@@ -48,7 +49,7 @@ class InventoriesScreen extends StatelessWidget {
       body: Column(
         children: [
           filterButtons(),
-          const Divider(),
+         
           Expanded(child: inventoryListBuilder()),
         ],
       ),
@@ -74,136 +75,157 @@ class InventoriesScreen extends StatelessWidget {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: CommonCard(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       onTap: () {
         print("Card clicked for item code: ${profile['itemCode']}");
       },
       additionalWidgets: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-           Column(children: [
-        AppText('Item Code: ${profile['itemCode'] ?? ""}', 
-          fontWeight: FontWeight.bold, fontSize: 14),
-        const SizedBox(height: 10),
-        AppText('Model Number: ${profile['ModelNumber'] ?? ""}', 
-          fontWeight: FontWeight.bold, fontSize: 14),
-        const SizedBox(height: 10),
-        AppText('Configuration: ${profile['configuration'] ?? ""}', 
-          fontWeight: FontWeight.bold, fontSize: 14),
-        const SizedBox(height: 10),
-        AppText('Serial Number: ${profile['serialNumber'] ?? ""}', 
-          fontWeight: FontWeight.bold, fontSize: 14),
-        const SizedBox(height: 10),
-        AppText('Status: ${profile['status'] ?? ""}', 
-          fontWeight: FontWeight.bold, fontSize: 14),
-        const SizedBox(height: 10),
-       
+      Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    // Left column for item details
+    Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              AppText(
+                'Item Code:  ',
+                fontWeight: FontWeight.bold, 
+                fontSize: 16,
+              ),
+              AppText(
+                '${profile['itemCode'] ?? ""}', 
+                fontWeight: FontWeight.normal, 
+                fontSize: 16,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              AppText(
+                'Model Number:  ',
+                fontWeight: FontWeight.bold, 
+                fontSize: 14,
+              ),
+              AppText(
+                '${profile['ModelNumber'] ?? ""}', 
+                fontWeight: FontWeight.normal, 
+                fontSize: 14,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              AppText(
+                'Configuration:  ',
+                fontWeight: FontWeight.bold, 
+                fontSize: 14,
+              ),
+              AppText(
+                '${profile['configuration'] ?? ""}', 
+                fontWeight: FontWeight.normal, 
+                fontSize: 14,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              AppText(
+                'Serial Number:  ',
+                fontWeight: FontWeight.bold, 
+                fontSize: 14,
+              ),
+              AppText(
+                '${profile['serialNumber'] ?? ""}', 
+                fontWeight: FontWeight.normal, 
+                fontSize: 14,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    ),
+    const SizedBox(width: 12),
+    // Right column for action buttons
+    Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppText(
+          '${profile['status'] ?? ""}',
+          fontWeight: FontWeight.bold, 
+          fontSize: 14,
+          color: profile['status'] == 'Available' ? Colors.green : Colors.red,
+        ),
+        IconButton(
+          icon: const Icon(Icons.edit, size: 20),
+          onPressed: controller.editItem,
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+        ),
+        IconButton(
+          icon: const Icon(Icons.delete, size: 20),
+          onPressed: controller.deleteItem,
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+        ),
       ],
     ),
-     Column(
-        
-          children: [
-            IconButton(
-              icon: const Icon(Icons.edit, size: 20),
-              onPressed: controller.editItem,
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete, size: 20),
-              onPressed: controller.deleteItem,
-            ),
-          ],
-        ),
-        ])
-    ],)
+  ],
+)
+
+
+      ],
+    ),
   );
 }
 
+
   Widget filterButtons() {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Obx(() => Expanded(
-              child: ElevatedButton(
-                onPressed: () {
+              child: FilterButton(
+                label: inevontryTextStrings.btnTextALL,
+                isSelected: controller.selectedButton.value == 'All',
+                onTap: () {
                   controller.selectedButton.value = 'All';
                   controller.fetchInventoryList(filterType: 'All');
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: controller.selectedButton.value == 'All'
-                      ? AppColors.primaryColor // Use active color
-                      : AppColors.greyColor, // Inactive color
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Text(
-                  inevontryTextStrings.btnTextALL,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
               ),
             )),
         const SizedBox(width: 10),
         Obx(() => Expanded(
-              child: ElevatedButton(
-                onPressed: () {
+              child: FilterButton(
+                label: inevontryTextStrings.btnTextStock,
+                isSelected: controller.selectedButton.value == 'Stock',
+                onTap: () {
                   controller.selectedButton.value = 'Stock';
                   controller.fetchInventoryList(filterType: 'Stock');
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: controller.selectedButton.value == 'Stock'
-                      ? AppColors.primaryColor
-                      : AppColors.greyColor,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Text(
-                  inevontryTextStrings.btnTextStock,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
               ),
             )),
         const SizedBox(width: 10),
         Obx(() => Expanded(
-              child: ElevatedButton(
-                onPressed: () {
+              child: FilterButton(
+                label: inevontryTextStrings.btnTextsell,
+                isSelected: controller.selectedButton.value == 'Sell',
+                onTap: () {
                   controller.selectedButton.value = 'Sell';
                   controller.fetchInventoryList(filterType: 'Sell');
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: controller.selectedButton.value == 'Sell'
-                      ? AppColors.primaryColor
-                      : AppColors.greyColor,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Text(
-                  inevontryTextStrings.btnTextsell,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
               ),
             )),
       ],
     ),
   );
 }
-
 
   Widget searchBar() {
     return SizedBox(

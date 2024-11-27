@@ -7,11 +7,13 @@ class Strings {
   static const welcome = "Welcome";
 
   static const inventory = 'Inventory';
+  
   static const supplier = "Supplier";
   static const repair = 'Repairs';
   static const customer = "Customer";
   // static const welcome = "Welcome";
   static const back = "Back";
+   static const rememberMe = "Remember me";
   static const login = "Login";
    static const save = "Save";
    static const saveNext = "Save+next";
@@ -41,6 +43,17 @@ class inevontryTextStrings {
   static const btnTextALL = 'All';
   static const btnTextStock = 'Stock';
   static const btnTextsell = "Sell";
+
+  static const inventory = 'Inventory';
+  static const supplier = "Supplier";
+
+
+}
+class repairTextStrings {
+  static const Searchhint = 'Search by item code';
+  static const btnTextALL = 'All';
+  static const btnTextRecieve = 'Recieve';
+  static const btnTextcomplete = "Complete";
 
   static const inventory = 'Inventory';
   static const supplier = "Supplier";
