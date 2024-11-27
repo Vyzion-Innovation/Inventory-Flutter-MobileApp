@@ -36,3 +36,14 @@ class Strings {
   static const transId = "Transaction ID";
 
 }
+class inevontryTextStrings {
+  static const Searchhint = 'Search by item code';
+  static const btnTextALL = 'All';
+  static const btnTextStock = 'Stock';
+  static const btnTextsell = "Sell";
+
+  static const inventory = 'Inventory';
+  static const supplier = "Supplier";
+
+
+}

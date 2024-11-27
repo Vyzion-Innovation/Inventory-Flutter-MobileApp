@@ -8,12 +8,47 @@ class InventoriesController extends GetxController {
   var selectedButton = 'All'.obs;
   var isSearching = false.obs;
   TextEditingController searchController = TextEditingController();
+   var inventoryList = [  {
+        'itemCode': 'A001',
+        'ModelNumber': 'MN001',
+        'configuration': 'Config1',
+        'serialNumber': 'SN001',
+        'status': 'Available',
+      },
+      {
+        'itemCode': 'A002',
+        'ModelNumber': 'MN002',
+        'configuration': 'Config2',
+        'serialNumber': 'SN002',
+        'status': 'Sold',
+      },
+      {
+        'itemCode': 'A003',
+        'ModelNumber': 'MN003',
+        'configuration': 'Config3',
+        'serialNumber': 'SN003',
+        'status': 'Available',
+      },
+      {
+        'itemCode': 'A004',
+        'ModelNumber': 'MN004',
+        'configuration': 'Config4',
+        'serialNumber': 'SN004',
+        'status': 'Out of stock',
+      },
+      {
+        'itemCode': 'A005',
+        'ModelNumber': 'MN005',
+        'configuration': 'Config5',
+        'serialNumber': 'SN005',
+        'status': 'Sold',
+      },].obs;
 
   @override
   void onInit() {
     super.onInit();
     searchController.addListener(filterInventory);
-    fetchInventoryList(); // Placeholder for fetching inventory
+    fetchInventoryList(); // Fetch or simulate fetching inventory
   }
 
   @override
@@ -21,27 +56,24 @@ class InventoriesController extends GetxController {
     searchController.dispose();
     super.onClose();
   }
+
   void toggleSearch() {
     isSearching.value = !isSearching.value; // Toggle search state
   }
 
-
   void fetchInventoryList({String filterType = 'All'}) {
-    // Placeholder for fetching inventory list
+    // Static data for testing purposes
+   
+   
   }
 
   void filterInventory() {
-    String query = searchController.text.toLowerCase();
-    if (query.isNotEmpty) {
-      // Implement filtering logic
-    } else {
-      // Reset to all inventory
-    }
+   
   }
 
   void addItem() {
-  Get.to(() => InventoryFormScreen());
-}
+    Get.to(() => InventoryFormScreen());
+  }
 
   void editItem() {
     // Placeholder for editing item logic

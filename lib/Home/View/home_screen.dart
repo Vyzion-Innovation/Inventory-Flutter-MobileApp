@@ -37,32 +37,36 @@ class HomePage extends StatelessWidget {
                 mainAxisSpacing: 8.0,
                 children: const [
                    CommonCard(
+                     padding: EdgeInsets.all(12), 
                     title: 'Card Title',
-                    subtitle: Text('This is an optional subtitle'),
+                    subtitle:'This is an optional subtitle',
                     additionalWidgets: [
                       Text('This is some additional text'),
                    
                     ],
                   ),
                   CommonCard(
+                   padding: EdgeInsets.all(12), 
                     title: 'Card Title',
-                    subtitle: Text('This is an optional subtitle'),
+                    subtitle: 'This is an optional subtitle',
                     additionalWidgets: [
                       Text('This is some additional text'),
                      
                     ],
                   ),
                   CommonCard(
+                     padding: EdgeInsets.all(12), 
                     title: 'Card Title',
-                    subtitle: Text('This is an optional subtitle'),
+                    subtitle: 'This is an optional subtitle',
                     additionalWidgets: [
                       Text('This is some additional text'),
                      
                     ],
                   ),
                    CommonCard(
+                     padding: EdgeInsets.all(12), 
                     title: 'Card Title',
-                    subtitle: Text('This is an optional subtitle'),
+                    subtitle: 'This is an optional subtitle',
                     additionalWidgets: [
                       Text('This is some additional text'),
                       Text('This is some additional text'),
@@ -74,8 +78,9 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                    CommonCard(
+                     padding: EdgeInsets.all(12), 
                     title: 'Card Title',
-                    subtitle: Text('This is an optional subtitle'),
+                    subtitle: 'This is an optional subtitle',
                     additionalWidgets: [
                       Text('This is some additional text'),
                      

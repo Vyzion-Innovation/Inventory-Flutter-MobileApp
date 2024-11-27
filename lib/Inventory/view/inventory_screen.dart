@@ -9,6 +9,7 @@ import 'package:inventoryappflutter/Inventory/Controller/inventory_controller.da
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
+import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/common_text_button.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
 
@@ -51,32 +52,47 @@ class InventoriesScreen extends StatelessWidget {
         children: [
           filterButtons(),
           Divider(),
-        
+          inventoryListView(),
+         
          
         ],
       ),
     );
   }
-
+  
   Widget inventoryListView() {
-    return SizedBox(
-      height: 30,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: const [
-           SizedBox(width: 10,),
-          AppText('Item code', fontWeight: FontWeight.bold , fontSize: 12,),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CommonCard(
+        padding: EdgeInsets.all(12), 
+        onTap: () {
+           controller.addItem();
+        },
+        additionalWidgets:  [
+         
+          AppText('Item code:', fontWeight: FontWeight.bold , fontSize: 14,),
          SizedBox(width: 10,),
-          AppText('Model no.', fontWeight: FontWeight.bold, fontSize: 12,),
+          AppText('Model number:', fontWeight: FontWeight.bold, fontSize: 14,),
            SizedBox(width: 10,),
-          AppText('Configuration', fontWeight: FontWeight.bold, fontSize: 12,),
+          AppText('Configuration', fontWeight: FontWeight.bold, fontSize: 14,),
            SizedBox(width: 10,),
-          AppText('Serial no.', fontWeight: FontWeight.bold, fontSize: 12,),
+          AppText('Serial number:', fontWeight: FontWeight.bold, fontSize: 14,),
            SizedBox(width: 10,),
-          AppText('Status', fontWeight: FontWeight.bold ,fontSize: 12,),
+          AppText('Status:', fontWeight: FontWeight.bold ,fontSize: 14,),
            SizedBox(width: 10,),
-          AppText('Actions', fontWeight: FontWeight.bold ,fontSize: 12,),
-        ],
+           Row(
+            mainAxisAlignment: MainAxisAlignment.center, children: [
+             IconButton(
+            icon: const Icon(Icons.edit, size: 20),
+            onPressed: controller.editItem,
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete, size: 20),
+            onPressed: controller.deleteItem,
+          ),
+           ],)
+        
+        ], 
       ),
     );
   }
@@ -148,5 +164,76 @@ class InventoriesScreen extends StatelessWidget {
     );
   }
 
- 
+  Widget inventoryListBuilder() {
+    return Expanded(
+      child: Obx(() {
+        if (controller.filteredInventory.isEmpty) {
+          return const Center(child: Text('No data available'));
+        }
+        return ListView.builder(
+          itemCount: controller.filteredInventory.length,
+          itemBuilder: (context, index) {
+            final profile = controller.filteredInventory[index];
+            return inventoryItemRow(profile);
+          },
+        );
+      }),
+    );
+  }
+
+  Widget inventoryItemRow(dynamic profile) {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+      Expanded(child: Text(profile.itemCode ?? "")),
+      Expanded(child: Text(profile.ModelNumber ?? "")),
+      Expanded(child: Text(profile.configuration ?? "")),
+      Expanded(child: Text(profile.serialNumber ?? "")),
+      Expanded(child: Text(profile.status ?? "")),
+      Column(children: [
+        IconButton(
+          icon: const Icon(Icons.edit, size: 16),
+          onPressed: controller.editItem,
+        ),
+        IconButton(
+          icon: const Icon(Icons.delete, size: 16),
+          onPressed: controller.deleteItem,
+        ),
+      ])
+    ]);
+  }
+   Widget inventoryRow() {
+    return SizedBox(
+      height: 50,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children:  [
+           SizedBox(width: 10,),
+      Expanded(child: Text( "000581sdss14")),
+       SizedBox(width: 10,),
+      Expanded(child: Text( "bsdhcvxc5699")),
+       SizedBox(width: 10,),
+      Expanded(child: Text( " apple[pv.lty]")),
+       SizedBox(width: 10,),
+      Expanded(child: Text( "05884")),
+       SizedBox(width: 10,),
+      Expanded(child: Text( "sell")),
+       SizedBox(width: 10,),
+      Expanded(
+        child: Column(children: [
+          Expanded(
+            child: IconButton(
+              icon:  Icon(Icons.edit, size: 16),
+              onPressed: controller.editItem,
+            ),
+          ),
+          Expanded(
+            child: IconButton(
+              icon: const Icon(Icons.delete, size: 16),
+              onPressed: controller.deleteItem,
+            ),
+          ),
+        ]),
+      )
+    ])
+      );
+  }
 }

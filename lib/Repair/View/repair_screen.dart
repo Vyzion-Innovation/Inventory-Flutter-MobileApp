@@ -6,19 +6,20 @@ import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Extension/form_validator.dart';
 import 'package:inventoryappflutter/Inventory/Controller/inventory_controller.dart';
+import 'package:inventoryappflutter/Repair/Controller/repair%20controller.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/common_text_button.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
 
-class InventoriesScreen extends StatelessWidget {
-  final InventoriesController controller = Get.put(InventoriesController());
+class RepairScreen extends StatelessWidget {
+  final RepairController controller = Get.put(RepairController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+       appBar: CustomAppBar(
           title: Obx(() {
             return controller.isSearching.value
                 ? searchBar()
@@ -47,96 +48,17 @@ class InventoriesScreen extends StatelessWidget {
               ),
             )
           ]),
-      body: ListView(
+      body: Column(
         children: [
-          filterButtons(),
+          inventoryListView(), // Column Headers
           Divider(),
-          inventoryListView(),
-          Divider(),
-         
+          inventoryItemRow(), // Data Rows
         ],
       ),
     );
   }
 
-  Widget inventoryListView() {
-    return SizedBox(
-      height: 30,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: const [
-           SizedBox(width: 10,),
-          AppText('Item code', fontWeight: FontWeight.bold , fontSize: 12,),
-         SizedBox(width: 10,),
-          AppText('Model no.', fontWeight: FontWeight.bold, fontSize: 12,),
-           SizedBox(width: 10,),
-          AppText('Configuration', fontWeight: FontWeight.bold, fontSize: 12,),
-           SizedBox(width: 10,),
-          AppText('Serial no.', fontWeight: FontWeight.bold, fontSize: 12,),
-           SizedBox(width: 10,),
-          AppText('Status', fontWeight: FontWeight.bold ,fontSize: 12,),
-           SizedBox(width: 10,),
-          AppText('Actions', fontWeight: FontWeight.bold ,fontSize: 12,),
-        ],
-      ),
-    );
-  }
-
-  Widget filterButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: 10,
-        ),
-        Obx(() => Expanded(
-              child: CustomTextButton(
-                title: 'All',
-                onPressed: () {
-                  controller.selectedButton.value = 'All';
-                  controller.fetchInventoryList(filterType: 'All');
-                },
-                textColor: Colors.white,
-                selected: controller.selectedButton.value == 'All',
-              ),
-            )),
-        SizedBox(
-          width: 10,
-        ),
-        Obx(() => Expanded(
-              child: CustomTextButton(
-                title: 'Stock',
-                onPressed: () {
-                  controller.selectedButton.value = 'Stock';
-                  controller.fetchInventoryList(filterType: 'Stock');
-                },
-                textColor: Colors.white,
-                selected: controller.selectedButton.value == 'Stock',
-              ),
-            )),
-        SizedBox(
-          width: 10,
-        ),
-        Obx(() => Expanded(
-              child: CustomTextButton(
-                title: 'Sell',
-                onPressed: () {
-                  controller.selectedButton.value = 'Sell';
-                  controller.fetchInventoryList(filterType: 'Sell');
-                },
-                textColor: Colors.white,
-                fontSize: 18.0,
-                selected: controller.selectedButton.value == 'Sell',
-              ),
-            )),
-        SizedBox(
-          width: 10,
-        )
-      ],
-    );
-  }
-
-  Widget searchBar() {
+Widget searchBar() {
     return SizedBox(
       height: 50,
       child: CustomTextField(
@@ -148,41 +70,95 @@ class InventoriesScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget inventoryListBuilder() {
-    return Expanded(
-      child: Obx(() {
-        if (controller.filteredInventory.isEmpty) {
-          return const Center(child: Text('No data available'));
-        }
-        return ListView.builder(
-          itemCount: controller.filteredInventory.length,
-          itemBuilder: (context, index) {
-            final profile = controller.filteredInventory[index];
-            return inventoryItemRow(profile);
-          },
-        );
-      }),
+  Widget inventoryListView() {
+    return Container(
+      
+      child: Table(
+        columnWidths: {
+          0: FixedColumnWidth(60), // Fixed width for Item code column
+          1: FixedColumnWidth(60), // Fixed width for Model no. column
+          2: FixedColumnWidth(100), // Fixed width for Configuration column
+          3: FixedColumnWidth(55), // Fixed width for Serial no. column
+          4: FixedColumnWidth(55), // Fixed width for Status column
+          5: FixedColumnWidth(60),  // Fixed width for Actions column
+        },
+        border: TableBorder.all(),
+        children: [
+          TableRow(
+            decoration: BoxDecoration(color: Colors.grey.shade300),
+            children: const [
+              TableCell(child: Padding(padding: EdgeInsets.all(8), child: AppText('Item code', fontWeight: FontWeight.bold, fontSize: 11))),
+              TableCell(child: Padding(padding: EdgeInsets.all(8), child: AppText('Model no.', fontWeight: FontWeight.bold, fontSize: 11))),
+              TableCell(child: Padding(padding: EdgeInsets.all(8), child: AppText('Configuration', fontWeight: FontWeight.bold, fontSize: 11))),
+              TableCell(child: Padding(padding: EdgeInsets.all(8), child: AppText('Serial no.', fontWeight: FontWeight.bold, fontSize: 11))),
+              TableCell(child: Padding(padding: EdgeInsets.all(8), child: AppText('Status', fontWeight: FontWeight.bold, fontSize: 11))),
+              TableCell(child: Padding(padding: EdgeInsets.all(8), child: AppText('Action', fontWeight: FontWeight.bold, fontSize: 11))),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
-  Widget inventoryItemRow(dynamic profile) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-      Expanded(child: Text(profile.itemCode ?? "")),
-      Expanded(child: Text(profile.ModelNumber ?? "")),
-      Expanded(child: Text(profile.configuration ?? "")),
-      Expanded(child: Text(profile.serialNumber ?? "")),
-      Expanded(child: Text(profile.status ?? "")),
-      Column(children: [
-        IconButton(
-          icon: const Icon(Icons.edit, size: 16),
-          onPressed: controller.editItem,
+  Widget inventoryListBuilder() {
+    return Obx(() {
+      if (controller.filteredInventory.isEmpty) {
+        return const Center(child: Text('No data available'));
+      }
+      return ListView.builder(
+        itemCount: controller.filteredInventory.length,
+        itemBuilder: (context, index) {
+          final profile = controller.filteredInventory[index];
+          return inventoryItemRow();
+        },
+      );
+    });
+  }
+
+  Widget inventoryItemRow() {
+    return Table(
+      
+      columnWidths: {
+       0: FixedColumnWidth(60), // Fixed width for Item code column
+          1: FixedColumnWidth(60), // Fixed width for Model no. column
+          2: FixedColumnWidth(100), // Fixed width for Configuration column
+          3: FixedColumnWidth(55), // Fixed width for Serial no. column
+          4: FixedColumnWidth(55), // Fixed width for Status column
+          5: FixedColumnWidth(60), 
+      },
+        border: TableBorder.all(),
+      children: [
+        TableRow(
+           decoration: BoxDecoration(color: Colors.white30),
+          children: [
+            TableCell(child: Text("fghfghfgh")),
+            TableCell(child: Text( "dgfdgdfg")),
+            TableCell(child: Text("dfgdfgdfg")),
+            TableCell(child: Text( "dfgdfgfg")),
+            TableCell(child: Text( "gfdfgdfg")),
+            TableCell(
+              child: Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: IconButton(
+                        icon: const Icon(Icons.edit, size: 16),
+                        onPressed: controller.editItem,
+                      ),
+                    ),
+                    Expanded(
+                      child: IconButton(
+                        icon: const Icon(Icons.delete, size: 16),
+                        onPressed: controller.deleteItem,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-        IconButton(
-          icon: const Icon(Icons.delete, size: 16),
-          onPressed: controller.deleteItem,
-        ),
-      ])
-    ]);
+      ],
+    );
   }
 }
