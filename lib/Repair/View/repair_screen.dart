@@ -51,7 +51,8 @@ class InventoriesScreen extends StatelessWidget {
         children: [
           filterButtons(),
           Divider(),
-        
+          inventoryListView(),
+          Divider(),
          
         ],
       ),
@@ -148,5 +149,40 @@ class InventoriesScreen extends StatelessWidget {
     );
   }
 
- 
+  Widget inventoryListBuilder() {
+    return Expanded(
+      child: Obx(() {
+        if (controller.filteredInventory.isEmpty) {
+          return const Center(child: Text('No data available'));
+        }
+        return ListView.builder(
+          itemCount: controller.filteredInventory.length,
+          itemBuilder: (context, index) {
+            final profile = controller.filteredInventory[index];
+            return inventoryItemRow(profile);
+          },
+        );
+      }),
+    );
+  }
+
+  Widget inventoryItemRow(dynamic profile) {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+      Expanded(child: Text(profile.itemCode ?? "")),
+      Expanded(child: Text(profile.ModelNumber ?? "")),
+      Expanded(child: Text(profile.configuration ?? "")),
+      Expanded(child: Text(profile.serialNumber ?? "")),
+      Expanded(child: Text(profile.status ?? "")),
+      Column(children: [
+        IconButton(
+          icon: const Icon(Icons.edit, size: 16),
+          onPressed: controller.editItem,
+        ),
+        IconButton(
+          icon: const Icon(Icons.delete, size: 16),
+          onPressed: controller.deleteItem,
+        ),
+      ])
+    ]);
+  }
 }

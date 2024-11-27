@@ -16,8 +16,10 @@ class Strings {
    static const save = "Save";
    static const saveNext = "Save+next";
    static const cancel = "Cancel";
-   static const labelEmail = "Enter email";
-  static const lablePassword = "Enter password";
+   static const lableEmail = "Email";
+  static const lablePassword = "Password";
+   static const hintEmail = "Enter email";
+  static const hintPassword = "Enter password";
    static const emailHint = "e.g. abc@gmail.com";
   static const strErrorEmptyPhone = "Enter email";
   static const strInvalidPhone = 'Enter a valid email address';

@@ -105,7 +105,9 @@ class _CustomTextFiledState extends State<CustomTextField> {
               obscuringCharacter: '*',
               autovalidateMode: AutovalidateMode.onUserInteraction,
               style: const TextStyle(
-                  color: AppColors.secondaryColor, fontSize: 15, fontFamily: "poppoins"),
+                  color: AppColors.secondaryColor,
+                  fontSize: 15,
+                  fontFamily: "poppoins"),
               decoration: InputDecoration(
                   prefixIcon: widget.prefftext,
                   counterText: '',
@@ -126,11 +128,11 @@ class _CustomTextFiledState extends State<CustomTextField> {
                   fillColor: widget.fillColor,
                   filled: true,
                   hintText: widget.hintText,
-                  labelText: widget.hintText,
+                  labelText: widget.labelText,
                   floatingLabelStyle:
                       const TextStyle(color: AppColors.primaryColor),
-                  hintStyle:
-                      const TextStyle(color: AppColors.secondaryColor, fontSize: 14),
+                  hintStyle: const TextStyle(
+                      color: AppColors.secondaryColor, fontSize: 14),
                   border: OutlineInputBorder(
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
                       borderSide: widget.borderSide!),

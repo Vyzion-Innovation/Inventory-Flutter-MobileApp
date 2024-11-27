@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: Strings.home,
+        title: AppText( Strings.home , fontSize: 20, fontWeight: FontWeight.bold,),
       ),
       drawer: SizedBox(
         width: 250,
@@ -57,14 +57,7 @@ class HomePage extends StatelessWidget {
                     subtitle: Text('This is an optional subtitle'),
                     additionalWidgets: [
                       Text('This is some additional text'),
-                      CustomTextButton(title: 'Button'),
-                         CustomTextButton(title: 'Button'),
-                            CustomTextButton(title: 'Button'),
-                               CustomTextButton(title: 'Button'),
-                                  CustomTextButton(title: 'Button'),
-                                   CustomTextButton(title: 'Button'),
-                               CustomTextButton(title: 'Button'),
-                                  CustomTextButton(title: 'Button'),
+                     
                     ],
                   ),
                    CommonCard(
