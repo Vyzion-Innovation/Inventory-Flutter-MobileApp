@@ -10,7 +10,7 @@ class InventoriesController extends GetxController {
   TextEditingController searchController = TextEditingController();
    var inventoryList = [  {
         'itemCode': 'A001',
-        'ModelNumber': 'MN001',
+        'ModelNumber': 'MN0012',
         'configuration': 'Config1',
         'serialNumber': 'SN001',
         'status': 'Available',
