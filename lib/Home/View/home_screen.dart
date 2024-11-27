@@ -1,0 +1,174 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
+import 'package:inventoryappflutter/Constant/appStrings.dart';
+import 'package:inventoryappflutter/Constant/app_colors.dart';
+import 'package:inventoryappflutter/Constant/app_logo.dart';
+import 'package:inventoryappflutter/Home/Controller/home_controller.dart';
+import 'package:inventoryappflutter/Login/Controller/login_controller.dart';
+import 'package:inventoryappflutter/Login/View/login_screen.dart';
+import 'package:inventoryappflutter/common/app_common_appbar.dart';
+import 'package:inventoryappflutter/common/app_text.dart';
+import 'package:inventoryappflutter/common/build_card.dart';
+import 'package:inventoryappflutter/common/common_text_button.dart';
+
+class HomePage extends StatelessWidget {
+  final SidePanelController sidePanelController = Get.put(SidePanelController());
+  final LoginController loginController = Get.put(LoginController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const CustomAppBar(
+        title: Strings.home,
+      ),
+      drawer: SizedBox(
+        width: 250,
+        child: _buildDrawer(context),
+      ),
+      body: SingleChildScrollView(
+        child: Row(
+          children: [
+            // Main Content
+            Expanded(
+              child: StaggeredGrid.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 8.0,
+                children: const [
+                   CommonCard(
+                    title: 'Card Title',
+                    subtitle: Text('This is an optional subtitle'),
+                    additionalWidgets: [
+                      Text('This is some additional text'),
+                   
+                    ],
+                  ),
+                  CommonCard(
+                    title: 'Card Title',
+                    subtitle: Text('This is an optional subtitle'),
+                    additionalWidgets: [
+                      Text('This is some additional text'),
+                     
+                    ],
+                  ),
+                  CommonCard(
+                    title: 'Card Title',
+                    subtitle: Text('This is an optional subtitle'),
+                    additionalWidgets: [
+                      Text('This is some additional text'),
+                      CustomTextButton(title: 'Button'),
+                         CustomTextButton(title: 'Button'),
+                            CustomTextButton(title: 'Button'),
+                               CustomTextButton(title: 'Button'),
+                                  CustomTextButton(title: 'Button'),
+                                   CustomTextButton(title: 'Button'),
+                               CustomTextButton(title: 'Button'),
+                                  CustomTextButton(title: 'Button'),
+                    ],
+                  ),
+                   CommonCard(
+                    title: 'Card Title',
+                    subtitle: Text('This is an optional subtitle'),
+                    additionalWidgets: [
+                      Text('This is some additional text'),
+                      Text('This is some additional text'),
+                      Text('This is some additional text'),
+                      Text('This is some additional text'),
+                      Text('This is some additional text'),Text('This is some additional text'),
+                      Text('This is some additional text'),
+                   
+                    ],
+                  ),
+                   CommonCard(
+                    title: 'Card Title',
+                    subtitle: Text('This is an optional subtitle'),
+                    additionalWidgets: [
+                      Text('This is some additional text'),
+                     
+                    ],
+                  ),
+        
+                ]
+                
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Drawer Widget
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 250,
+            color: AppColors.gradientOne,
+            padding: const EdgeInsets.fromLTRB(40.0, 50, 0, 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  child: Image.asset(
+                    AppLogo.companyLogo,
+                    height: MediaQuery.of(context).size.height / 4,
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const AppText(
+                  'Pawan Ginti',
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.colorWhite,
+                ),
+                const SizedBox(height: 5),
+                const AppText(
+                  'P@p.com',
+                  fontSize: 15,
+                  color: AppColors.colorWhite,
+                ),
+              ],
+            ),
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: const AppText(
+              'Profile Info',
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(Icons.details_rounded),
+            title: const AppText(
+              'About App',
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(Icons.exit_to_app),
+            title: const AppText(
+              'Logout',
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
+            onTap: () {
+              loginController.logout();
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
