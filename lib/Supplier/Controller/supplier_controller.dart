@@ -3,76 +3,49 @@ import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Supplier/View/add_supplier_screen.dart';
 
 class SupplierController extends GetxController {
+  RxList<Map<String, String>> supplierList = <Map<String, String>>[
+    // Add sample supplier data for testing
+    {'Name': 'Supplier A', 'Phone_Number': '1234567890', 'Address': 'Location A', 'CreatedAt': '2024-11-28'},
+    {'Name': 'Supplier B', 'Phone_Number': '0987654321', 'Address': 'Location f', 'CreatedAt': '2024-11-28'},
+     {'Name': 'Supplier C', 'Phone_Number': '09876514321', 'Address': 'Location d', 'CreatedAt': '2024-11-28'},
+      {'Name': 'Supplier d', 'Phone_Number': '09876545321', 'Address': 'Location z', 'CreatedAt': '2024-11-28'},
+       {'Name': 'Supplier E', 'Phone_Number': '09876444321', 'Address': 'Location s', 'CreatedAt': '2024-11-28'},
+  ].obs;
 
-  var selectedButton = 'All'.obs;
-  var isSearching = RxBool(false);
+  RxList<Map<String, String>> filteredSupplierList = <Map<String, String>>[].obs;
+
   TextEditingController searchController = TextEditingController();
-   var supplierList = [  {
-        'Name': 'A001',
-        'Phone_Number': '9027417888',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-       
-      },
-      {
-        'Name': 'A002',
-        'Phone_Number': '4485529114',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },
-      {
-        'Name': 'A003',
-        'Phone_Number': '5485892247',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },
-      {
-        'Name': 'A004',
-        'Phone_Number': '5595158987',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },
-      {
-        'Name': 'A005',
-        'Phone_Number': '56699529852',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },].obs;
 
   @override
   void onInit() {
     super.onInit();
-    searchController.addListener(fetchSupplierList);
-    fetchSupplierList(); // Fetch or simulate fetching inventory
+    // Initialize the filtered list with all items
+    filteredSupplierList.assignAll(supplierList);
+    // Listen to changes in the search text
+    searchController.addListener(() {
+      filterSupplierList();
+    });
   }
 
-  @override
-  void onClose() {
-    searchController.dispose();
-    super.onClose();
+  void filterSupplierList() {
+    final query = searchController.text.trim().toLowerCase();
+    if (query.isEmpty) {
+      // If the query is empty, show all items
+      filteredSupplierList.assignAll(supplierList);
+    } else {
+      // Filter the list based on the query
+     filteredSupplierList.assignAll(supplierList.where((item) {
+  return (item['Name']?.toLowerCase().contains(query) ?? false);
+         
+}).toList());
+    }
   }
 
   void toggleSearch() {
-    isSearching.value = !isSearching.value; // Toggle search state
+    filterSupplierList();
   }
 
-  void fetchSupplierList({String filterType = 'All'}) {
-    // Static data for testing purposes
-   
-   
-  }
-
-  
-
-  void addItem() {
+ void addItem() {
     Get.to(() => AddSupplierScreen());
-  }
-
-  void editItem() {
-    // Placeholder for editing item logic
-  }
-
-  void deleteItem() {
-    // Placeholder for deleting item logic
   }
 }

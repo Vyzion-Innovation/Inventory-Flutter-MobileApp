@@ -17,7 +17,7 @@ class InventoryFormScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
      appBar: const CustomAppBar(
-        title: AppText( Strings.inventory , fontSize: 20, fontWeight: FontWeight.bold,),
+        title: AppText( Strings.addInventory , fontSize: 20, fontWeight: FontWeight.bold,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

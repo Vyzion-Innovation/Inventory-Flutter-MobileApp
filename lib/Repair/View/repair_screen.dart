@@ -152,7 +152,7 @@ class RepairScreen extends StatelessWidget {
                   '${profile['status'] ?? ""}',
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
-                  color: profile['status'] == 'Available' ? Colors.green : Colors.red,
+                  color: profile['status']?.toLowerCase() == 'available' ? Colors.green : Colors.red,
                 ),
                 IconButton(
                   icon: const Icon(Icons.edit, size: 20),

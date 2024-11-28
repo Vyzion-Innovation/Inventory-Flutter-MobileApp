@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Customer/Controller/add_customer_controller.dart';
-import 'package:inventoryappflutter/Add_Supplier/Controller/add_supllier_controller.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Extension/form_validator.dart';
@@ -10,14 +9,14 @@ import 'package:inventoryappflutter/common/app_common_button.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
 
-class AddSupplierScreen extends StatelessWidget {
+class AddCustomerScreen extends StatelessWidget {
   final AddCustomerController controller = Get.put(AddCustomerController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
      appBar: const CustomAppBar(
-        title: AppText( Strings.supplier , fontSize: 20, fontWeight: FontWeight.bold,),
+        title: AppText( Strings.addCustomer , fontSize: 20, fontWeight: FontWeight.bold,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -31,7 +30,7 @@ class AddSupplierScreen extends StatelessWidget {
                 controller: controller.supllierName,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
-                validator: FieldValidator.validateSupllierName,
+                validator: FieldValidator.validateCustomerName,
               ),
               const SizedBox(height: 20),
               CustomTextField(
@@ -44,9 +43,10 @@ class AddSupplierScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               CustomTextField(
-                labelText: "Address",
+                labelText: "Billing Address",
                 hintText: "Enter Address",
                 controller: controller.supplierAddressController,
+                MaxLine: 4,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validateAddress,

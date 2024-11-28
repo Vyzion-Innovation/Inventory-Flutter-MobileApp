@@ -17,7 +17,7 @@ class RepairFormScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
      appBar: const CustomAppBar(
-        title: AppText( Strings.repair , fontSize: 20, fontWeight: FontWeight.bold,),
+        title: AppText( Strings.addRepair , fontSize: 20, fontWeight: FontWeight.bold,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -97,6 +97,7 @@ class RepairFormScreen extends StatelessWidget {
                         labelText: "Description",
                         hintText: "Enter Description",
                         controller: controller.descriptionController,
+                         MaxLine: 4,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
                         validator: FieldValidator.validateDescription,

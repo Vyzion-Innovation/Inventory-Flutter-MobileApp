@@ -16,7 +16,7 @@ class AddSupplierScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
      appBar: const CustomAppBar(
-        title: AppText( Strings.supplier , fontSize: 20, fontWeight: FontWeight.bold,),
+        title: AppText( Strings.addSupplier , fontSize: 20, fontWeight: FontWeight.bold,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -46,6 +46,7 @@ class AddSupplierScreen extends StatelessWidget {
                 labelText: "Address",
                 hintText: "Enter Address",
                 controller: controller.supplierAddressController,
+                 MaxLine: 4,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validateAddress,

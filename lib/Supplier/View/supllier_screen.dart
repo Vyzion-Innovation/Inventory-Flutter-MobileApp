@@ -44,19 +44,19 @@ class SupllierScreen extends StatelessWidget {
   }
 
   Widget inventoryListBuilder() {
-    return Obx(() {
-      if (controller.supplierList.isEmpty) {
-        return const Center(child: Text('No data available'));
-      }
-      return ListView.builder(
-        itemCount: controller.supplierList.length,
-        itemBuilder: (context, index) {
-          final profile = controller.supplierList[index];
-          return inventoryItemCard(profile, index);
-        },
-      );
-    });
-  }
+  return Obx(() {
+    if (controller.filteredSupplierList.isEmpty) {
+      return const Center(child: Text('No data available'));
+    }
+    return ListView.builder(
+      itemCount: controller.filteredSupplierList.length,
+      itemBuilder: (context, index) {
+        final profile = controller.filteredSupplierList[index];
+        return inventoryItemCard(profile, index);
+      },
+    );
+  });
+}
 
   Widget inventoryItemCard(Map<String, String> profile, int index) {
     return Padding(

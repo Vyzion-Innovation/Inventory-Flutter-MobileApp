@@ -44,19 +44,21 @@ class InventoriesScreen extends StatelessWidget {
   }
 
   Widget inventoryListBuilder() {
-    return Obx(() {
-      if (controller.inventoryList.isEmpty) {
-        return const Center(child: Text('No data available'));
-      }
-      return ListView.builder(
-        itemCount: controller.inventoryList.length,
-        itemBuilder: (context, index) {
-          final profile = controller.inventoryList[index];
-          return inventoryItemCard(profile, index);
-        },
-      );
-    });
-  }
+  return Obx(() {
+    final inventory = controller.filteredInventoryList; // Use the filtered list
+    if (inventory.isEmpty) {
+      return const Center(child: Text('No data available'));
+    }
+    return ListView.builder(
+      itemCount: inventory.length,
+      itemBuilder: (context, index) {
+        final profile = inventory[index];
+        return inventoryItemCard(profile, index);
+      },
+    );
+  });
+}
+
 
   Widget inventoryItemCard(Map<String, String> profile, int index) {
     return Padding(
@@ -147,7 +149,7 @@ class InventoriesScreen extends StatelessWidget {
                     '${profile['status'] ?? ""}',
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
-                    color: profile['status'] == 'Available'
+                    color: profile['status']?.toLowerCase() == 'stock'
                         ? Colors.green
                         : Colors.red,
                   ),
@@ -177,48 +179,49 @@ class InventoriesScreen extends StatelessWidget {
     );
   }
 
-  Widget filterButtons() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Obx(() => Expanded(
-                child: FilterButton(
-                  label: inevontryTextStrings.btnTextALL,
-                  isSelected: controller.selectedButton.value == 'All',
-                  onTap: () {
-                    controller.selectedButton.value = 'All';
-                    controller.fetchInventoryList(filterType: 'All');
-                  },
-                ),
-              )),
-          const SizedBox(width: 10),
-          Obx(() => Expanded(
-                child: FilterButton(
-                  label: inevontryTextStrings.btnTextStock,
-                  isSelected: controller.selectedButton.value == 'Stock',
-                  onTap: () {
-                    controller.selectedButton.value = 'Stock';
-                    controller.fetchInventoryList(filterType: 'Stock');
-                  },
-                ),
-              )),
-          const SizedBox(width: 10),
-          Obx(() => Expanded(
-                child: FilterButton(
-                  label: inevontryTextStrings.btnTextsell,
-                  isSelected: controller.selectedButton.value == 'Sell',
-                  onTap: () {
-                    controller.selectedButton.value = 'Sell';
-                    controller.fetchInventoryList(filterType: 'Sell');
-                  },
-                ),
-              )),
-        ],
-      ),
-    );
-  }
+ Widget filterButtons() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Obx(() => Expanded(
+              child: FilterButton(
+                label: 'All',
+                isSelected: controller.selectedButton.value == 'All',
+                onTap: () {
+                  controller.selectedButton.value = 'All';
+                  // controller.fetchInventoryList(filterType: 'All');
+                },
+              ),
+            )),
+        const SizedBox(width: 10),
+        Obx(() => Expanded(
+              child: FilterButton(
+                label: 'Stock',
+                isSelected: controller.selectedButton.value == 'Stock',
+                onTap: () {
+                  controller.selectedButton.value = 'Stock';
+                  // controller.fetchInventoryList(filterType: 'Stock');
+                },
+              ),
+            )),
+        const SizedBox(width: 10),
+        Obx(() => Expanded(
+              child: FilterButton(
+                label: 'Sell',
+                isSelected: controller.selectedButton.value == 'Sell',
+                onTap: () {
+                  controller.selectedButton.value = 'Sell';
+                  // controller.fetchInventoryList(filterType: 'Sell');
+                },
+              ),
+            )),
+      ],
+    ),
+  );
+}
+
 
   Widget searchBar() {
     return Padding(
@@ -226,13 +229,16 @@ class InventoriesScreen extends StatelessWidget {
       child: SizedBox(
         height: 50,
         child: CustomTextField(
+         
           MaxLine: 1,
           hintText: inevontryTextStrings.Searchhint,
           controller: controller.searchController,
           borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
+          focusNode: FocusNode(),
           suffix: IconButton(
             onPressed: () {
-              controller.toggleSearch();
+              // controller.toggleSearch();
+              FocusNode().requestFocus();
             },
             icon: const Icon(
               Icons.search,

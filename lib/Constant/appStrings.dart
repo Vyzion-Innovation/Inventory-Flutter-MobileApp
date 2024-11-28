@@ -11,6 +11,11 @@ class Strings {
   static const supplier = "Supplier";
   static const repair = 'Repairs';
   static const customer = "Customer";
+   static const addInventory = ' Add Inventory';
+  
+  static const addSupplier = "Add Supplier";
+  static const addRepair = 'Add Repairs';
+  static const addCustomer = "Add Customer";
   // static const welcome = "Welcome";
   static const back = "Back";
    static const rememberMe = "Remember me";
