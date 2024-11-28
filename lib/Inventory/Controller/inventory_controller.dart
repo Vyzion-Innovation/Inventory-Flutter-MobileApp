@@ -8,7 +8,7 @@ class InventoriesController extends GetxController {
   var selectedButton = 'All'.obs;
   var isSearching = false.obs;
   TextEditingController searchController = TextEditingController();
-   var inventoryList = [  {
+   var inventoryList = <Map<String, String>> [  {
         'itemCode': 'A001',
         'ModelNumber': 'MN0012',
         'configuration': 'Config1',
@@ -75,11 +75,19 @@ class InventoriesController extends GetxController {
     Get.to(() => InventoryFormScreen());
   }
 
-  void editItem() {
-    // Placeholder for editing item logic
+ void editItem(int index, String newItemCode) {
+    if (index >= 0 && index < inventoryList.length) {
+      // Create a new list with the updated item
+      var updatedList = List<Map<String, String>>.from(inventoryList);
+      updatedList[index]['itemCode'] = newItemCode; // Update the item code
+      inventoryList.assignAll(updatedList); // Assign the new list to the observable list
+    }
   }
 
-  void deleteItem() {
-    // Placeholder for deleting item logic
+  void deleteItem(int index) {
+    if (index >= 0 && index < inventoryList.length) {
+      inventoryList.removeAt(index); // Remove the item at the specified index
+    }
   }
+
 }

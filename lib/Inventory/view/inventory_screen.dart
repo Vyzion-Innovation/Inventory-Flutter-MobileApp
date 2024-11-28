@@ -65,13 +65,13 @@ class InventoriesScreen extends StatelessWidget {
         itemCount: controller.inventoryList.length,
         itemBuilder: (context, index) {
           final profile = controller.inventoryList[index];
-          return inventoryItemCard(profile);
+          return inventoryItemCard(profile, index);
         },
       );
     });
   }
 
-  Widget inventoryItemCard(dynamic profile) {
+  Widget inventoryItemCard(Map<String, String> profile, int index) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: CommonCard(
@@ -80,104 +80,108 @@ class InventoriesScreen extends StatelessWidget {
         print("Card clicked for item code: ${profile['itemCode']}");
       },
       additionalWidgets: [
-      Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    // Left column for item details
-    Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              AppText(
-                'Item Code:  ',
-                fontWeight: FontWeight.bold, 
-                fontSize: 16,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Left column for item details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      AppText(
+                        'Item Code:  ',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                      AppText(
+                        '${profile['itemCode'] ?? ""}',
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      AppText(
+                        'Model Number:  ',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      AppText(
+                        '${profile['ModelNumber'] ?? ""}',
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      AppText(
+                        'Configuration:  ',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      AppText(
+                        '${profile['configuration'] ?? ""}',
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      AppText(
+                        'Serial Number:  ',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      AppText(
+                        '${profile['serialNumber'] ?? ""}',
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                ],
               ),
-              AppText(
-                '${profile['itemCode'] ?? ""}', 
-                fontWeight: FontWeight.normal, 
-                fontSize: 16,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              AppText(
-                'Model Number:  ',
-                fontWeight: FontWeight.bold, 
-                fontSize: 14,
-              ),
-              AppText(
-                '${profile['ModelNumber'] ?? ""}', 
-                fontWeight: FontWeight.normal, 
-                fontSize: 14,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              AppText(
-                'Configuration:  ',
-                fontWeight: FontWeight.bold, 
-                fontSize: 14,
-              ),
-              AppText(
-                '${profile['configuration'] ?? ""}', 
-                fontWeight: FontWeight.normal, 
-                fontSize: 14,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              AppText(
-                'Serial Number:  ',
-                fontWeight: FontWeight.bold, 
-                fontSize: 14,
-              ),
-              AppText(
-                '${profile['serialNumber'] ?? ""}', 
-                fontWeight: FontWeight.normal, 
-                fontSize: 14,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-        ],
-      ),
-    ),
-    const SizedBox(width: 12),
-    // Right column for action buttons
-    Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        AppText(
-          '${profile['status'] ?? ""}',
-          fontWeight: FontWeight.bold, 
-          fontSize: 14,
-          color: profile['status'] == 'Available' ? Colors.green : Colors.red,
+            ),
+            const SizedBox(width: 12),
+            // Right column for action buttons
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AppText(
+                  '${profile['status'] ?? ""}',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: profile['status'] == 'Available' ? Colors.green : Colors.red,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.edit, size: 20),
+                  onPressed: () {
+                    // Call editItem with the index and a new item code (for example purposes)
+                    controller.editItem(index, 'A0001'); // Replace 'NewItemCode' with actual input
+                  },
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete, size: 20),
+                  onPressed: () {
+                    // Call deleteItem with the index
+                    controller.deleteItem(index);
+                  },
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                ),
+              ],
+            ),
+          ],
         ),
-        IconButton(
-          icon: const Icon(Icons.edit, size: 20),
-          onPressed: controller.editItem,
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-        ),
-        IconButton(
-          icon: const Icon(Icons.delete, size: 20),
-          onPressed: controller.deleteItem,
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-        ),
-      ],
-    ),
-  ],
-)
-
-
       ],
     ),
   );
