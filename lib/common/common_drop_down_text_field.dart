@@ -31,7 +31,8 @@ class CommonDropDownTextField extends StatefulWidget {
     this.items,
     this.value,
     this.fillColor = Colors.white,
-    this.borderSide = const BorderSide(color: AppColors.primaryColor, width: 1.0),
+    this.borderSide =
+        const BorderSide(color: AppColors.primaryColor, width: 1.0),
     this.fontsize,
     this.alignment,
     this.readOnly = false,
@@ -57,14 +58,15 @@ class _CommonDropDownTextFieldState extends State<CommonDropDownTextField> {
         ),
         fillColor: widget.fillColor,
         filled: true,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          borderSide: widget.borderSide!,
-        ),
+        border: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderSide: widget.borderSide!),
         focusedBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          borderSide: widget.borderSide!,
-        ),
+            borderSide: widget.borderSide!,
+            borderRadius: const BorderRadius.all(Radius.circular(10))),
+        enabledBorder: OutlineInputBorder(
+            borderSide: widget.borderSide!,
+            borderRadius: const BorderRadius.all(Radius.circular(10))),
         floatingLabelStyle: const TextStyle(color: AppColors.primaryColor),
         hintStyle: TextStyle(
           color: AppColors.greyColor,

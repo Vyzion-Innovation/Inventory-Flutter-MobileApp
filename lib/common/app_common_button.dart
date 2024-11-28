@@ -10,17 +10,20 @@ class CustomButton extends StatelessWidget {
   final Color? color;
   final Color? textColor;
   final FontWeight? textWeight;
-
+  final bool selected; 
   final double? fontSize;
-  const CustomButton(
-      {super.key,
-      this.onTap,
-      this.title,
-      this.width,
-      this.fontSize,
-      this.color,
-      this.textColor,
-      this.textWeight});
+
+  const CustomButton({
+    Key? key,
+    this.onTap,
+    this.title,
+    this.width,
+    this.fontSize,
+    this.color,
+    this.textColor,
+    this.selected = false,
+    this.textWeight,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +31,10 @@ class CustomButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 50,
-        width: double.infinity,
+        width: width ?? double.infinity, // Use the provided width or default to full width
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          gradient: color == AppColors.primaryColor
+          gradient: selected 
               ? const LinearGradient(colors: <Color>[
                   AppColors.gradientOne,
                   AppColors.gradientTwo,
@@ -44,9 +47,9 @@ class CustomButton extends StatelessWidget {
         child: Center(
           child: AppText(
             title ?? "",
-            fontSize: 15,
-            color: AppColors.colorWhite,
-            fontWeight: FontWeight.normal,
+            fontSize: fontSize ?? 15, // Use provided fontSize or default to 15
+            color: textColor ?? AppColors.colorWhite, // Use provided textColor or default to white
+            fontWeight: textWeight ?? FontWeight.normal, // Use provided textWeight or default to normal
           ),
         ),
       ),

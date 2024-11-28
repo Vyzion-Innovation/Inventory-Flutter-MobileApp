@@ -5,6 +5,7 @@ import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/BottomNavBar/Controller/navbar_controller.dart';
 import 'package:inventoryappflutter/Home/View/home_screen.dart';
 import 'package:inventoryappflutter/Inventory/view/inventory_screen.dart';
+import 'package:inventoryappflutter/Repair/View/repair_screen.dart';
 
 class NavBarScreen extends StatelessWidget {
   // Get the controller instance
@@ -65,7 +66,7 @@ class NavBarScreen extends StatelessWidget {
       case Strings.inventory:
         return  Center(child: InventoriesScreen());
       case Strings.repair:
-        return const Center(child: Text('Repairs Screen'));
+        return  Center(child: RepairScreen());
       case Strings.customer:
         return const Center(child: Text('Customer Screen'));
       case Strings.supplier:

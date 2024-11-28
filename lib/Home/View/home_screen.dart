@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: Strings.home,
+        title: AppText( Strings.home , fontSize: 20, fontWeight: FontWeight.bold,),
       ),
       drawer: SizedBox(
         width: 250,
@@ -37,39 +37,36 @@ class HomePage extends StatelessWidget {
                 mainAxisSpacing: 8.0,
                 children: const [
                    CommonCard(
+                     padding: EdgeInsets.all(12), 
                     title: 'Card Title',
-                    subtitle: Text('This is an optional subtitle'),
+                    subtitle:'This is an optional subtitle',
                     additionalWidgets: [
                       Text('This is some additional text'),
                    
                     ],
                   ),
                   CommonCard(
+                   padding: EdgeInsets.all(12), 
                     title: 'Card Title',
-                    subtitle: Text('This is an optional subtitle'),
+                    subtitle: 'This is an optional subtitle',
                     additionalWidgets: [
                       Text('This is some additional text'),
                      
                     ],
                   ),
                   CommonCard(
+                     padding: EdgeInsets.all(12), 
                     title: 'Card Title',
-                    subtitle: Text('This is an optional subtitle'),
+                    subtitle: 'This is an optional subtitle',
                     additionalWidgets: [
                       Text('This is some additional text'),
-                      CustomTextButton(title: 'Button'),
-                         CustomTextButton(title: 'Button'),
-                            CustomTextButton(title: 'Button'),
-                               CustomTextButton(title: 'Button'),
-                                  CustomTextButton(title: 'Button'),
-                                   CustomTextButton(title: 'Button'),
-                               CustomTextButton(title: 'Button'),
-                                  CustomTextButton(title: 'Button'),
+                     
                     ],
                   ),
                    CommonCard(
+                     padding: EdgeInsets.all(12), 
                     title: 'Card Title',
-                    subtitle: Text('This is an optional subtitle'),
+                    subtitle: 'This is an optional subtitle',
                     additionalWidgets: [
                       Text('This is some additional text'),
                       Text('This is some additional text'),
@@ -81,8 +78,9 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                    CommonCard(
+                     padding: EdgeInsets.all(12), 
                     title: 'Card Title',
-                    subtitle: Text('This is an optional subtitle'),
+                    subtitle: 'This is an optional subtitle',
                     additionalWidgets: [
                       Text('This is some additional text'),
                      

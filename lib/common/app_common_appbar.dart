@@ -5,7 +5,7 @@ import 'package:inventoryappflutter/common/app_text.dart';
 import '../constant/app_colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String? title;
+  final Widget? title;
   final bool? isCenter;
   final bool? isLeading;
   final Widget? leading;
@@ -23,7 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      // backgroundColor: AppColors.colorWhite,
+      backgroundColor: AppColors.deselectSegment,
       leadingWidth: leading != null ? leadingWidth : null,
       leading: isLeading!
           ? GestureDetector(
@@ -37,12 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             )
           : leading,
       centerTitle: isCenter,
-      title: AppText(
-        title ?? "",
-        fontWeight: FontWeight.w600,
-        fontSize: 16,
-        color: AppColors.colorBlack,
-      ),
+      title: title,
       actions: actions,
     );
   }

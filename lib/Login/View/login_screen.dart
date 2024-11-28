@@ -33,7 +33,7 @@ class LoginScreenPage extends StatelessWidget {
                     child: ClipOval(
                       child: Image.asset(
                         AppLogo.companyLogo,
-                        height: MediaQuery.of(context).size.height / 4,
+                        height: MediaQuery.of(context).size.height / 6,
                         fit: BoxFit.scaleDown,
                         matchTextDirection: true,
                       ),
@@ -49,8 +49,8 @@ class LoginScreenPage extends StatelessWidget {
 
                   // Email Field
                   CustomTextField(
-                    labelText: Strings.labelEmail,
-                    hintText: Strings.labelEmail,
+                    labelText: Strings.lableEmail,
+                    hintText: Strings.hintEmail,
                     controller: loginController.emailController,
                     input: TextInputType.emailAddress,
                     borderSide: const BorderSide(color:AppColors.primaryColor, width: 1.0),
@@ -70,7 +70,7 @@ class LoginScreenPage extends StatelessWidget {
                   Obx(
                     () => CustomTextField(
                       labelText: Strings.lablePassword,
-                      hintText: Strings.lablePassword,
+                      hintText: Strings.hintPassword,
                       obscureText: !loginController.passwordVisible.value,
                       controller: loginController.passwordController,
                       suffixVisibility: true,
@@ -93,6 +93,19 @@ class LoginScreenPage extends StatelessWidget {
                         );
                       },
                     ),
+                  ),
+                   Row(
+                    children: [
+                      Obx(
+                        () => Checkbox(
+                          value: loginController.rememberMe.value,
+                          onChanged: (value) {
+                            loginController.toggleRememberMe(value ?? false);
+                          },
+                        ),
+                      ),
+                      const Text(Strings.rememberMe),
+                    ],
                   ),
 
                   const CustomSizedBox(height: 20),
