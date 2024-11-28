@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventoryappflutter/common/app_text.dart';
 
 class CommonCard extends StatelessWidget {
   final String? title;
@@ -38,16 +39,18 @@ class CommonCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (title != null && title!.isNotEmpty) ...[
-              Text(
+              AppText(
                 title!,
-                style: Theme.of(context).textTheme.titleLarge,
+                 fontSize: 20,
+                 fontWeight: FontWeight.bold,
+               
               ),
               const SizedBox(height: 8), // Space after title
             ],
             if (subtitle != null && subtitle!.isNotEmpty) ...[
-              Text(
+              AppText(
                 subtitle!,
-                style: Theme.of(context).textTheme.bodyMedium,
+               fontSize: 16,
               ),
               const SizedBox(height: 16), // Space after subtitle
             ],

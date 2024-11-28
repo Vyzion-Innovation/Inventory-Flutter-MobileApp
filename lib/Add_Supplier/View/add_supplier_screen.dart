@@ -26,12 +26,12 @@ class AddSupplierScreen extends StatelessWidget {
           child: ListView(
             children: [
               CustomTextField(
-                labelText: "Customer Name",
+                labelText: "Name",
                 hintText: "Enter name",
                 controller: controller.supllierName,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
-                validator: FieldValidator.validateItemCode,
+                validator: FieldValidator.validateSupllierName,
               ),
               const SizedBox(height: 20),
               CustomTextField(
@@ -40,16 +40,16 @@ class AddSupplierScreen extends StatelessWidget {
                 controller: controller.phoneNumberController,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
-                validator: FieldValidator.validateCompanyName,
+                validator: FieldValidator.validatePhoneNumber,
               ),
               const SizedBox(height: 20),
               CustomTextField(
-                labelText: "Issue",
-                hintText: "Enter Issue",
+                labelText: "Address",
+                hintText: "Enter Address",
                 controller: controller.supplierAddressController,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
-                validator: FieldValidator.validateBrand,
+                validator: FieldValidator.validateAddress,
               ),
              
               SizedBox(height: 10),

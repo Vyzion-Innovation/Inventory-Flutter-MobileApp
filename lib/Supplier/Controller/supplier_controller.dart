@@ -1,41 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:inventoryappflutter/Add_Repair/View/repair_screen.dart';
 import 'package:inventoryappflutter/Add_Supplier/View/add_supplier_screen.dart';
+import 'package:inventoryappflutter/Supplier/View/supllier_screen.dart';
 
 class SupplierController extends GetxController {
 
   var selectedButton = 'All'.obs;
-  var isSearching = false.obs;
+  var isSearching = RxBool(false);
   TextEditingController searchController = TextEditingController();
    var supplierList = [  {
         'Name': 'A001',
-        'Phone_Number': 'MN0012',
+        'Phone_Number': '9027417888',
         'Address': 'Config1',
         'CreatedAt': 'SN001',
        
       },
       {
         'Name': 'A002',
-        'Phone_Number': 'MN0012',
+        'Phone_Number': '4485529114',
         'Address': 'Config1',
         'CreatedAt': 'SN001',
       },
       {
         'Name': 'A003',
-        'Phone Number': 'MN0012',
+        'Phone_Number': '5485892247',
         'Address': 'Config1',
         'CreatedAt': 'SN001',
       },
       {
         'Name': 'A004',
-        'Phone _Number': 'MN0012',
+        'Phone_Number': '5595158987',
         'Address': 'Config1',
         'CreatedAt': 'SN001',
       },
       {
         'Name': 'A005',
-        'Phone_Number': 'MN0012',
+        'Phone_Number': '56699529852',
         'Address': 'Config1',
         'CreatedAt': 'SN001',
       },].obs;

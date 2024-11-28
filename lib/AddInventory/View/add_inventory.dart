@@ -132,7 +132,7 @@ class InventoryFormScreen extends StatelessWidget {
                             Icons.calendar_month,
                           ),
                         ),
-                        validator: FieldValidator.validateItemCode,
+                        validator: FieldValidator.validateDate,
                       ),
                       const SizedBox(height: 20),
                       CustomTextField(
@@ -141,7 +141,7 @@ class InventoryFormScreen extends StatelessWidget {
                         controller: controller.sellAmountController,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
-                        validator: FieldValidator.validateItemCode,
+                        validator: FieldValidator.validateEstimatedCost,
                       ),
                       const SizedBox(height: 20),
                       Obx(() => CommonDropDownTextField(
@@ -196,7 +196,7 @@ class InventoryFormScreen extends StatelessWidget {
                         ),
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
-                        validator: FieldValidator.validateItemCode,
+                        validator: FieldValidator.validateDate,
                       ),
                       const SizedBox(height: 20),
                       CustomTextField(
@@ -205,7 +205,7 @@ class InventoryFormScreen extends StatelessWidget {
                         controller: controller.amountController,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
-                        validator: FieldValidator.validateItemCode,
+                        validator: FieldValidator.validateEstimatedCost,
                       ),
                       const SizedBox(height: 20),
                       Obx(() => CommonDropDownTextField(

@@ -27,71 +27,74 @@ class HomePage extends StatelessWidget {
         child: _buildDrawer(context),
       ),
       body: SingleChildScrollView(
-        child: Row(
-          children: [
-            // Main Content
-            Expanded(
-              child: StaggeredGrid.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
-                children: const [
-                   CommonCard(
-                     padding: EdgeInsets.all(12), 
-                    title: 'Card Title',
-                    subtitle:'This is an optional subtitle',
-                    additionalWidgets: [
-                      Text('This is some additional text'),
-                   
-                    ],
-                  ),
-                  CommonCard(
-                   padding: EdgeInsets.all(12), 
-                    title: 'Card Title',
-                    subtitle: 'This is an optional subtitle',
-                    additionalWidgets: [
-                      Text('This is some additional text'),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              // Main Content
+              Expanded(
+                child: StaggeredGrid.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 15.0,
+                  mainAxisSpacing: 15.0,
+                  children: const [
+                     CommonCard(
+                       padding: EdgeInsets.all(12), 
+                      title: 'Total Stock Count',
+                      // subtitle:'This is an optional subtitle',
+                      additionalWidgets: [
+                        Center(child: AppText('0',fontSize: 15, color: AppColors.gradientOne,)),
                      
-                    ],
-                  ),
-                  CommonCard(
+                      ],
+                    ),
+                    CommonCard(
                      padding: EdgeInsets.all(12), 
-                    title: 'Card Title',
-                    subtitle: 'This is an optional subtitle',
-                    additionalWidgets: [
-                      Text('This is some additional text'),
+                      title: 'Total Stock Value',
+                      // subtitle: 'This is an optional subtitle',
+                      additionalWidgets: [
+                        Center(child: AppText('Rs 0', fontSize: 15,color:  AppColors.gradientOne)),
+                       
+                      ],
+                    ),
+                    CommonCard(
+                       padding: EdgeInsets.all(12), 
+                      title: 'Card Title',
+                      subtitle: 'This is an optional subtitle',
+                      additionalWidgets: [
+                        Text('This is some additional text'),
+                       
+                      ],
+                    ),
+                     CommonCard(
+                       padding: EdgeInsets.all(12), 
+                      title: 'Card Title',
+                      subtitle: 'This is an optional subtitle',
+                      additionalWidgets: [
+                        Text('This is some additional text'),
+                        Text('This is some additional text'),
+                        Text('This is some additional text'),
+                        Text('This is some additional text'),
+                        Text('This is some additional text'),Text('This is some additional text'),
+                        Text('This is some additional text'),
                      
-                    ],
-                  ),
-                   CommonCard(
-                     padding: EdgeInsets.all(12), 
-                    title: 'Card Title',
-                    subtitle: 'This is an optional subtitle',
-                    additionalWidgets: [
-                      Text('This is some additional text'),
-                      Text('This is some additional text'),
-                      Text('This is some additional text'),
-                      Text('This is some additional text'),
-                      Text('This is some additional text'),Text('This is some additional text'),
-                      Text('This is some additional text'),
-                   
-                    ],
-                  ),
-                   CommonCard(
-                     padding: EdgeInsets.all(12), 
-                    title: 'Card Title',
-                    subtitle: 'This is an optional subtitle',
-                    additionalWidgets: [
-                      Text('This is some additional text'),
-                     
-                    ],
-                  ),
-        
-                ]
-                
+                      ],
+                    ),
+                     CommonCard(
+                       padding: EdgeInsets.all(12), 
+                      title: 'Card Title',
+                      subtitle: 'This is an optional subtitle',
+                      additionalWidgets: [
+                        Text('This is some additional text'),
+                       
+                      ],
+                    ),
+          
+                  ]
+                  
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

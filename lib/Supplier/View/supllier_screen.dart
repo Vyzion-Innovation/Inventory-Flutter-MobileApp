@@ -76,7 +76,7 @@ class SupllierScreen extends StatelessWidget {
     child: CommonCard(
       padding: const EdgeInsets.all(16),
       onTap: () {
-        print("Card clicked for item code: ${profile['itemCode']}");
+        print("Card clicked for item code");
       },
       additionalWidgets: [
         Row(
@@ -110,7 +110,7 @@ class SupllierScreen extends StatelessWidget {
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['Phone Number'] ?? ""}',
+                        '${profile['Phone_Number'] ?? ""}',
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
