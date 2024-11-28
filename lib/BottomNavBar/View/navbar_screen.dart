@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/BottomNavBar/Controller/navbar_controller.dart';
+import 'package:inventoryappflutter/Customer/View/customer_screen.dart';
 import 'package:inventoryappflutter/Home/View/home_screen.dart';
 import 'package:inventoryappflutter/Inventory/view/inventory_screen.dart';
 import 'package:inventoryappflutter/Repair/View/repair_screen.dart';
@@ -69,7 +70,7 @@ class NavBarScreen extends StatelessWidget {
       case Strings.repair:
         return  Center(child: RepairScreen());
       case Strings.customer:
-        return  Center(child: SupllierScreen());
+        return  Center(child: CustomerScreen());
       case Strings.supplier:
         return  Center(child: SupllierScreen());
       default:

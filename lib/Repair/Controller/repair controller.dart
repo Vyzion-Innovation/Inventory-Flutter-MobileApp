@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventoryappflutter/AddInventory/View/add_inventory.dart';
 import 'package:inventoryappflutter/Add_Repair/View/repair_screen.dart';
 
 class RepairController extends GetxController {

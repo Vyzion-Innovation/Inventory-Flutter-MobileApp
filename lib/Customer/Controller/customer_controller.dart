@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Supplier/View/add_supplier_screen.dart';
 
-class SupplierController extends GetxController {
+class CustomerController extends GetxController {
 
   var selectedButton = 'All'.obs;
   var isSearching = RxBool(false);

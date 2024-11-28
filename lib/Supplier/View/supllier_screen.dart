@@ -6,7 +6,6 @@ import 'package:inventoryappflutter/Supplier/Controller/supplier_controller.dart
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
-import 'package:inventoryappflutter/common/filter_button.dart';
 
 import '../../common/app_common_appbar.dart';
 
@@ -17,25 +16,13 @@ class SupllierScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-          title: Obx(() {
-            return controller.isSearching.value
-                ? searchBar()
-                : const AppText(
-                    Strings.supplier,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  );
-          }),
+          title: const AppText(
+            Strings.supplier,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
           isCenter: true,
           actions: [
-            IconButton(
-              onPressed: () {
-                controller.toggleSearch();
-              },
-              icon: const Icon(
-                Icons.search,
-              ),
-            ),
             IconButton(
               onPressed: () {
                 controller.addItem();
@@ -48,7 +35,8 @@ class SupllierScreen extends StatelessWidget {
       body: Column(
         children: [
           // filterButtons(),
-         
+          searchBar(),
+
           Expanded(child: inventoryListBuilder()),
         ],
       ),
@@ -70,126 +58,131 @@ class SupllierScreen extends StatelessWidget {
     });
   }
 
- Widget inventoryItemCard(Map<String, String> profile, int index) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: CommonCard(
-      padding: const EdgeInsets.all(16),
-      onTap: () {
-        print("Card clicked for item code");
-      },
-      additionalWidgets: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Left column for item details
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+  Widget inventoryItemCard(Map<String, String> profile, int index) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CommonCard(
+        padding: const EdgeInsets.all(16),
+        onTap: () {
+          print("Card clicked for item code");
+        },
+        additionalWidgets: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Left column for item details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const AppText(
+                          'Name:  ',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        AppText(
+                          '${profile['Name'] ?? ""}',
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const AppText(
+                          'Phone_Number:  ',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        AppText(
+                          '${profile['Phone_Number'] ?? ""}',
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const AppText(
+                          'Address:  ',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        AppText(
+                          '${profile['Address'] ?? ""}',
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        AppText(
+                          'CreatedAt:  ',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        AppText(
+                          '${profile['CreatedAt'] ?? ""}',
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              // Right column for action buttons
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      AppText(
-                        'Name:  ',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                      AppText(
-                        '${profile['Name'] ?? ""}',
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16,
-                      ),
-                    ],
+                  IconButton(
+                    icon: const Icon(Icons.edit, size: 20),
+                    onPressed: () {},
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                   ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      AppText(
-                        'Phone_Number:  ',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                      AppText(
-                        '${profile['Phone_Number'] ?? ""}',
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14,
-                      ),
-                    ],
+                  IconButton(
+                    icon: const Icon(Icons.delete, size: 20),
+                    onPressed: () {
+                      // Call deleteItem with the index
+                    },
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                   ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      AppText(
-                        'Address:  ',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                      AppText(
-                        '${profile['Address'] ?? ""}',
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      AppText(
-                        'CreatedAt:  ',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                      AppText(
-                        '${profile['CreatedAt'] ?? ""}',
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
                 ],
               ),
-            ),
-            const SizedBox(width: 12),
-            // Right column for action buttons
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-               
-                IconButton(
-                  icon: const Icon(Icons.edit, size: 20),
-                  onPressed: () {
-                   
-                  },
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete, size: 20),
-                  onPressed: () {
-                    // Call deleteItem with the index
-                   
-                  },
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-
-
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget searchBar() {
-    return SizedBox(
-      height: 50,
-      child: CustomTextField(
-       MaxLine:1,
-        hintText: inevontryTextStrings.Searchhint,
-        controller: controller.searchController,
-        borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: SizedBox(
+        height: 50,
+        child: CustomTextField(
+          MaxLine: 1,
+          hintText: inevontryTextStrings.Searchhint,
+          controller: controller.searchController,
+          borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
+          suffix: IconButton(
+            onPressed: () {
+              controller.toggleSearch();
+            },
+            icon: const Icon(
+              Icons.search,
+            ),
+          ),
+        ),
       ),
     );
   }

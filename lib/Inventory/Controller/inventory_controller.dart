@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventoryappflutter/AddInventory/View/add_inventory.dart';
+import 'package:inventoryappflutter/Add_Inventory/View/add_inventory.dart';
 
 class InventoriesController extends GetxController {
   var filteredInventory = [].obs; // To store filtered items

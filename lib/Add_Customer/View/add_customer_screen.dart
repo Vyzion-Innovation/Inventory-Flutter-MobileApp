@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryappflutter/Add_Customer/Controller/add_customer_controller.dart';
 import 'package:inventoryappflutter/Add_Supplier/Controller/add_supllier_controller.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
@@ -10,7 +11,7 @@ import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
 
 class AddSupplierScreen extends StatelessWidget {
-  final SupplierFormController controller = Get.put(SupplierFormController());
+  final AddCustomerController controller = Get.put(AddCustomerController());
 
   @override
   Widget build(BuildContext context) {

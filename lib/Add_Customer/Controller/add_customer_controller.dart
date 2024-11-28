@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SupplierFormController extends GetxController {
+class AddCustomerController extends GetxController {
   // Form Key
   final formKey = GlobalKey<FormState>();
 
@@ -10,7 +10,7 @@ class SupplierFormController extends GetxController {
   final phoneNumberController = TextEditingController();
   final supplierAddressController = TextEditingController();
 
-  final items = ['Receive', 'Complete'];
+  
 
   // Save Data Method
   void saveData() {

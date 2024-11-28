@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
-import 'package:inventoryappflutter/Inventory/Controller/inventory_controller.dart';
 import 'package:inventoryappflutter/Repair/Controller/repair%20controller.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
-import 'package:inventoryappflutter/common/common_text_button.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
 import 'package:inventoryappflutter/common/filter_button.dart';
 
@@ -19,25 +17,16 @@ class RepairScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-          title: Obx(() {
-            return controller.isSearching.value
-                ? searchBar()
-                : const AppText(
+          title: 
+                 AppText(
                     Strings.repair,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                  );
-          }),
+                  ),
+         
           isCenter: true,
           actions: [
-            IconButton(
-              onPressed: () {
-                controller.toggleSearch();
-              },
-              icon: const Icon(
-                Icons.search,
-              ),
-            ),
+           
             IconButton(
               onPressed: () {
                 controller.addItem();
@@ -49,6 +38,8 @@ class RepairScreen extends StatelessWidget {
           ]),
       body: Column(
         children: [
+          searchBar(),
+
           filterButtons(),
          
           Expanded(child: inventoryListBuilder()),
@@ -91,7 +82,7 @@ class RepairScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      AppText(
+                      const AppText(
                         'Item Code:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -106,7 +97,7 @@ class RepairScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      AppText(
+                      const AppText(
                         'Model Number:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
@@ -121,7 +112,7 @@ class RepairScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      AppText(
+                      const AppText(
                         'Configuration:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
@@ -136,7 +127,7 @@ class RepairScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      AppText(
+                      const AppText(
                         'Serial Number:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
@@ -231,14 +222,26 @@ class RepairScreen extends StatelessWidget {
   );
 }
 
-  Widget searchBar() {
-    return SizedBox(
-      height: 50,
-      child: CustomTextField(
+   Widget searchBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: SizedBox(
+        height: 50,
+      
+        child: CustomTextField(
          MaxLine:1,
-        hintText: inevontryTextStrings.Searchhint,
-        controller: controller.searchController,
-        borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
+          hintText: inevontryTextStrings.Searchhint,
+          controller: controller.searchController,
+          borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
+          suffix:  IconButton(
+              onPressed: () {
+                controller.toggleSearch();
+              },
+              icon: const Icon(
+                Icons.search,
+              ),
+            ),
+        ),
       ),
     );
   }
