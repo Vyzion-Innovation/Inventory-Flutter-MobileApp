@@ -136,9 +136,9 @@ class HomePage extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.info),
+            leading: const Icon(Icons.person),
             title: const AppText(
-              'Profile Info',
+              'Profile',
               fontSize: 15,
               fontWeight: FontWeight.w500,
             ),

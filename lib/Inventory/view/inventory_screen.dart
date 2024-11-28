@@ -235,6 +235,7 @@ class InventoriesScreen extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: CustomTextField(
+         MaxLine:1,
         hintText: inevontryTextStrings.Searchhint,
         controller: controller.searchController,
         borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),

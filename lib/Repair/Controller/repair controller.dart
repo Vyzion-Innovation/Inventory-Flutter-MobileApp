@@ -10,7 +10,7 @@ class RepairController extends GetxController {
   var isSearching = false.obs;
   TextEditingController searchController = TextEditingController();
    var repairList = [  {
-        'itemCode': 'A001',
+        'itemCode': 'A009',
         'ModelNumber': 'MN0012',
         'configuration': 'Config1',
         'serialNumber': 'SN001',

@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
-import 'package:inventoryappflutter/Inventory/Controller/inventory_controller.dart';
-import 'package:inventoryappflutter/Repair/Controller/repair%20controller.dart';
+import 'package:inventoryappflutter/Supplier/Controller/supplier_controller.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
-import 'package:inventoryappflutter/common/common_text_button.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
 import 'package:inventoryappflutter/common/filter_button.dart';
 
 import '../../common/app_common_appbar.dart';
 
-class RepairScreen extends StatelessWidget {
-  final RepairController controller = Get.put(RepairController());
+class SupllierScreen extends StatelessWidget {
+  final SupplierController controller = Get.put(SupplierController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +21,7 @@ class RepairScreen extends StatelessWidget {
             return controller.isSearching.value
                 ? searchBar()
                 : const AppText(
-                    Strings.repair,
+                    Strings.supplier,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   );
@@ -49,7 +47,7 @@ class RepairScreen extends StatelessWidget {
           ]),
       body: Column(
         children: [
-          filterButtons(),
+          // filterButtons(),
          
           Expanded(child: inventoryListBuilder()),
         ],
@@ -59,13 +57,13 @@ class RepairScreen extends StatelessWidget {
 
   Widget inventoryListBuilder() {
     return Obx(() {
-      if (controller.repairList.isEmpty) {
+      if (controller.supplierList.isEmpty) {
         return const Center(child: Text('No data available'));
       }
       return ListView.builder(
-        itemCount: controller.repairList.length,
+        itemCount: controller.supplierList.length,
         itemBuilder: (context, index) {
-          final profile = controller.repairList[index];
+          final profile = controller.supplierList[index];
           return inventoryItemCard(profile, index);
         },
       );
@@ -92,12 +90,12 @@ class RepairScreen extends StatelessWidget {
                   Row(
                     children: [
                       AppText(
-                        'Item Code:  ',
+                        'Name:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                       AppText(
-                        '${profile['itemCode'] ?? ""}',
+                        '${profile['Name'] ?? ""}',
                         fontWeight: FontWeight.normal,
                         fontSize: 16,
                       ),
@@ -107,12 +105,12 @@ class RepairScreen extends StatelessWidget {
                   Row(
                     children: [
                       AppText(
-                        'Model Number:  ',
+                        'Phone_Number:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['ModelNumber'] ?? ""}',
+                        '${profile['Phone Number'] ?? ""}',
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -122,12 +120,12 @@ class RepairScreen extends StatelessWidget {
                   Row(
                     children: [
                       AppText(
-                        'Configuration:  ',
+                        'Address:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['configuration'] ?? ""}',
+                        '${profile['Address'] ?? ""}',
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -137,12 +135,12 @@ class RepairScreen extends StatelessWidget {
                   Row(
                     children: [
                       AppText(
-                        'Serial Number:  ',
+                        'CreatedAt:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['serialNumber'] ?? ""}',
+                        '${profile['CreatedAt'] ?? ""}',
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -157,12 +155,7 @@ class RepairScreen extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AppText(
-                  '${profile['status'] ?? ""}',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: profile['status'] == 'Available' ? Colors.green : Colors.red,
-                ),
+               
                 IconButton(
                   icon: const Icon(Icons.edit, size: 20),
                   onPressed: () {
@@ -188,54 +181,12 @@ class RepairScreen extends StatelessWidget {
 }
 
 
-  Widget filterButtons() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: repairTextStrings.btnTextALL,
-                isSelected: controller.selectedButton.value == 'All',
-                onTap: () {
-                  controller.selectedButton.value = 'All';
-                  controller.fetchRepairList(filterType: 'All');
-                },
-              ),
-            )),
-        const SizedBox(width: 10),
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: repairTextStrings.btnTextRecieve,
-                isSelected: controller.selectedButton.value == 'Recieve',
-                onTap: () {
-                  controller.selectedButton.value = 'Recieve';
-                  controller.fetchRepairList(filterType: 'Recieve');
-                },
-              ),
-            )),
-        const SizedBox(width: 10),
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: repairTextStrings.btnTextcomplete,
-                isSelected: controller.selectedButton.value == 'Complete',
-                onTap: () {
-                  controller.selectedButton.value = 'Complete';
-                  controller.fetchRepairList(filterType: 'Complete');
-                },
-              ),
-            )),
-      ],
-    ),
-  );
-}
 
   Widget searchBar() {
     return SizedBox(
       height: 50,
       child: CustomTextField(
-         MaxLine:1,
+       MaxLine:1,
         hintText: inevontryTextStrings.Searchhint,
         controller: controller.searchController,
         borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
