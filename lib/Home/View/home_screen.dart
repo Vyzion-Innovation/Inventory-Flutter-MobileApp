@@ -143,7 +143,9 @@ class HomePage extends StatelessWidget {
               fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
-            onTap: () {},
+            onTap: () {
+              sidePanelController.profileScreenRoute();
+            },
           ),
           ListTile(
             leading: const Icon(Icons.details_rounded),
@@ -163,7 +165,7 @@ class HomePage extends StatelessWidget {
             ),
             onTap: () {
               loginController.logout();
-              Navigator.pop(context);
+             
             },
           ),
         ],

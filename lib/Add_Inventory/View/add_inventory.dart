@@ -9,10 +9,8 @@ import 'package:inventoryappflutter/common/app_common_button.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/common_drop_down_text_field.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
-
 class InventoryFormScreen extends StatelessWidget {
   final InventoryFormController controller = Get.put(InventoryFormController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

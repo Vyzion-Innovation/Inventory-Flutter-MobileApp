@@ -30,7 +30,7 @@ class CommonCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
+                  color: Colors.grey.withOpacity(0.6),
                   blurRadius: 6,
                   offset: const Offset(0, 4),
                 ),

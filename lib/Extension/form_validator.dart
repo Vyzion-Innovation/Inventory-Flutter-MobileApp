@@ -14,6 +14,30 @@ class FieldValidator {
     }
     return null;
   }
+  static String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return ErrorMessages.name; // "Company Name is required."
+    }
+    return null;
+  }
+  static String? validateCity(String? value) {
+    if (value == null || value.isEmpty) {
+      return ErrorMessages.city; // "Company Name is required."
+    }
+    return null;
+  }
+  static String? validatePinCode(String? value) {
+    if (value == null || value.isEmpty) {
+      return ErrorMessages.pinCode; // "Company Name is required."
+    }
+    return null;
+  }
+  static String? validateGstNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return ErrorMessages.gstNumber; // "Company Name is required."
+    }
+    return null;
+  }
 
   static String? validateBrand(String? value) {
     if (value == null || value.isEmpty) {

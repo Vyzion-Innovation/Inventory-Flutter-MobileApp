@@ -12,7 +12,6 @@ import '../../common/app_common_appbar.dart';
 
 class RepairScreen extends StatelessWidget {
   final RepairController controller = Get.put(RepairController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,11 +22,9 @@ class RepairScreen extends StatelessWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
-         
-          isCenter: true,
+                   isCenter: true,
           actions: [
-           
-            IconButton(
+                       IconButton(
               onPressed: () {
                 controller.addItem();
               },
@@ -39,15 +36,12 @@ class RepairScreen extends StatelessWidget {
       body: Column(
         children: [
           searchBar(),
-
           filterButtons(),
-         
-          Expanded(child: inventoryListBuilder()),
+                   Expanded(child: inventoryListBuilder()),
         ],
       ),
     );
   }
-
   Widget inventoryListBuilder() {
     return Obx(() {
       if (controller.filteredRepairList.isEmpty) {
@@ -62,7 +56,6 @@ class RepairScreen extends StatelessWidget {
       );
     });
   }
-
  Widget inventoryItemCard(Map<String, String> profile, int index) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
@@ -152,7 +145,7 @@ class RepairScreen extends StatelessWidget {
                   '${profile['status'] ?? ""}',
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
-                  color: profile['status']?.toLowerCase() == 'Complete' ? Colors.green : Colors.red,
+                  color: profile['status']?.toLowerCase() == 'Complete'.toLowerCase() ? Colors.green : Colors.red,
                 ),
                 IconButton(
                   icon: const Icon(Icons.edit, size: 20),
@@ -164,8 +157,7 @@ class RepairScreen extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.delete, size: 20),
                   onPressed: () {
-                    // Call deleteItem with the index
-                   
+                    // Call deleteItem with the index                   
                   },
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                 ),
@@ -177,8 +169,6 @@ class RepairScreen extends StatelessWidget {
     ),
   );
 }
-
-
   Widget filterButtons() {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
@@ -217,11 +207,10 @@ class RepairScreen extends StatelessWidget {
                 },
               ),
             )),
-      ],
+       ],
     ),
   );
 }
-
    Widget searchBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),

@@ -12,6 +12,8 @@ class Strings {
   static const repair = 'Repairs';
   static const customer = "Customer";
    static const addInventory = ' Add Inventory';
+    static const addProfile = ' Add Profile';
+    static const saveProfile = ' Save Profile';
   
   static const addSupplier = "Add Supplier";
   static const addRepair = 'Add Repairs';
