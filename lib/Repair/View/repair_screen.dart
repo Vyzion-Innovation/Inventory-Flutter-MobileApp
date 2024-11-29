@@ -145,17 +145,17 @@ class RepairScreen extends StatelessWidget {
                   '${profile['status'] ?? ""}',
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
-                  color: profile['status']?.toLowerCase() == 'Complete'.toLowerCase() ? Colors.green : Colors.red,
+                  color: profile['status']?.toLowerCase() == 'Complete'.toLowerCase() ? AppColors.successColor : Colors.red,
                 ),
                 IconButton(
-                  icon: const Icon(Icons.edit, size: 20),
+                  icon: const Icon(Icons.edit, size: 20, color: AppColors.infoColor,),
                   onPressed: () {
                    
                   },
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete, size: 20),
+                  icon: const Icon(Icons.delete, size: 20, color: AppColors.warningColor,),
                   onPressed: () {
                     // Call deleteItem with the index                   
                   },
@@ -211,27 +211,36 @@ class RepairScreen extends StatelessWidget {
     ),
   );
 }
-   Widget searchBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: SizedBox(
-        height: 50,
-      
-        child: CustomTextField(
-         MaxLine:1,
+  Widget searchBar() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    child: SizedBox(
+      height: 50,
+      child: Obx(
+        () => CustomTextField(
+          focusNode: controller.focusNode, // Use the controller's FocusNode
+          onTap: () {
+            controller.isSearchActive.value = true; // Activate search
+          },
+          MaxLine: 1,
           hintText: inevontryTextStrings.Searchhint,
           controller: controller.searchController,
           borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
-          suffix:  IconButton(
-              onPressed: () {
-                // controller.toggleSearch();
-              },
-              icon: const Icon(
-                Icons.search,
-              ),
-            ),
+          prefftext: const Icon(Icons.search),
+          suffix: controller.isSearchActive.value
+              ? IconButton(
+                  onPressed: () {
+                    // Clear search and deactivate
+                    controller.searchController.clear();
+                    controller.isSearchActive.value = false;
+                    controller.focusNode.unfocus(); // Dismiss the keyboard
+                  },
+                  icon: const Icon(Icons.cancel),
+                )
+              : null,
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Repair/Controller/repair_controller.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
@@ -56,6 +57,7 @@ class RepairFormScreen extends StatelessWidget {
                 labelText: "Estimated Cost",
                 hintText: "Enter Estimated Cost",
                 controller: controller.estimatedCostController,
+                 inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validateEstimatedCost,
@@ -141,6 +143,7 @@ class RepairFormScreen extends StatelessWidget {
                         labelText: "Final Cost",
                         hintText: "Enter Final Cost",
                         controller: controller.finalCostController,
+                         inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
                         validator: FieldValidator.validateEstimatedCost,

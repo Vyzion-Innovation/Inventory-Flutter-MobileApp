@@ -224,28 +224,37 @@ class InventoriesScreen extends StatelessWidget {
 
 
   Widget searchBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: SizedBox(
-        height: 50,
-        child: CustomTextField(
-         
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    child: SizedBox(
+      height: 50,
+      child: Obx(
+        () => CustomTextField(
+          focusNode: controller.focusNode, // Use the controller's FocusNode
+          onTap: () {
+            controller.isSearchActive.value = true; // Activate search
+          },
           MaxLine: 1,
           hintText: inevontryTextStrings.Searchhint,
           controller: controller.searchController,
           borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
-          focusNode: FocusNode(),
-          suffix: IconButton(
-            onPressed: () {
-              // controller.toggleSearch();
-              // FocusNode().requestFocus();
-            },
-            icon: const Icon(
-              Icons.search,
-            ),
-          ),
+          prefftext: const Icon(Icons.search),
+          suffix: controller.isSearchActive.value
+              ? IconButton(
+                  onPressed: () {
+                    // Clear search and deactivate
+                    controller.searchController.clear();
+                    controller.isSearchActive.value = false;
+                    controller.focusNode.unfocus(); // Dismiss the keyboard
+                  },
+                  icon: const Icon(Icons.cancel),
+                )
+              : null,
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
+
 }

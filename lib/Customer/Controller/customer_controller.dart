@@ -6,7 +6,8 @@ import 'package:inventoryappflutter/Add_Supplier/View/add_supplier_screen.dart';
 class CustomerController extends GetxController {
 
   var selectedButton = 'All'.obs;
-  var isSearching = RxBool(false);
+  RxBool isSearchActive = false.obs;
+  FocusNode focusNode = FocusNode();
   TextEditingController searchController = TextEditingController();
    var supplierList = [  {
         'Name': 'A001',
@@ -40,11 +41,13 @@ class CustomerController extends GetxController {
         'CreatedAt': 'SN001',
       },].obs;
 
+       RxList<Map<String, String>> filteredCustomerList = <Map<String, String>>[].obs;
+
   @override
   void onInit() {
     super.onInit();
-    searchController.addListener(fetchSupplierList);
-    fetchSupplierList(); // Fetch or simulate fetching inventory
+    searchController.addListener(filterSupplierList);
+    filterSupplierList(); // Fetch or simulate fetching inventory
   }
 
   @override
@@ -53,14 +56,22 @@ class CustomerController extends GetxController {
     super.onClose();
   }
 
-  void toggleSearch() {
-    isSearching.value = !isSearching.value; // Toggle search state
-  }
+  // void toggleSearch() {
+  //   isSearching.value = !isSearching.value; // Toggle search state
+  // }
 
-  void fetchSupplierList({String filterType = 'All'}) {
-    // Static data for testing purposes
-   
-   
+   void filterSupplierList() {
+    final query = searchController.text.trim().toLowerCase();
+    if (query.isEmpty) {
+      // If the query is empty, show all items
+      filteredCustomerList.assignAll(supplierList);
+    } else {
+      // Filter the list based on the query
+     filteredCustomerList.assignAll(supplierList.where((item) {
+  return (item['Name']?.toLowerCase().contains(query) ?? false);
+         
+}).toList());
+    }
   }
 
   

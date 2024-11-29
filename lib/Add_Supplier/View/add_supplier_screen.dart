@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Supplier/Controller/add_supllier_controller.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
@@ -37,6 +38,7 @@ class AddSupplierScreen extends StatelessWidget {
                 labelText: "Phone Number",
                 hintText: "Enter Phone Number",
                 controller: controller.phoneNumberController,
+                 inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validatePhoneNumber,

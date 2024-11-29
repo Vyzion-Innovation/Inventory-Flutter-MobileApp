@@ -57,7 +57,7 @@ class inevontryTextStrings {
 
 }
 class repairTextStrings {
-  static const Searchhint = 'Search by item code';
+  static const SearchhintName = 'Search by item Name';
   static const btnTextALL = 'All';
   static const btnTextRecieve = 'Recieve';
   static const btnTextcomplete = "Complete";

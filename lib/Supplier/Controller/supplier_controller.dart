@@ -9,19 +9,22 @@ class SupplierController extends GetxController {
     {'Name': 'Supplier B', 'Phone_Number': '0987654321', 'Address': 'Location f', 'CreatedAt': '2024-11-28'},
      {'Name': 'Supplier C', 'Phone_Number': '09876514321', 'Address': 'Location d', 'CreatedAt': '2024-11-28'},
       {'Name': 'Supplier d', 'Phone_Number': '09876545321', 'Address': 'Location z', 'CreatedAt': '2024-11-28'},
-       {'Name': 'Supplier E', 'Phone_Number': '09876444321', 'Address': 'Location s', 'CreatedAt': '2024-11-28'},
+       {'Name': 'Supplier E', 'Phone_Number': '09876455321', 'Address': 'Location s', 'CreatedAt': '2024-11-28'},
+        {'Name': 'Supplier F', 'Phone_Number': '1478965885', 'Address': 'Location u', 'CreatedAt': '2024-11-28'},
+      {'Name': 'Supplier G', 'Phone_Number': '09876545441', 'Address': 'Location v', 'CreatedAt': '2024-11-28'},
+       {'Name': 'Supplier H', 'Phone_Number': '2258848145', 'Address': 'Location o', 'CreatedAt': '2024-11-28'},
   ].obs;
 
   RxList<Map<String, String>> filteredSupplierList = <Map<String, String>>[].obs;
+   RxBool isSearchActive = false.obs;
+  FocusNode focusNode = FocusNode();
 
   TextEditingController searchController = TextEditingController();
 
   @override
   void onInit() {
     super.onInit();
-    // Initialize the filtered list with all items
-    filteredSupplierList.assignAll(supplierList);
-    // Listen to changes in the search text
+    filterSupplierList();
     searchController.addListener(() {
       filterSupplierList();
     });

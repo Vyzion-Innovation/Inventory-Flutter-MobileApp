@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Inventory/Controller/add_inventory_controller.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
@@ -136,6 +137,7 @@ class InventoryFormScreen extends StatelessWidget {
                         labelText: "Sell Amount",
                         hintText: "Enter Sell Amount",
                         controller: controller.sellAmountController,
+                         inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
                         validator: FieldValidator.validateEstimatedCost,
@@ -200,6 +202,7 @@ class InventoryFormScreen extends StatelessWidget {
                         labelText: "Purchase Amount",
                         hintText: "Enter Purchase Amount",
                         controller: controller.amountController,
+                         inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
                         validator: FieldValidator.validateEstimatedCost,

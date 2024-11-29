@@ -10,7 +10,7 @@ class AppColors {
   static const Color deselectSegment = Color(0xffF4F1EE);
   static const Color borderColor = Color(0xffDCDCDC);
   static const Color greyColor = Color(0xffD9D9D9);
-  static const Color primaryColor = Color(0xff055C9D);
+  static const Color primaryColor = Color(0xFF6366F1);
   static const Color secondaryColor = Color(0xff7987a1);
   static const Color successColor = Color(0xff05a34a);
   static const Color infoColor = Color(0xff66d1d1);

@@ -45,13 +45,13 @@ class CustomerScreen extends StatelessWidget {
 
   Widget inventoryListBuilder() {
     return Obx(() {
-      if (controller.supplierList.isEmpty) {
+      if (controller.filteredCustomerList.isEmpty) {
         return const Center(child: Text('No data available'));
       }
       return ListView.builder(
-        itemCount: controller.supplierList.length,
+        itemCount: controller.filteredCustomerList.length,
         itemBuilder: (context, index) {
-          final profile = controller.supplierList[index];
+          final profile = controller.filteredCustomerList[index];
           return inventoryItemCard(profile, index);
         },
       );
@@ -164,26 +164,36 @@ class CustomerScreen extends StatelessWidget {
     );
   }
 
-  Widget searchBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: SizedBox(
-        height: 50,
-        child: CustomTextField(
+ Widget searchBar() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    child: SizedBox(
+      height: 50,
+      child: Obx(
+        () => CustomTextField(
+          focusNode: controller.focusNode, // Use the controller's FocusNode
+          onTap: () {
+            controller.isSearchActive.value = true; // Activate search
+          },
           MaxLine: 1,
-          hintText: inevontryTextStrings.Searchhint,
+          hintText: repairTextStrings.SearchhintName,
           controller: controller.searchController,
           borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
-          suffix: IconButton(
-            onPressed: () {
-              controller.toggleSearch();
-            },
-            icon: const Icon(
-              Icons.search,
-            ),
-          ),
+          prefftext: const Icon(Icons.search),
+          suffix: controller.isSearchActive.value
+              ? IconButton(
+                  onPressed: () {
+                    // Clear search and deactivate
+                    controller.searchController.clear();
+                    controller.isSearchActive.value = false;
+                    controller.focusNode.unfocus(); // Dismiss the keyboard
+                  },
+                  icon: const Icon(Icons.cancel),
+                )
+              : null,
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

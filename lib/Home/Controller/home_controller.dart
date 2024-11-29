@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:inventoryappflutter/Login/View/login_screen.dart';
 import 'package:inventoryappflutter/Profile/View/profile_screen.dart';
 
 class SidePanelController extends GetxController {
