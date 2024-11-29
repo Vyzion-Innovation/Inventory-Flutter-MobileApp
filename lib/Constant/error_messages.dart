@@ -1,5 +1,5 @@
 // ignore: constant_identifier_names
-class ErrorMessages {
+class ErrorValidationMessages {
   static const  itemCode = "Item code is required";
    static const companyName = "Company name is required";
    static const brand = "Please enter a particular brand";
