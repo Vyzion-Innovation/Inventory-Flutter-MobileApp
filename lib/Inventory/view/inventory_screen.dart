@@ -191,7 +191,7 @@ class InventoriesScreen extends StatelessWidget {
                 isSelected: controller.selectedButton.value == 'All',
                 onTap: () {
                   controller.selectedButton.value = 'All';
-                  // controller.fetchInventoryList(filterType: 'All');
+                  controller.fetchInventoryList(filterType: 'All');
                 },
               ),
             )),
@@ -202,7 +202,7 @@ class InventoriesScreen extends StatelessWidget {
                 isSelected: controller.selectedButton.value == 'Stock',
                 onTap: () {
                   controller.selectedButton.value = 'Stock';
-                  // controller.fetchInventoryList(filterType: 'Stock');
+                  controller.filterInventory();
                 },
               ),
             )),
@@ -213,7 +213,7 @@ class InventoriesScreen extends StatelessWidget {
                 isSelected: controller.selectedButton.value == 'Sell',
                 onTap: () {
                   controller.selectedButton.value = 'Sell';
-                  // controller.fetchInventoryList(filterType: 'Sell');
+                  controller.fetchInventoryList(filterType: 'Sell');
                 },
               ),
             )),
@@ -238,7 +238,7 @@ class InventoriesScreen extends StatelessWidget {
           suffix: IconButton(
             onPressed: () {
               // controller.toggleSearch();
-              FocusNode().requestFocus();
+              // FocusNode().requestFocus();
             },
             icon: const Icon(
               Icons.search,

@@ -19,44 +19,49 @@ class CommonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap, // Handle tap if onTap is provided
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              blurRadius: 6,
-              offset: const Offset(0, 4),
+    return ClipRRect(
+       borderRadius: BorderRadius.circular(12),
+      child: Material(
+        child: InkWell(
+          onTap: onTap, // Handle tap if onTap is provided
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  blurRadius: 6,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-          ],
-        ),
-        padding: padding ?? const EdgeInsets.all(16), // Default padding if not provided
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (title != null && title!.isNotEmpty) ...[
-              AppText(
-                title!,
-                 fontSize: 20,
-                 fontWeight: FontWeight.bold,
-               
-              ),
-              const SizedBox(height: 8), // Space after title
-            ],
-            if (subtitle != null && subtitle!.isNotEmpty) ...[
-              AppText(
-                subtitle!,
-               fontSize: 16,
-              ),
-              const SizedBox(height: 16), // Space after subtitle
-            ],
-            if (additionalWidgets != null && additionalWidgets!.isNotEmpty)
-              ...additionalWidgets!,
-          ],
+            padding: padding ?? const EdgeInsets.all(16), // Default padding if not provided
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (title != null && title!.isNotEmpty) ...[
+                  AppText(
+                    title!,
+                     fontSize: 20,
+                     fontWeight: FontWeight.bold,
+                   
+                  ),
+                  const SizedBox(height: 8), // Space after title
+                ],
+                if (subtitle != null && subtitle!.isNotEmpty) ...[
+                  AppText(
+                    subtitle!,
+                   fontSize: 16,
+                  ),
+                  const SizedBox(height: 16), // Space after subtitle
+                ],
+                if (additionalWidgets != null && additionalWidgets!.isNotEmpty)
+                  ...additionalWidgets!,
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -50,13 +50,13 @@ class RepairScreen extends StatelessWidget {
 
   Widget inventoryListBuilder() {
     return Obx(() {
-      if (controller.repairList.isEmpty) {
+      if (controller.filteredRepairList.isEmpty) {
         return const Center(child: Text('No data available'));
       }
       return ListView.builder(
-        itemCount: controller.repairList.length,
+        itemCount: controller.filteredRepairList.length,
         itemBuilder: (context, index) {
-          final profile = controller.repairList[index];
+          final profile = controller.filteredRepairList[index];
           return inventoryItemCard(profile, index);
         },
       );
@@ -152,7 +152,7 @@ class RepairScreen extends StatelessWidget {
                   '${profile['status'] ?? ""}',
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
-                  color: profile['status']?.toLowerCase() == 'available' ? Colors.green : Colors.red,
+                  color: profile['status']?.toLowerCase() == 'Complete' ? Colors.green : Colors.red,
                 ),
                 IconButton(
                   icon: const Icon(Icons.edit, size: 20),
@@ -191,7 +191,7 @@ class RepairScreen extends StatelessWidget {
                 isSelected: controller.selectedButton.value == 'All',
                 onTap: () {
                   controller.selectedButton.value = 'All';
-                  controller.fetchRepairList(filterType: 'All');
+                  controller.filterRepairList();
                 },
               ),
             )),
@@ -202,7 +202,7 @@ class RepairScreen extends StatelessWidget {
                 isSelected: controller.selectedButton.value == 'Recieve',
                 onTap: () {
                   controller.selectedButton.value = 'Recieve';
-                  controller.fetchRepairList(filterType: 'Recieve');
+                  controller.filterRepairList();
                 },
               ),
             )),
@@ -213,7 +213,7 @@ class RepairScreen extends StatelessWidget {
                 isSelected: controller.selectedButton.value == 'Complete',
                 onTap: () {
                   controller.selectedButton.value = 'Complete';
-                  controller.fetchRepairList(filterType: 'Complete');
+                  controller.filterRepairList();
                 },
               ),
             )),
@@ -235,7 +235,7 @@ class RepairScreen extends StatelessWidget {
           borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
           suffix:  IconButton(
               onPressed: () {
-                controller.toggleSearch();
+                // controller.toggleSearch();
               },
               icon: const Icon(
                 Icons.search,

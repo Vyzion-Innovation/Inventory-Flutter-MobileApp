@@ -48,6 +48,7 @@ class InventoriesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+  
     searchController.addListener(filterInventory);
     filterInventory(); // Initialize with all data
   }
@@ -78,23 +79,22 @@ class InventoriesController extends GetxController {
 
 void filterInventory() {
   final query = searchController.text.trim().toLowerCase();
+  print('Selected Button: ${selectedButton.value}');
+  print('Search Query: $query');
 
-  // Base filtering on the already filtered list
   final currentList = selectedButton.value == 'All'
       ? inventoryList
       : inventoryList.where((item) => item['status'] == selectedButton.value).toList();
 
-  // Apply search query
-  List<Map<String, String>> searched = query.isEmpty
+  final searched = query.isEmpty
       ? currentList
       : currentList.where((item) {
           return (item['itemCode']?.toLowerCase().contains(query) ?? false) ||
               (item['ModelNumber']?.toLowerCase().contains(query) ?? false);
-             
         }).toList();
 
-  // Only update if the searched list has changed
   if (!filteredInventoryList.equals(searched)) {
+    print('Updating Filtered Inventory List');
     filteredInventoryList.assignAll(searched);
   }
 }
