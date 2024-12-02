@@ -82,15 +82,13 @@ In Visual Studio Code, navigate to `Preferences` -> `Settings` and search for `F
 
 ### Libraries & Tools Used
 
-* [Dio](https://github.com/flutterchina/dio)
-* [Database](https://github.com/tekartik/sembast.dart)
-* [MobX](https://github.com/jonataslaw/getx) (to connect the reactive data of your application with the UI)
-* [Provider](https://github.com/rrousselGit/provider) (State Management)
-* [Encryption](https://github.com/xxtea/xxtea-dart)
-* [Validation](https://github.com/dart-league/validators)
-* [Logging](https://github.com/zubairehman/Flogs)
+* [Firestore](https://github.com/firebase/flutterfire/tree/main/packages/cloud_firestore/cloud_firestore)
+* [Shared_preferences](https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences) (to connect the reactive data of your application with the UI)
+* [Progress_dialog_null_safe](https://github.com/CodingFries/progress_dialog)
+* [GetX](https://github.com/jonataslaw/getx)
+* [Flutter staggered grid view](https://github.com/letsar/flutter_staggered_grid_view)
 * [Json Serialization](https://github.com/dart-lang/json_serializable)
-* [Dependency Injection](https://github.com/fluttercommunity/get_it)
+* [collection](https://github.com/dart-lang/core/tree/main/pkgs/collection)
 
 ### Folder Structure
 Here is the core folder structure which flutter provides.
@@ -109,11 +107,14 @@ Here is the folder structure we have been using in this project
 ```
 lib/
 |- constants/
-|- data/
-|- stores/
-|- ui/
-|- utils/
-|- widgets/
+|- common/
+|- extension/
+|- login/
+|- home/
+|- inventory/
+|- repair.dart
+|- supplier.dart
+|- customer/
 |- main.dart
 |- routes.dart
 ```
@@ -126,8 +127,8 @@ Now, lets dive into the lib folder which has the main code for the application.
 3- stores - Contains store(s) for state-management of your application, to connect the reactive data of your application with the UI. 
 4- ui — Contains all the ui of your project, contains sub directory for each screen.
 5- util — Contains the utilities/common functions of your application.
-6- widgets — Contains the common widgets for your applications. For example, Button, TextField etc.
-7- routes.dart — This file contains all the routes for your application.
+6- common — Contains the common widgets for your applications. For example, Button, TextField etc.
+7- extension — This folder contains all the validation contants and form validation for your application.
 8- main.dart - This is the starting point of the application. All the application level configurations are defined in this file i.e, theme, routes, title, orientation etc.
 ```
 
@@ -137,11 +138,11 @@ This directory contains all the application level constants. A separate file is 
 
 ```
 constants/
-|- app_theme.dart
-|- dimens.dart
-|- endpoints.dart
-|- preferences.dart
+|- app_color.dart
 |- strings.dart
+|- icon.dart
+|- routestring.dart
+|- errormeassage.dart
 ```
 
 ### Data
@@ -149,24 +150,7 @@ constants/
 All the business logic of your application will go into this directory, it represents the data layer of your application. It is sub-divided into three directories `local`, `network` and `sharedperf`, each containing the domain specific logic. Since each layer exists independently, that makes it easier to unit test. The communication between UI and data layer is handled by using central repository.
 
 ```
-data/
-|- local/
-    |- constants/
-    |- datasources/
-    |- app_database.dart
-   
-|- network/
-    |- constants/
-    |- exceptions/
-    |- rest_client.dart
-    
-|- sharedpref
-    |- constants/
-    |- shared_preference_helper.dart
-    
-|- repository.dart
 
-```
 
 ### Stores
 
@@ -224,18 +208,17 @@ import 'package:flutter/material.dart';
 
 import 'ui/post/post_list.dart';
 import 'ui/login/login.dart';
-import 'ui/splash/splash.dart';
+
 
 class Routes {
   Routes._();
 
   //static variables
-  static const String splash = '/splash';
+
   static const String login = '/login';
   static const String home = '/post';
 
   static final routes = <String, WidgetBuilder>{
-    splash: (BuildContext context) => SplashScreen(),
     login: (BuildContext context) => LoginScreen(),
     home: (BuildContext context) => HomeScreen(),
   };
@@ -275,7 +258,7 @@ class MyApp extends StatelessWidget {
       title: Strings.appName,
       theme: themeData,
       routes: Routes.routes,
-      home: SplashScreen(),
+      home: LoginScreen(),
     );
   }
 }
