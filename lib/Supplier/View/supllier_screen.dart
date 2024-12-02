@@ -51,14 +51,14 @@ class SupllierScreen extends StatelessWidget {
     return ListView.builder(
       itemCount: controller.filteredSupplierList.length,
       itemBuilder: (context, index) {
-        final profile = controller.filteredSupplierList[index];
+        Map<String, dynamic> profile = controller.filteredSupplierList[index];
         return inventoryItemCard(profile, index);
       },
     );
   });
 }
 
-  Widget inventoryItemCard(Map<String, String> profile, int index) {
+  Widget inventoryItemCard(Map<String, dynamic> profile, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CommonCard(

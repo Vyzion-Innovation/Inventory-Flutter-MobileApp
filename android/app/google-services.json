@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "908354481632",
+    "firebase_url": "https://mac-solutions-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "mac-solutions",
+    "storage_bucket": "mac-solutions.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908354481632:android:5cd670ed879fb27ac30f85",
+        "android_client_info": {
+          "package_name": "com.example.inventoryappflutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHoa612_zzy9cdGC3N6HE-94TfC6Zg4kQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

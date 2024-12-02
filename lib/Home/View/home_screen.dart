@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:inventoryappflutter/Constant/app_logo.dart';
 import 'package:inventoryappflutter/Home/Controller/home_controller.dart';
 import 'package:inventoryappflutter/Login/Controller/login_controller.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
+import 'package:inventoryappflutter/common/app_common_button.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 
@@ -91,7 +93,7 @@ class HomePage extends StatelessWidget {
                           Text('This is some additional text'),
                         ],
                       ),
-                       CommonCard(
+                      CommonCard(
                         padding: EdgeInsets.all(12),
                         title: 'Card Title',
                         subtitle: 'This is an optional subtitle',
@@ -133,13 +135,13 @@ class HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipOval(
-                      child: Image.asset(
-                        AppLogo.companyLogo,
-                        height: MediaQuery.of(context).size.height / 8,
-                        fit: BoxFit.scaleDown,
-                        matchTextDirection: true,
-                      ),
-                    ),
+                  child: Image.asset(
+                    AppLogo.companyLogo,
+                    height: MediaQuery.of(context).size.height / 8,
+                    fit: BoxFit.scaleDown,
+                    matchTextDirection: true,
+                  ),
+                ),
                 const SizedBox(height: 10),
                 const AppText(
                   'Pawan Ginti',
@@ -175,7 +177,9 @@ class HomePage extends StatelessWidget {
               fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
-            onTap: () {},
+            onTap: () {
+              sidePanelController.aboutScreenRoute();
+            },
           ),
           ListTile(
             leading: const Icon(Icons.exit_to_app),
@@ -185,7 +189,16 @@ class HomePage extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
             onTap: () {
-              loginController.logout();
+              showCupertinoModalPopup(
+                context: context,
+                builder: (BuildContext context) => AlertPopUp(
+                  title: 'Do you really want to logout?',
+                  onTap: () {
+                    Navigator.pop(context); // Close the dialog
+                    loginController.logout(); // Perform logout
+                  },
+                ),
+              );
             },
           ),
         ],

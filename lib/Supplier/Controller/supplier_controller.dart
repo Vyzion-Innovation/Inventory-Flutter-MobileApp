@@ -1,21 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Supplier/View/add_supplier_screen.dart';
 
 class SupplierController extends GetxController {
-  RxList<Map<String, String>> supplierList = <Map<String, String>>[
-    // Add sample supplier data for testing
-    {'Name': 'Supplier A', 'Phone_Number': '1234567890', 'Address': 'Location A', 'CreatedAt': '2024-11-28'},
-    {'Name': 'Supplier B', 'Phone_Number': '0987654321', 'Address': 'Location f', 'CreatedAt': '2024-11-28'},
-     {'Name': 'Supplier C', 'Phone_Number': '09876514321', 'Address': 'Location d', 'CreatedAt': '2024-11-28'},
-      {'Name': 'Supplier d', 'Phone_Number': '09876545321', 'Address': 'Location z', 'CreatedAt': '2024-11-28'},
-       {'Name': 'Supplier E', 'Phone_Number': '09876455321', 'Address': 'Location s', 'CreatedAt': '2024-11-28'},
-        {'Name': 'Supplier F', 'Phone_Number': '1478965885', 'Address': 'Location u', 'CreatedAt': '2024-11-28'},
-      {'Name': 'Supplier G', 'Phone_Number': '09876545441', 'Address': 'Location v', 'CreatedAt': '2024-11-28'},
-       {'Name': 'Supplier H', 'Phone_Number': '2258848145', 'Address': 'Location o', 'CreatedAt': '2024-11-28'},
+  RxList<Map<String, dynamic>> supplierList = <Map<String, dynamic>>[
   ].obs;
 
-  RxList<Map<String, String>> filteredSupplierList = <Map<String, String>>[].obs;
+  List<Map<String, dynamic>> filteredSupplierList = <Map<String, dynamic>>[].obs;
    RxBool isSearchActive = false.obs;
   FocusNode focusNode = FocusNode();
 
@@ -24,12 +16,32 @@ class SupplierController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    filterSupplierList();
+    fetchSuppliers();
     searchController.addListener(() {
       filterSupplierList();
     });
   }
 
+ Future<void> fetchSuppliers() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('suppliers').get();
+      List<Map<String, dynamic>> suppliers = snapshot.docs.map((doc) {
+        return {
+          'Name': doc['Name'],
+          'Phone_Number': doc['Phone_Number'],
+          'Address': doc['Address'],
+          'CreatedAt': doc['CreatedAt'],
+        };
+      }).toList();
+
+      supplierList.assignAll(suppliers);
+      print(supplierList);
+      // filteredSupplierList.assignAll(suppliers);  // Initialize filtered list with fetched data
+    } catch (e) {
+      print("Error fetching suppliers: $e");
+    }
+  }
+  
   void filterSupplierList() {
     final query = searchController.text.trim().toLowerCase();
     if (query.isEmpty) {
@@ -43,6 +55,8 @@ class SupplierController extends GetxController {
 }).toList());
     }
   }
+
+
 
   void toggleSearch() {
     filterSupplierList();

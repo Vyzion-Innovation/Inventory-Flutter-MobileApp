@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBKdnnL3suhBsUh_b8z_eitX7x19r0WPCY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>908354481632</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.inventoryappflutter</string>
+	<key>PROJECT_ID</key>
+	<string>mac-solutions</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mac-solutions.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:908354481632:ios:296d0a92c7d54999c30f85</string>
+	<key>DATABASE_URL</key>
+	<string>https://mac-solutions-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>

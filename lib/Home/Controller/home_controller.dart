@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Profile/View/profile_screen.dart';
+import 'package:inventoryappflutter/about_screen.dart';
 
 class SidePanelController extends GetxController {
   var isVisible = false.obs; // Tracks visibility of the side panel
@@ -9,5 +10,8 @@ class SidePanelController extends GetxController {
   }
    void profileScreenRoute() {
     Get.to(() => ProfileScreen());
+  }
+  void aboutScreenRoute() {
+    Get.to(() => AboutScreen());
   }
 }
