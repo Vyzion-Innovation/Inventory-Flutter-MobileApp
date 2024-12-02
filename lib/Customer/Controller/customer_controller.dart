@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Customer/View/add_customer_screen.dart';
@@ -9,43 +10,15 @@ class CustomerController extends GetxController {
   RxBool isSearchActive = false.obs;
   FocusNode focusNode = FocusNode();
   TextEditingController searchController = TextEditingController();
-   var supplierList = [  {
-        'Name': 'A001',
-        'Phone_Number': '9027417888',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-       
-      },
-      {
-        'Name': 'A002',
-        'Phone_Number': '4485529114',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },
-      {
-        'Name': 'A003',
-        'Phone_Number': '5485892247',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },
-      {
-        'Name': 'A004',
-        'Phone_Number': '5595158987',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },
-      {
-        'Name': 'A005',
-        'Phone_Number': '56699529852',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },].obs;
+   List<Map<String, dynamic>> customerList = <Map<String, dynamic>>[ 
+       ].obs;
 
-       RxList<Map<String, String>> filteredCustomerList = <Map<String, String>>[].obs;
+      List<Map<String, dynamic>> filteredCustomerList = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
     super.onInit();
+    fetchcustomer();
     searchController.addListener(filterSupplierList);
     filterSupplierList(); // Fetch or simulate fetching inventory
   }
@@ -56,18 +29,35 @@ class CustomerController extends GetxController {
     super.onClose();
   }
 
-  // void toggleSearch() {
-  //   isSearching.value = !isSearching.value; // Toggle search state
-  // }
+   Future<void> fetchcustomer() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('customers').get();
+      List<Map<String, dynamic>> suppliers = snapshot.docs.map((doc) {
+        return {
+          'Name': doc['name'],
+          'Phone_Number': doc['phone'],
+          'Address': doc['billing_address'],
+          'CreatedAt': doc['created_at'],
+        };
+      }).toList();
+
+      customerList.assignAll(suppliers);
+      filterSupplierList();
+      print(customerList);
+      // filteredSupplierList.assignAll(suppliers);  
+    } catch (e) {
+      print("Error fetching suppliers: $e");
+    }
+  }
 
    void filterSupplierList() {
     final query = searchController.text.trim().toLowerCase();
     if (query.isEmpty) {
       // If the query is empty, show all items
-      filteredCustomerList.assignAll(supplierList);
+      filteredCustomerList.assignAll(customerList);
     } else {
       // Filter the list based on the query
-     filteredCustomerList.assignAll(supplierList.where((item) {
+     filteredCustomerList.assignAll(customerList.where((item) {
   return (item['Name']?.toLowerCase().contains(query) ?? false);
          
 }).toList());

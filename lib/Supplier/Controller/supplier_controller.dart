@@ -27,16 +27,17 @@ class SupplierController extends GetxController {
       QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('suppliers').get();
       List<Map<String, dynamic>> suppliers = snapshot.docs.map((doc) {
         return {
-          'Name': doc['Name'],
-          'Phone_Number': doc['Phone_Number'],
-          'Address': doc['Address'],
-          'CreatedAt': doc['CreatedAt'],
+          'Name': doc['name'],
+          'Phone_Number': doc['phone'],
+          'Address': doc['address'],
+          'CreatedAt': doc['created_at'],
         };
       }).toList();
 
       supplierList.assignAll(suppliers);
+      filterSupplierList();
       print(supplierList);
-      // filteredSupplierList.assignAll(suppliers);  // Initialize filtered list with fetched data
+      // filteredSupplierList.assignAll(suppliers);  
     } catch (e) {
       print("Error fetching suppliers: $e");
     }
@@ -48,11 +49,13 @@ class SupplierController extends GetxController {
       // If the query is empty, show all items
       filteredSupplierList.assignAll(supplierList);
     } else {
-      // Filter the list based on the query
+    
      filteredSupplierList.assignAll(supplierList.where((item) {
   return (item['Name']?.toLowerCase().contains(query) ?? false);
+ 
          
 }).toList());
+ print(filteredSupplierList);
     }
   }
 

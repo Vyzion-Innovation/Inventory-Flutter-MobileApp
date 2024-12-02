@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Inventory/Controller/inventory_controller.dart';
+import 'package:inventoryappflutter/Inventory/Model/inventory_model.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
@@ -60,13 +61,13 @@ class InventoriesScreen extends StatelessWidget {
 }
 
 
-  Widget inventoryItemCard(Map<String, String> profile, int index) {
+  Widget inventoryItemCard(InventoryModel profile, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CommonCard(
         padding: const EdgeInsets.all(16),
         onTap: () {
-          print("Card clicked for item code: ${profile['itemCode']}");
+          print("Card clicked for item code: ${profile.itemCode}");
         },
         additionalWidgets: [
           Row(
@@ -85,7 +86,7 @@ class InventoriesScreen extends StatelessWidget {
                           fontSize: 16,
                         ),
                         AppText(
-                          '${profile['itemCode'] ?? ""}',
+                          profile.itemCode ?? "",
                           fontWeight: FontWeight.normal,
                           fontSize: 16,
                         ),
@@ -100,7 +101,7 @@ class InventoriesScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                         AppText(
-                          '${profile['ModelNumber'] ?? ""}',
+                          profile.modelNumber ?? "",
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
@@ -115,7 +116,7 @@ class InventoriesScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                         AppText(
-                          '${profile['configuration'] ?? ""}',
+                          profile.configuration ?? "",
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
@@ -130,7 +131,7 @@ class InventoriesScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                         AppText(
-                          '${profile['serialNumber'] ?? ""}',
+                          profile.serialNumber ?? "",
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
@@ -146,10 +147,10 @@ class InventoriesScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppText(
-                    '${profile['status'] ?? ""}',
+                    profile.status ?? "",
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
-                    color: profile['status']?.toLowerCase() == 'stock'
+                    color: profile.status?.toLowerCase() == 'stock'
                         ? Colors.green
                         : Colors.red,
                   ),
@@ -191,7 +192,7 @@ class InventoriesScreen extends StatelessWidget {
                 isSelected: controller.selectedButton.value == 'All',
                 onTap: () {
                   controller.selectedButton.value = 'All';
-                  controller.fetchInventoryList(filterType: 'All');
+                  controller.filterInventory();
                 },
               ),
             )),
@@ -213,7 +214,7 @@ class InventoriesScreen extends StatelessWidget {
                 isSelected: controller.selectedButton.value == 'Sell',
                 onTap: () {
                   controller.selectedButton.value = 'Sell';
-                  controller.fetchInventoryList(filterType: 'Sell');
+                  controller.filterInventory();
                 },
               ),
             )),

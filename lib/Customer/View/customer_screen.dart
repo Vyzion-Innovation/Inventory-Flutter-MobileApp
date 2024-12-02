@@ -58,7 +58,7 @@ class CustomerScreen extends StatelessWidget {
     });
   }
 
-  Widget inventoryItemCard(Map<String, String> profile, int index) {
+  Widget inventoryItemCard(Map<String, dynamic> profile, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CommonCard(

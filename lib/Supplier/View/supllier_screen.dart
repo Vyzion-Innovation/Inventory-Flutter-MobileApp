@@ -59,110 +59,111 @@ class SupllierScreen extends StatelessWidget {
 }
 
   Widget inventoryItemCard(Map<String, dynamic> profile, int index) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: CommonCard(
-        padding: const EdgeInsets.all(16),
-        onTap: () {
-          print("Card clicked for item code");
-        },
-        additionalWidgets: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Left column for item details
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const AppText(
-                          'Name:  ',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                        AppText(
-                          '${profile['Name'] ?? ""}',
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const AppText(
-                          'Phone_Number:  ',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                        AppText(
-                          '${profile['Phone_Number'] ?? ""}',
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const AppText(
-                          'Address:  ',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                        AppText(
-                          '${profile['Address'] ?? ""}',
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        AppText(
-                          'CreatedAt:  ',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                        AppText(
-                          '${profile['CreatedAt'] ?? ""}',
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              // Right column for action buttons
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: CommonCard(
+      padding: const EdgeInsets.all(16),
+      onTap: () {
+        print("Card clicked for item code");
+      },
+      additionalWidgets: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Left column for item details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit, size: 20),
-                    onPressed: () {},
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  Row(
+                    children: [
+                      const AppText(
+                        'Name:  ',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                      AppText(
+                        '${profile['Name'] ?? ""}', // Updated key
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, size: 20),
-                    onPressed: () {
-                      // Call deleteItem with the index
-                    },
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const AppText(
+                        'Phone_Number:  ',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      AppText(
+                        '${profile['Phone_Number'] ?? ""}', // Updated key
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const AppText(
+                        'Address:  ',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      AppText(
+                        '${profile['Address'] ?? ""}', // Updated key
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      AppText(
+                        'CreatedAt:  ',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      AppText(
+                        '${profile['CreatedAt'] ?? ""}', // Updated key
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
                 ],
               ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+            ),
+            const SizedBox(width: 12),
+            // Right column for action buttons
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.edit, size: 20),
+                  onPressed: () {},
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete, size: 20),
+                  onPressed: () {
+                    // Call deleteItem with the index
+                  },
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
 
  Widget searchBar() {
   return Padding(
