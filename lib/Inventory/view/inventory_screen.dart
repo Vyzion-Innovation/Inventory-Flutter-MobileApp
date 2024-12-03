@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Inventory/Controller/inventory_controller.dart';
-import 'package:inventoryappflutter/Inventory/Model/inventory_model.dart';
+import 'package:inventoryappflutter/Model/inventory_model.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';

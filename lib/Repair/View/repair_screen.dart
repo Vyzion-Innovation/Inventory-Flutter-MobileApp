@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Repair/Controller/repair%20controller.dart';
-import 'package:inventoryappflutter/Repair/Model/repair_model.dart';
+import 'package:inventoryappflutter/Model/repair_model.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
@@ -46,7 +46,7 @@ class RepairScreen extends StatelessWidget {
   Widget inventoryListBuilder() {
     return Obx(() {
       if (controller.filteredRepairList.isEmpty) {
-        return const Center(child: Text('No data available'));
+        return  Center(child:  controller.isloading.value ? CircularProgressIndicator() : Text('No data available'));
       }
       return ListView.builder(
         itemCount: controller.filteredRepairList.length,
@@ -181,8 +181,8 @@ class RepairScreen extends StatelessWidget {
                 label: repairTextStrings.btnTextALL,
                 isSelected: controller.selectedButton.value == 'All',
                 onTap: () {
-                  controller.selectedButton.value = 'All';
-                  controller.filterRepairList();
+                   controller.selectedButton.value = 'All';
+              controller.fetchRepairList(controller.selectedButton.value);
                 },
               ),
             )),
@@ -193,7 +193,7 @@ class RepairScreen extends StatelessWidget {
                 isSelected: controller.selectedButton.value == 'Receive',
                 onTap: () {
                   controller.selectedButton.value = 'Receive';
-                  controller.filterRepairList();
+              controller.fetchRepairList(controller.selectedButton.value); 
                 },
               ),
             )),
@@ -204,7 +204,7 @@ class RepairScreen extends StatelessWidget {
                 isSelected: controller.selectedButton.value == 'Complete',
                 onTap: () {
                   controller.selectedButton.value = 'Complete';
-                  controller.filterRepairList();
+              controller.fetchRepairList(controller.selectedButton.value);
                 },
               ),
             )),

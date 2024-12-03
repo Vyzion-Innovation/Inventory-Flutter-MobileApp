@@ -16,11 +16,11 @@ class CustomTextButton extends StatelessWidget {
     Key? key,
     required this.title,
     required this.onPressed,
-    this.textColor = Colors.white,
+    this.textColor = AppColors.gradientOne,
     this.backgroundColor = AppColors.gradientTwo,
-    this.pressedColor = AppColors.gradientOne, // Default pressed color
-    this.fontSize = 16.0,
-    this.padding = const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+    this.pressedColor = AppColors.colorWhite, // Default pressed color
+    this.fontSize = 14.0,
+    this.padding = const EdgeInsets.symmetric(vertical: 4.0, horizontal: 20.0),
     this.icon,
     this.selected = false, // Default is not selected
   }) : super(key: key);
@@ -30,8 +30,8 @@ class CustomTextButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        padding: padding,
-        backgroundColor: selected ? pressedColor : backgroundColor,
+        // padding: padding,
+        // backgroundColor: selected ? pressedColor : backgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
@@ -39,10 +39,10 @@ class CustomTextButton extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) ...[
-            Icon(icon, color: textColor, size: fontSize + 2),
-            const SizedBox(width: 8),
-          ],
+          // if (icon != null) ...[
+          //   Icon(icon, color: textColor, size: fontSize + 2),
+          //   const SizedBox(width: 8),
+          // ],
           Text(
             title,
             style: TextStyle(

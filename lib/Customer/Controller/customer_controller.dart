@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Customer/View/add_customer_screen.dart';
 import 'package:inventoryappflutter/Add_Supplier/View/add_supplier_screen.dart';
+import 'package:inventoryappflutter/Model/customer_model.dart';
 
 class CustomerController extends GetxController {
 
@@ -10,10 +11,10 @@ class CustomerController extends GetxController {
   RxBool isSearchActive = false.obs;
   FocusNode focusNode = FocusNode();
   TextEditingController searchController = TextEditingController();
-   List<Map<String, dynamic>> customerList = <Map<String, dynamic>>[ 
+  var customerList = <CustomerModel>[ 
        ].obs;
 
-      List<Map<String, dynamic>> filteredCustomerList = <Map<String, dynamic>>[].obs;
+      var filteredCustomerList = <CustomerModel>[].obs;
 
   @override
   void onInit() {
@@ -32,16 +33,11 @@ class CustomerController extends GetxController {
    Future<void> fetchcustomer() async {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('customers').get();
-      List<Map<String, dynamic>> suppliers = snapshot.docs.map((doc) {
-        return {
-          'Name': doc['name'],
-          'Phone_Number': doc['phone'],
-          'Address': doc['billing_address'],
-          'CreatedAt': doc['created_at'],
-        };
+     List<CustomerModel> customers = snapshot.docs.map((doc) {
+        return CustomerModel.fromJson(doc.data() as Map<String, dynamic>);
       }).toList();
 
-      customerList.assignAll(suppliers);
+      customerList.assignAll(customers);
       filterSupplierList();
       print(customerList);
       // filteredSupplierList.assignAll(suppliers);  
@@ -58,7 +54,7 @@ class CustomerController extends GetxController {
     } else {
       // Filter the list based on the query
      filteredCustomerList.assignAll(customerList.where((item) {
-  return (item['Name']?.toLowerCase().contains(query) ?? false);
+  return (item.name.toLowerCase().contains(query) ?? false);
          
 }).toList());
     }

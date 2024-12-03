@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Customer/Controller/customer_controller.dart';
+import 'package:inventoryappflutter/Model/customer_model.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
@@ -58,7 +59,7 @@ class CustomerScreen extends StatelessWidget {
     });
   }
 
-  Widget inventoryItemCard(Map<String, dynamic> profile, int index) {
+  Widget inventoryItemCard(CustomerModel profile, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CommonCard(
@@ -83,7 +84,7 @@ class CustomerScreen extends StatelessWidget {
                           fontSize: 16,
                         ),
                         AppText(
-                          '${profile['Name'] ?? ""}',
+                          profile.name,
                           fontWeight: FontWeight.normal,
                           fontSize: 16,
                         ),
@@ -98,7 +99,7 @@ class CustomerScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                         AppText(
-                          '${profile['Phone_Number'] ?? ""}',
+                          profile.phone,
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
@@ -113,7 +114,7 @@ class CustomerScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                         AppText(
-                          '${profile['Address'] ?? ""}',
+                          profile.billingAddress,
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
@@ -128,7 +129,7 @@ class CustomerScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                         AppText(
-                          '${profile['CreatedAt'] ?? ""}',
+                          profile.createdAt.toString().split(' ')[0],
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),

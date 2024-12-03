@@ -3,6 +3,7 @@ import 'package:inventoryappflutter/common/app_text.dart';
 
 class CommonCard extends StatelessWidget {
   final String? title;
+   final double? width;
   final String? subtitle;
   final List<Widget>? additionalWidgets;
   final EdgeInsetsGeometry? padding;
@@ -13,6 +14,7 @@ class CommonCard extends StatelessWidget {
     this.title,
     this.subtitle,
     this.padding,
+    this.width,
     this.additionalWidgets,
     this.onTap, // Optional parameter
   }) : super(key: key);
@@ -25,6 +27,7 @@ class CommonCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap, // Handle tap if onTap is provided
           child: Container(
+            width: width,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),

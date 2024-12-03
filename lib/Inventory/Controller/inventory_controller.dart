@@ -5,7 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Inventory/View/add_inventory.dart';
-import 'package:inventoryappflutter/Inventory/Model/inventory_model.dart';
+import 'package:inventoryappflutter/Model/inventory_model.dart';
 
 class InventoriesController extends GetxController {
  var filteredInventoryList =
