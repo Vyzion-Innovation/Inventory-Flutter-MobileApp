@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Repair/Controller/repair%20controller.dart';
+import 'package:inventoryappflutter/Repair/Model/repair_model.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
@@ -56,13 +57,13 @@ class RepairScreen extends StatelessWidget {
       );
     });
   }
- Widget inventoryItemCard(Map<String, String> profile, int index) {
+ Widget inventoryItemCard(RepairModel profile, int index) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: CommonCard(
       padding: const EdgeInsets.all(16),
       onTap: () {
-        print("Card clicked for item code: ${profile['itemCode']}");
+        print("Card clicked for item code: ${profile.customerName}");
       },
       additionalWidgets: [
         Row(
@@ -76,12 +77,12 @@ class RepairScreen extends StatelessWidget {
                   Row(
                     children: [
                       const AppText(
-                        'Item Code:  ',
+                        'Customer Name:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                       AppText(
-                        '${profile['itemCode'] ?? ""}',
+                        profile.customerName ?? "",
                         fontWeight: FontWeight.normal,
                         fontSize: 16,
                       ),
@@ -96,7 +97,7 @@ class RepairScreen extends StatelessWidget {
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['ModelNumber'] ?? ""}',
+                          profile.model ?? "",
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -106,12 +107,12 @@ class RepairScreen extends StatelessWidget {
                   Row(
                     children: [
                       const AppText(
-                        'Configuration:  ',
+                        'Job Number:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['configuration'] ?? ""}',
+                           profile.jobNumber ?? "",
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -121,12 +122,12 @@ class RepairScreen extends StatelessWidget {
                   Row(
                     children: [
                       const AppText(
-                        'Serial Number:  ',
+                        'Phone Number:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['serialNumber'] ?? ""}',
+                           profile.phone ?? "",
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -142,10 +143,10 @@ class RepairScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppText(
-                  '${profile['status'] ?? ""}',
+                     profile.status ?? "",
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
-                  color: profile['status']?.toLowerCase() == 'Complete'.toLowerCase() ? AppColors.successColor : Colors.red,
+                  color:    profile.status ?.toLowerCase() == 'Complete'.toLowerCase() ? AppColors.successColor : Colors.red,
                 ),
                 IconButton(
                   icon: const Icon(Icons.edit, size: 20, color: AppColors.infoColor,),
@@ -189,9 +190,9 @@ class RepairScreen extends StatelessWidget {
         Obx(() => Expanded(
               child: FilterButton(
                 label: repairTextStrings.btnTextRecieve,
-                isSelected: controller.selectedButton.value == 'Recieve',
+                isSelected: controller.selectedButton.value == 'Receive',
                 onTap: () {
-                  controller.selectedButton.value = 'Recieve';
+                  controller.selectedButton.value = 'Receive';
                   controller.filterRepairList();
                 },
               ),

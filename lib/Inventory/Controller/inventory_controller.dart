@@ -8,13 +8,13 @@ import 'package:inventoryappflutter/Add_Inventory/View/add_inventory.dart';
 import 'package:inventoryappflutter/Inventory/Model/inventory_model.dart';
 
 class InventoriesController extends GetxController {
- RxList<InventoryModel> filteredInventoryList =
+ var filteredInventoryList =
       <InventoryModel>[].obs;
   TextEditingController searchController = TextEditingController();
   var selectedButton = 'All'.obs; // Tracks the selected filter button
   RxBool isSearchActive = false.obs;
   FocusNode focusNode = FocusNode();
-  RxList<InventoryModel> inventoryList = <InventoryModel>[
+ var inventoryList = <InventoryModel>[
     
 ].obs;
 
@@ -57,7 +57,7 @@ fetchInventory();
     final currentList = selectedButton.value == 'All'
         ? inventoryList
         : inventoryList
-            .where((item) => item.status == selectedButton.value)
+            .where((item) => item.status?.toLowerCase() == selectedButton.value.toLowerCase())
             .toList();
 
    final searched = query.isEmpty

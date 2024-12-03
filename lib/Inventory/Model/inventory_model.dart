@@ -9,12 +9,12 @@ class InventoryModel {
   int? purchaseAmountNum;
   String? modelNumber;
   int? purchaseTimestamp;
-  int? purchaseAmount;
+  String? purchaseAmount;
   String? paidBy;
   int? sellAmountNum;
   int? sellTimestamp;
   String? purchaseDate;
-  int? sellAmount;
+  String? sellAmount;
   String? serialNumber;
   String? sellDate;
   int? createdAt;

@@ -45,21 +45,21 @@ class InventoriesScreen extends StatelessWidget {
   }
 
   Widget inventoryListBuilder() {
-  return Obx(() {
-    final inventory = controller.filteredInventoryList; // Use the filtered list
-    if (inventory.isEmpty) {
-      return const Center(child: Text('No data available'));
-    }
-    return ListView.builder(
-      itemCount: inventory.length,
-      itemBuilder: (context, index) {
-        final profile = inventory[index];
-        return inventoryItemCard(profile, index);
-      },
-    );
-  });
-}
-
+    return Obx(() {
+      final inventory =
+          controller.filteredInventoryList; // Use the filtered list
+      if (inventory.isEmpty) {
+        return const Center(child: Text('No data available'));
+      }
+      return ListView.builder(
+        itemCount: inventory.length,
+        itemBuilder: (context, index) {
+          final profile = inventory[index];
+          return inventoryItemCard(profile, index);
+        },
+      );
+    });
+  }
 
   Widget inventoryItemCard(InventoryModel profile, int index) {
     return Padding(
@@ -85,10 +85,13 @@ class InventoriesScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
-                        AppText(
-                          profile.itemCode ?? "",
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16,
+                        Expanded(
+                          // Wrap with Expanded to prevent overflow
+                          child: AppText(
+                            profile.itemCode ?? "",
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
@@ -100,10 +103,13 @@ class InventoriesScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
-                        AppText(
-                          profile.modelNumber ?? "",
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
+                        Expanded(
+                          // Wrap with Expanded to prevent overflow
+                          child: AppText(
+                            profile.modelNumber ?? "",
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                          ),
                         ),
                       ],
                     ),
@@ -115,10 +121,13 @@ class InventoriesScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
-                        AppText(
-                          profile.configuration ?? "",
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
+                        Expanded(
+                          // Wrap with Expanded to prevent overflow
+                          child: AppText(
+                            profile.configuration ?? "",
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                          ),
                         ),
                       ],
                     ),
@@ -130,10 +139,31 @@ class InventoriesScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
-                        AppText(
-                          profile.serialNumber ?? "",
-                          fontWeight: FontWeight.normal,
+                        Expanded(
+                          // Wrap with Expanded to prevent overflow
+                          child: AppText(
+                            profile.serialNumber ?? "",
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                     const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const AppText(
+                          'Purchase Amount:  ',
+                          fontWeight: FontWeight.bold,
                           fontSize: 14,
+                        ),
+                        Expanded(
+                          // Wrap with Expanded to prevent overflow
+                          child: AppText(
+                            profile.purchaseAmount ?? "",
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                          ),
                         ),
                       ],
                     ),
@@ -158,8 +188,8 @@ class InventoriesScreen extends StatelessWidget {
                     icon: const Icon(Icons.edit, size: 20),
                     onPressed: () {
                       // Call editItem with the index and a new item code (for example purposes)
-                      controller.editItem(index,
-                          'A0001'); // Replace 'NewItemCode' with actual input
+                      controller.editItem(
+                          index, 'A0001'); // Replace 'A0001' with actual input
                     },
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                   ),
@@ -180,82 +210,80 @@ class InventoriesScreen extends StatelessWidget {
     );
   }
 
- Widget filterButtons() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: 'All',
-                isSelected: controller.selectedButton.value == 'All',
-                onTap: () {
-                  controller.selectedButton.value = 'All';
-                  controller.filterInventory();
-                },
-              ),
-            )),
-        const SizedBox(width: 10),
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: 'Stock',
-                isSelected: controller.selectedButton.value == 'Stock',
-                onTap: () {
-                  controller.selectedButton.value = 'Stock';
-                  controller.filterInventory();
-                },
-              ),
-            )),
-        const SizedBox(width: 10),
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: 'Sell',
-                isSelected: controller.selectedButton.value == 'Sell',
-                onTap: () {
-                  controller.selectedButton.value = 'Sell';
-                  controller.filterInventory();
-                },
-              ),
-            )),
-      ],
-    ),
-  );
-}
-
+  Widget filterButtons() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Obx(() => Expanded(
+                child: FilterButton(
+                  label: 'All',
+                  isSelected: controller.selectedButton.value == 'All',
+                  onTap: () {
+                    controller.selectedButton.value = 'All';
+                    controller.filterInventory();
+                  },
+                ),
+              )),
+          const SizedBox(width: 10),
+          Obx(() => Expanded(
+                child: FilterButton(
+                  label: 'Stock',
+                  isSelected: controller.selectedButton.value == 'Stock',
+                  onTap: () {
+                    controller.selectedButton.value = 'Stock';
+                    controller.filterInventory();
+                  },
+                ),
+              )),
+          const SizedBox(width: 10),
+          Obx(() => Expanded(
+                child: FilterButton(
+                  label: 'Sell',
+                  isSelected: controller.selectedButton.value == 'Sell',
+                  onTap: () {
+                    controller.selectedButton.value = 'Sell';
+                    controller.filterInventory();
+                  },
+                ),
+              )),
+        ],
+      ),
+    );
+  }
 
   Widget searchBar() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 12),
-    child: SizedBox(
-      height: 50,
-      child: Obx(
-        () => CustomTextField(
-          focusNode: controller.focusNode, // Use the controller's FocusNode
-          onTap: () {
-            controller.isSearchActive.value = true; // Activate search
-          },
-          MaxLine: 1,
-          hintText: inevontryTextStrings.Searchhint,
-          controller: controller.searchController,
-          borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
-          prefftext: const Icon(Icons.search),
-          suffix: controller.isSearchActive.value
-              ? IconButton(
-                  onPressed: () {
-                    // Clear search and deactivate
-                    controller.searchController.clear();
-                    controller.isSearchActive.value = false;
-                    controller.focusNode.unfocus(); // Dismiss the keyboard
-                  },
-                  icon: const Icon(Icons.cancel),
-                )
-              : null,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: SizedBox(
+        height: 50,
+        child: Obx(
+          () => CustomTextField(
+            focusNode: controller.focusNode, // Use the controller's FocusNode
+            onTap: () {
+              controller.isSearchActive.value = true; // Activate search
+            },
+            MaxLine: 1,
+            hintText: inevontryTextStrings.Searchhint,
+            controller: controller.searchController,
+            borderSide:
+                const BorderSide(color: AppColors.greyColor, width: 1.0),
+            prefftext: const Icon(Icons.search),
+            suffix: controller.isSearchActive.value
+                ? IconButton(
+                    onPressed: () {
+                      // Clear search and deactivate
+                      controller.searchController.clear();
+                      controller.isSearchActive.value = false;
+                      controller.focusNode.unfocus(); // Dismiss the keyboard
+                    },
+                    icon: const Icon(Icons.cancel),
+                  )
+                : null,
+          ),
         ),
       ),
-    ),
-  );
-}
-
-
+    );
+  }
 }
