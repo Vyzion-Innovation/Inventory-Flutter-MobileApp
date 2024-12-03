@@ -54,7 +54,7 @@ class CustomerController extends GetxController {
     } else {
       // Filter the list based on the query
      filteredCustomerList.assignAll(customerList.where((item) {
-  return (item.name.toLowerCase().contains(query) ?? false);
+  return (item.name?.toLowerCase().contains(query) ?? false);
          
 }).toList());
     }

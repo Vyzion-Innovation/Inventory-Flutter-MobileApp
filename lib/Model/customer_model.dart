@@ -1,7 +1,7 @@
 class CustomerModel {
-  final String phone;
-  final String billingAddress;
-  final String name;
+  final String? phone;
+  final String? billingAddress;
+  final String? name;
   final DateTime updatedAt;
   final DateTime createdAt;
 
@@ -16,9 +16,9 @@ class CustomerModel {
   // Factory method to create a Customer instance from a JSON map
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
     return CustomerModel(
-      phone: json['phone'] as String,
-      billingAddress: json['billing_address'] as String,
-      name: json['name'] as String,
+      phone: json['phone'] as String?,
+      billingAddress: json['billing_address'] as String?,
+      name: json['name'] as String?,
       updatedAt: DateTime.fromMillisecondsSinceEpoch(json['updated_at'] as int),
       createdAt: DateTime.fromMillisecondsSinceEpoch(json['created_at'] as int),
     );

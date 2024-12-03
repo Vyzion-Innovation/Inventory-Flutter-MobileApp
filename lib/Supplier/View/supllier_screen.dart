@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
+import 'package:inventoryappflutter/Model/supplier_model.dart';
 import 'package:inventoryappflutter/Supplier/Controller/supplier_controller.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
@@ -51,14 +52,14 @@ class SupllierScreen extends StatelessWidget {
     return ListView.builder(
       itemCount: controller.filteredSupplierList.length,
       itemBuilder: (context, index) {
-        Map<String, dynamic> profile = controller.filteredSupplierList[index];
+        var profile = controller.filteredSupplierList[index];
         return inventoryItemCard(profile, index);
       },
     );
   });
 }
 
-  Widget inventoryItemCard(Map<String, dynamic> profile, int index) {
+  Widget inventoryItemCard(SupplierModel profile, int index) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: CommonCard(
@@ -83,7 +84,7 @@ class SupllierScreen extends StatelessWidget {
                         fontSize: 16,
                       ),
                       AppText(
-                        '${profile['Name'] ?? ""}', // Updated key
+                        profile.name ?? '', // Updated key
                         fontWeight: FontWeight.normal,
                         fontSize: 16,
                       ),
@@ -98,7 +99,7 @@ class SupllierScreen extends StatelessWidget {
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['Phone_Number'] ?? ""}', // Updated key
+                       profile.phone ?? '',  // Updated key
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -113,7 +114,7 @@ class SupllierScreen extends StatelessWidget {
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['Address'] ?? ""}', // Updated key
+                       profile.supplierAddress ?? '', // Updated key
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -128,7 +129,7 @@ class SupllierScreen extends StatelessWidget {
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['CreatedAt'] ?? ""}', // Updated key
+                        profile.createdAt.toString().split(' ')[0] ?? '' ,// Updated key
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),

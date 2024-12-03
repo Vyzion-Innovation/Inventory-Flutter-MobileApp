@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Supplier/View/add_supplier_screen.dart';
+import 'package:inventoryappflutter/Model/supplier_model.dart';
 
 class SupplierController extends GetxController {
-  RxList<Map<String, dynamic>> supplierList = <Map<String, dynamic>>[
+  var supplierList = <SupplierModel>[
   ].obs;
 
-  List<Map<String, dynamic>> filteredSupplierList = <Map<String, dynamic>>[].obs;
+  var filteredSupplierList = <SupplierModel>[].obs;
    RxBool isSearchActive = false.obs;
   FocusNode focusNode = FocusNode();
 
@@ -25,13 +26,9 @@ class SupplierController extends GetxController {
  Future<void> fetchSuppliers() async {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('suppliers').get();
-      List<Map<String, dynamic>> suppliers = snapshot.docs.map((doc) {
-        return {
-          'Name': doc['name'],
-          'Phone_Number': doc['phone'],
-          'Address': doc['address'],
-          'CreatedAt': doc['created_at'],
-        };
+      List<SupplierModel> suppliers = snapshot.docs.map((doc) {
+        return 
+         SupplierModel.fromJson(doc.data() as Map<String, dynamic>);
       }).toList();
 
       supplierList.assignAll(suppliers);
@@ -51,7 +48,7 @@ class SupplierController extends GetxController {
     } else {
     
      filteredSupplierList.assignAll(supplierList.where((item) {
-  return (item['Name']?.toLowerCase().contains(query) ?? false);
+  return (item.name?.toLowerCase().contains(query) ?? false);
  
          
 }).toList());

@@ -84,7 +84,7 @@ class CustomerScreen extends StatelessWidget {
                           fontSize: 16,
                         ),
                         AppText(
-                          profile.name,
+                          profile.name ?? '',
                           fontWeight: FontWeight.normal,
                           fontSize: 16,
                         ),
@@ -99,7 +99,7 @@ class CustomerScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                         AppText(
-                          profile.phone,
+                          profile.phone ?? '',
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
@@ -114,7 +114,7 @@ class CustomerScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                         AppText(
-                          profile.billingAddress,
+                          profile.billingAddress ?? '',
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
