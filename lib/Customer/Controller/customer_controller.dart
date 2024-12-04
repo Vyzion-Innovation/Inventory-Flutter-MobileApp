@@ -20,8 +20,8 @@ class CustomerController extends GetxController {
   void onInit() {
     super.onInit();
     fetchcustomer();
-    searchController.addListener(filterSupplierList);
-    filterSupplierList(); // Fetch or simulate fetching inventory
+    searchController.addListener(filterCustomerList);
+    filterCustomerList(); // Fetch or simulate fetching inventory
   }
 
   @override
@@ -38,7 +38,7 @@ class CustomerController extends GetxController {
       }).toList();
 
       customerList.assignAll(customers);
-      filterSupplierList();
+      filterCustomerList();
       print(customerList);
       // filteredSupplierList.assignAll(suppliers);  
     } catch (e) {
@@ -46,7 +46,7 @@ class CustomerController extends GetxController {
     }
   }
 
-   void filterSupplierList() {
+   void filterCustomerList() {
     final query = searchController.text.trim().toLowerCase();
     if (query.isEmpty) {
       // If the query is empty, show all items
@@ -62,8 +62,13 @@ class CustomerController extends GetxController {
 
   
 
-  void addItem() {
-    Get.to(() => AddCustomerScreen());
+  void addItem() async {
+    final result = await Get.to(() => AddCustomerScreen());
+     // ignore: unrelated_type_equality_checks
+     if (result == true) {
+      fetchcustomer(); // Refresh data if changes were made
+    }
+
   }
 
   void editItem() {

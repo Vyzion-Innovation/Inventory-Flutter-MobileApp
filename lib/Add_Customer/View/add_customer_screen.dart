@@ -19,7 +19,7 @@ class AddCustomerScreen extends StatelessWidget {
      appBar: const CustomAppBar(
         title: AppText( Strings.addCustomer , fontSize: 20, fontWeight: FontWeight.bold,),
       ),
-      body: Padding(
+      body: controller.isLoader.value ?Center(child: CircularProgressIndicator(),) : Padding(
         padding: const EdgeInsets.all(20.0),
         child: Form(
           key: controller.formKey,
@@ -28,7 +28,7 @@ class AddCustomerScreen extends StatelessWidget {
               CustomTextField(
                 labelText: "Name",
                 hintText: "Enter name",
-                controller: controller.supllierName,
+                controller: controller.customerName,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validateCustomerName,
@@ -47,7 +47,7 @@ class AddCustomerScreen extends StatelessWidget {
               CustomTextField(
                 labelText: "Billing Address",
                 hintText: "Enter Address",
-                controller: controller.supplierAddressController,
+                controller: controller.customerAddressController,
                 MaxLine: 4,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
@@ -63,7 +63,7 @@ class AddCustomerScreen extends StatelessWidget {
                     child: CustomButton(
                       title: Strings.save,
                       onTap: () {
-                        controller.saveData();
+                        controller.saveData('save');
                       },
                     ),
                   ),
@@ -72,7 +72,7 @@ class AddCustomerScreen extends StatelessWidget {
                     child: CustomButton(
                       title: Strings.saveNext,
                       onTap: () {
-                        controller.saveData();
+                        controller.saveData('save+next');
                       },
                     ),
                   ),
@@ -81,7 +81,7 @@ class AddCustomerScreen extends StatelessWidget {
                     child: CustomButton(
                       title: Strings.cancel,
                       onTap: () {
-                        controller.cancelsaving();
+                        controller.cancelSaving();
                       },
                     ),
                   ),

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 
 import '../constant/app_colors.dart';
@@ -28,7 +30,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: isLeading!
           ? GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                Get.back(result: true);
               },
               child: Icon(
                 Icons.arrow_back_ios_rounded,

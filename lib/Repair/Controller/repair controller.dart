@@ -66,13 +66,10 @@ class RepairController extends GetxController {
 
   void filterRepairList() {
     final query = searchController.text.trim().toLowerCase();
-    
-    // Filter based on the selected button and search query
-    final filteredByStatus = repairList; // All repairs already fetched based on button
-
+  
     final searchedList = query.isEmpty
-      ? filteredByStatus
-      : filteredByStatus.where((item) {
+      ? repairList
+      : repairList.where((item) {
           return 
                  (item.customerName?.toLowerCase().contains(query) ?? false);
       }).toList();

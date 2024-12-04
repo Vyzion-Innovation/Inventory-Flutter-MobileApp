@@ -150,14 +150,14 @@ class RepairScreen extends StatelessWidget {
                   color:    profile.status ?.toLowerCase() == 'Complete'.toLowerCase() ? AppColors.successColor : Colors.red,
                 ),
                 IconButton(
-                  icon: const Icon(Icons.edit, size: 20, color: AppColors.infoColor,),
+                  icon: const Icon(Icons.edit, size: 20,),
                   onPressed: () {
                    
                   },
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete, size: 20, color: AppColors.warningColor,),
+                  icon: const Icon(Icons.delete, size: 20,),
                   onPressed: () {
                     // Call deleteItem with the index                   
                   },

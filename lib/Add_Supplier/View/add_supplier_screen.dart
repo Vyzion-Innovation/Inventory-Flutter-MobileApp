@@ -28,7 +28,7 @@ class AddSupplierScreen extends StatelessWidget {
               CustomTextField(
                 labelText: "Name",
                 hintText: "Enter name",
-                controller: controller.supllierName,
+                controller: controller.supplierName,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validateSupllierName,
@@ -63,7 +63,7 @@ class AddSupplierScreen extends StatelessWidget {
                     child: CustomButton(
                       title: Strings.save,
                       onTap: () {
-                        controller.saveData();
+                        controller.saveData('save');
                       },
                     ),
                   ),
@@ -72,7 +72,7 @@ class AddSupplierScreen extends StatelessWidget {
                     child: CustomButton(
                       title: Strings.saveNext,
                       onTap: () {
-                        controller.saveData();
+                        controller.saveData('save+next');
                       },
                     ),
                   ),

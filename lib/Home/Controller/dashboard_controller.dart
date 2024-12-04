@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Customer/View/add_customer_screen.dart';
 import 'package:inventoryappflutter/Add_Inventory/View/add_inventory.dart';
@@ -7,8 +6,6 @@ import 'package:inventoryappflutter/Add_Repair/View/repair_screen.dart';
 import 'package:inventoryappflutter/Add_Supplier/View/add_supplier_screen.dart';
 import 'package:inventoryappflutter/Model/inventory_model.dart';
 import 'package:inventoryappflutter/Model/repair_model.dart';
-import 'package:inventoryappflutter/Profile/View/profile_screen.dart';
-import 'package:inventoryappflutter/about_screen.dart';
 
 class DashboardController extends GetxController {
   var count = 0.obs; // Observable count variable
@@ -51,11 +48,19 @@ class DashboardController extends GetxController {
     }
   }
 
-  Future<void> fetchSellCountAndSum() async {
+   Future<void> fetchSellCountAndSum() async {
+     DateTime now = DateTime.now();
+    DateTime startOfMonth = DateTime(now.year, now.month -1, 1);
+    DateTime startOfNextMonth = DateTime(now.year, now.month + 1, 1);
+
+    int startTimestamp = startOfMonth.millisecondsSinceEpoch;
+    int endTimestamp = startOfNextMonth.millisecondsSinceEpoch;
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('inventories')
           .where('status', isEqualTo: 'sell')
+           .where('sell_timestamp', isGreaterThanOrEqualTo: startTimestamp)
+          .where('createdAt', isLessThan: endTimestamp)
           .get();
       // Map the documents to InventoryModel instances
       List<InventoryModel> inventories = snapshot.docs.map((doc) {
