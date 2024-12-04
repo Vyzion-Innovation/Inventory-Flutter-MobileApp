@@ -4,6 +4,7 @@ import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Repair/Controller/repair%20controller.dart';
 import 'package:inventoryappflutter/Model/repair_model.dart';
+import 'package:inventoryappflutter/Repair/View/full_details.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
@@ -38,12 +39,12 @@ class RepairScreen extends StatelessWidget {
         children: [
           searchBar(),
           filterButtons(),
-                   Expanded(child: inventoryListBuilder()),
+                   Expanded(child: repairListBuilder()),
         ],
       ),
     );
   }
-  Widget inventoryListBuilder() {
+  Widget repairListBuilder() {
     return Obx(() {
       if (controller.filteredRepairList.isEmpty) {
         return  Center(child:  controller.isloading.value ? CircularProgressIndicator() : Text('No data available'));
@@ -63,7 +64,7 @@ class RepairScreen extends StatelessWidget {
     child: CommonCard(
       padding: const EdgeInsets.all(16),
       onTap: () {
-        print("Card clicked for item code: ${profile.customerName}");
+        Get.to(() => RepairDetailsScreen(repair: profile));
       },
       additionalWidgets: [
         Row(

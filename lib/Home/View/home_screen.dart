@@ -126,12 +126,16 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-        const CommonCard(
+         CommonCard(
           padding: EdgeInsets.all(12),
           title: 'Current Month Repair Job',
           additionalWidgets: [
             Center(
-              child: Text('This is some additional text'),
+              child: AppText(
+                  '${dashboardController.currentMonthRepairAmount}',
+                  fontSize: 15,
+                  color: AppColors.gradientOne,
+                ),
             ),
           ],
         ),

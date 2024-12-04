@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Inventory/Controller/inventory_controller.dart';
+import 'package:inventoryappflutter/Inventory/view/inventory_details_screen.dart';
 import 'package:inventoryappflutter/Model/inventory_model.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
@@ -67,7 +68,7 @@ class InventoriesScreen extends StatelessWidget {
       child: CommonCard(
         padding: const EdgeInsets.all(16),
         onTap: () {
-          print("Card clicked for item code: ${profile.itemCode}");
+         Get.to(() => InventoryDetailsScreen(inventory: profile));
         },
         additionalWidgets: [
           Row(

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Customer/Controller/customer_controller.dart';
+import 'package:inventoryappflutter/Customer/View/customer_details.dart';
 import 'package:inventoryappflutter/Model/customer_model.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
@@ -65,7 +66,7 @@ class CustomerScreen extends StatelessWidget {
       child: CommonCard(
         padding: const EdgeInsets.all(16),
         onTap: () {
-          print("Card clicked for item code");
+        Get.to(() => CustomerDetailsScreen(customer: profile));
         },
         additionalWidgets: [
           Row(
