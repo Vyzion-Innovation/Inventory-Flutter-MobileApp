@@ -5,6 +5,7 @@ import 'package:inventoryappflutter/Add_Supplier/Controller/add_supllier_control
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Extension/form_validator.dart';
+import 'package:inventoryappflutter/Model/supplier_model.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
@@ -12,6 +13,13 @@ import 'package:inventoryappflutter/common/customTextField.dart';
 
 class AddSupplierScreen extends StatelessWidget {
   final SupplierFormController controller = Get.put(SupplierFormController());
+
+   AddSupplierScreen({Key? key, SupplierModel? supplier}) : super(key: key) {
+    // If a customer object is passed, set it for editing
+    if (supplier != null) {
+      controller.setSupplierData(supplier);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +76,7 @@ class AddSupplierScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 10), // Spacing between buttons
+                    if(controller.supplierToEdit == null)...[
                   Expanded(
                     child: CustomButton(
                       title: Strings.saveNext,
@@ -76,6 +85,7 @@ class AddSupplierScreen extends StatelessWidget {
                       },
                     ),
                   ),
+                    ],
                   SizedBox(width: 10), // Spacing between buttons
                   Expanded(
                     child: CustomButton(

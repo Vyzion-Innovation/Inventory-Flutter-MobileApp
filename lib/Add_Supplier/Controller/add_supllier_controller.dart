@@ -9,11 +9,19 @@ class SupplierFormController extends GetxController {
 
   // Observable for loader
   var isLoader = false.obs;
+  SupplierModel? supplierToEdit;
 
   // Text Controllers for form fields
   final supplierName = TextEditingController();
   final phoneNumberController = TextEditingController();
   final supplierAddressController = TextEditingController();
+
+  void setSupplierData(SupplierModel supplier) {
+    supplierToEdit = supplier;
+    supplierName.text = supplier.name!;
+    phoneNumberController.text = supplier.phone!;
+    supplierAddressController.text = supplier.supplierAddress!;
+  }
 
 
   void refresh() {
@@ -30,7 +38,13 @@ class SupplierFormController extends GetxController {
     if (buttonType.toLowerCase() == 'save') {
       // Save button: Validate and save, then go back
       if (formKey.currentState!.validate()) {
-        await _saveSupplier(); // Save supplier data
+         if (supplierToEdit != null)
+         {
+           await _updateSupplier(); // Call to update the existing customer
+        } else {
+           await _saveSupplier();
+         }
+        
         Get.back(result: true); // Close screen and pass success
       }
     } else if (buttonType.toLowerCase() == 'save+next') {
@@ -67,6 +81,31 @@ class SupplierFormController extends GetxController {
       print("Supplier data saved successfully.");
     } catch (e) {
       print("Error saving supplier data: $e");
+    }
+  }
+   Future<void> _updateSupplier() async {
+    try {
+      if (supplierToEdit == null) return; 
+
+      // Get the document reference using the customer's ID
+      DocumentReference supplierRef = FirebaseFirestore.instance
+          .collection('suppliers')
+          .doc(supplierToEdit
+              ?.id); // Assuming your CustomerModel has an 'id' field
+
+      Map<String, dynamic> updatedData = {
+        'phone': phoneNumberController.text,
+        'name': supplierName.text,
+        'address': supplierAddressController.text,
+        'updated_At': DateTime.now(), // Update timestamp
+      };
+
+      await supplierRef.update(updatedData);
+      print("supplier data updated successfully.");
+    } catch (e) {
+      print("Error updating supplier data: $e");
+    } finally {
+      isLoader.value = false; // Reset loader state
     }
   }
 

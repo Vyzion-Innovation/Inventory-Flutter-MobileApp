@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryappflutter/Add_Supplier/View/add_supplier_screen.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Model/supplier_model.dart';
@@ -142,23 +143,35 @@ class SupllierScreen extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             // Right column for action buttons
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.edit, size: 20),
-                  onPressed: () {},
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                ),
-                IconButton(
+           Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.edit, size: 20),
+                    onPressed: () {
+                      // Assuming 'customer' is the current customer object you want to edit
+                      Get.to(() => AddSupplierScreen(supplier: profile));
+                    },
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  ),
+                 IconButton(
                   icon: const Icon(Icons.delete, size: 20),
                   onPressed: () {
-                    // Call deleteItem with the index
+                    // Confirm deletion
+                    Get.defaultDialog(
+                      title: 'Confirm Deletion',
+                      middleText: 'Are you sure you want to delete this customer?',
+                      onCancel: () => Get.back(),
+                      onConfirm: () {
+                        controller.deleteSupllier(profile); // Pass the document ID here
+                        Get.back(); // Close the dialog
+                      },
+                    );
                   },
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                 ),
-              ],
-            ),
+                ],
+              ),
           ],
         ),
       ],

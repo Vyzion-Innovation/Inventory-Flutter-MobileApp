@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryappflutter/Add_Customer/View/add_customer_screen.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Customer/Controller/customer_controller.dart';
@@ -66,7 +67,7 @@ class CustomerScreen extends StatelessWidget {
       child: CommonCard(
         padding: const EdgeInsets.all(16),
         onTap: () {
-        Get.to(() => CustomerDetailsScreen(customer: profile));
+          Get.to(() => CustomerDetailsScreen(customer: profile));
         },
         additionalWidgets: [
           Row(
@@ -147,16 +148,28 @@ class CustomerScreen extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.edit, size: 20),
-                    onPressed: () {},
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, size: 20),
                     onPressed: () {
-                      // Call deleteItem with the index
+                      // Assuming 'customer' is the current customer object you want to edit
+                      Get.to(() => AddCustomerScreen(customer: profile));
                     },
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                   ),
+                 IconButton(
+                  icon: const Icon(Icons.delete, size: 20),
+                  onPressed: () {
+                    // Confirm deletion
+                    Get.defaultDialog(
+                      title: 'Confirm Deletion',
+                      middleText: 'Are you sure you want to delete this customer?',
+                      onCancel: () => Get.back(),
+                      onConfirm: () {
+                        controller.deleteCustomer(profile); // Pass the document ID here
+                        Get.back(); // Close the dialog
+                      },
+                    );
+                  },
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                ),
                 ],
               ),
             ],
@@ -166,36 +179,37 @@ class CustomerScreen extends StatelessWidget {
     );
   }
 
- Widget searchBar() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 12),
-    child: SizedBox(
-      height: 50,
-      child: Obx(
-        () => CustomTextField(
-          focusNode: controller.focusNode, // Use the controller's FocusNode
-          onTap: () {
-            controller.isSearchActive.value = true; // Activate search
-          },
-          MaxLine: 1,
-          hintText: repairTextStrings.SearchhintName,
-          controller: controller.searchController,
-          borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
-          prefftext: const Icon(Icons.search),
-          suffix: controller.isSearchActive.value
-              ? IconButton(
-                  onPressed: () {
-                    // Clear search and deactivate
-                    controller.searchController.clear();
-                    controller.isSearchActive.value = false;
-                    controller.focusNode.unfocus(); // Dismiss the keyboard
-                  },
-                  icon: const Icon(Icons.cancel),
-                )
-              : null,
+  Widget searchBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: SizedBox(
+        height: 50,
+        child: Obx(
+          () => CustomTextField(
+            focusNode: controller.focusNode, // Use the controller's FocusNode
+            onTap: () {
+              controller.isSearchActive.value = true; // Activate search
+            },
+            MaxLine: 1,
+            hintText: repairTextStrings.SearchhintName,
+            controller: controller.searchController,
+            borderSide:
+                const BorderSide(color: AppColors.greyColor, width: 1.0),
+            prefftext: const Icon(Icons.search),
+            suffix: controller.isSearchActive.value
+                ? IconButton(
+                    onPressed: () {
+                      // Clear search and deactivate
+                      controller.searchController.clear();
+                      controller.isSearchActive.value = false;
+                      controller.focusNode.unfocus(); // Dismiss the keyboard
+                    },
+                    icon: const Icon(Icons.cancel),
+                  )
+                : null,
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

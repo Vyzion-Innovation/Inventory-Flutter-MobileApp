@@ -26,10 +26,7 @@ class SupplierController extends GetxController {
  Future<void> fetchSuppliers() async {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('suppliers').get();
-      List<SupplierModel> suppliers = snapshot.docs.map((doc) {
-        return 
-         SupplierModel.fromJson(doc.data() as Map<String, dynamic>);
-      }).toList();
+      List<SupplierModel> suppliers = snapshot.docs.map((doc) => SupplierModel.fromFirestore(doc)).toList();
 
       supplierList.assignAll(suppliers);
       filterSupplierList();
@@ -63,6 +60,25 @@ class SupplierController extends GetxController {
   }
 
  void addItem() {
-    Get.to(() => AddSupplierScreen());
+    final result = Get.to(() => AddSupplierScreen());
+     if (result == true) {
+      fetchSuppliers(); // Refresh data if changes were made
+    }
+  }
+
+
+
+   Future<void> deleteSupllier(SupplierModel m) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('suppliers')
+          .doc(m.id) // Use the document ID to delete
+          .delete();
+      print("Supplier deleted successfully.");
+      // Optionally refresh the customer list
+      await fetchSuppliers(); // Ensure you have this method to fetch the updated list
+    } catch (e) {
+      print("Error deleting customer: $e");
+    }
   }
 }

@@ -7,7 +7,6 @@ import 'package:inventoryappflutter/Model/customer_model.dart';
 
 class CustomerController extends GetxController {
 
-  var selectedButton = 'All'.obs;
   RxBool isSearchActive = false.obs;
   FocusNode focusNode = FocusNode();
   TextEditingController searchController = TextEditingController();
@@ -19,7 +18,7 @@ class CustomerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchcustomer();
+    fetchCustomers();
     searchController.addListener(filterCustomerList);
     filterCustomerList(); // Fetch or simulate fetching inventory
   }
@@ -30,12 +29,10 @@ class CustomerController extends GetxController {
     super.onClose();
   }
 
-   Future<void> fetchcustomer() async {
+   Future<void> fetchCustomers() async {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('customers').get();
-     List<CustomerModel> customers = snapshot.docs.map((doc) {
-        return CustomerModel.fromJson(doc.data() as Map<String, dynamic>);
-      }).toList();
+    final List<CustomerModel> customers = snapshot.docs.map((doc) => CustomerModel.fromFirestore(doc)).toList();
 
       customerList.assignAll(customers);
       filterCustomerList();
@@ -66,16 +63,22 @@ class CustomerController extends GetxController {
     final result = await Get.to(() => AddCustomerScreen());
      // ignore: unrelated_type_equality_checks
      if (result == true) {
-      fetchcustomer(); // Refresh data if changes were made
+      fetchCustomers(); // Refresh data if changes were made
     }
 
   }
 
-  void editItem() {
-    // Placeholder for editing item logic
-  }
-
-  void deleteItem() {
-    // Placeholder for deleting item logic
+   Future<void> deleteCustomer(CustomerModel m) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('customers')
+          .doc(m.id) // Use the document ID to delete
+          .delete();
+      print("Customer deleted successfully.");
+      // Optionally refresh the customer list
+      await fetchCustomers(); // Ensure you have this method to fetch the updated list
+    } catch (e) {
+      print("Error deleting customer: $e");
+    }
   }
 }
