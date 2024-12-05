@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryappflutter/Add_Inventory/View/add_inventory.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Inventory/Controller/inventory_controller.dart';
@@ -187,18 +188,32 @@ class InventoriesScreen extends StatelessWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.edit, size: 20),
-                    onPressed: () {
-                      // Call editItem with the index and a new item code (for example purposes)
-                      controller.editItem(
-                          index, 'A0001'); // Replace 'A0001' with actual input
+                     onPressed: () async {
+                      final result = await Get.to(
+                          () => InventoryFormScreen(inventory: profile));
+                      // ignore: unrelated_type_equality_checks
+                      if (result == true) {
+                        await controller
+                            .fetchInventory(); // Refresh data if changes were made
+                      }
                     },
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete, size: 20),
                     onPressed: () {
-                      // Call deleteItem with the index
-                      controller.deleteItem(index);
+                      // Confirm deletion
+                      Get.defaultDialog(
+                        title: 'Confirm Deletion',
+                        middleText:
+                            'Are you sure you want to delete this item?',
+                        onCancel: () => Get.back(),
+                        onConfirm: () {
+                          controller.deleteItem(
+                              profile); // Pass the document ID here
+                          Get.back(); // Close the dialog
+                        },
+                      );
                     },
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                   ),

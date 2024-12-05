@@ -66,13 +66,11 @@ class AddCustomerController extends GetxController {
   // Save new customer
   Future<void> _saveCustomer() async {
     try {
-      DateTime now = DateTime.now();
-      DateTime createdAt = DateTime(now.year, now.month - 1, now.day);
 
       CustomerModel customer = CustomerModel(
         phone: phoneNumberController.text,
         name: customerName.text,
-        createdAt: createdAt,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
         billingAddress: customerAddressController.text,
         updatedAt: null,
       );
@@ -91,6 +89,7 @@ class AddCustomerController extends GetxController {
 
   // Update existing customer
   Future<void> _updateCustomer() async {
+     
     try {
       if (customerToEdit == null) return; // Ensure there's a customer to update
 
@@ -103,8 +102,8 @@ class AddCustomerController extends GetxController {
       Map<String, dynamic> updatedData = {
         'phone': phoneNumberController.text,
         'name': customerName.text,
-        'billingAddress': customerAddressController.text,
-        'updatedAt': DateTime.now(), // Update timestamp
+        'billing_address': customerAddressController.text,
+        'updated_at': DateTime.now().millisecondsSinceEpoch, // Update timestamp
       };
 
       await customerRef.update(updatedData);

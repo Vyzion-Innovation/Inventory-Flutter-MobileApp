@@ -59,10 +59,10 @@ class SupplierController extends GetxController {
     filterSupplierList();
   }
 
- void addItem() {
-    final result = Get.to(() => AddSupplierScreen());
+ void addItem() async {
+    final result = await Get.to(() => AddSupplierScreen());
      if (result == true) {
-      fetchSuppliers(); // Refresh data if changes were made
+     await fetchSuppliers(); // Refresh data if changes were made
     }
   }
 

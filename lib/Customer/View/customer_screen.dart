@@ -148,28 +148,35 @@ class CustomerScreen extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.edit, size: 20),
-                    onPressed: () {
-                      // Assuming 'customer' is the current customer object you want to edit
-                      Get.to(() => AddCustomerScreen(customer: profile));
+                    onPressed: () async {
+                      final result = await Get.to(
+                          () => AddCustomerScreen(customer: profile));
+                      // ignore: unrelated_type_equality_checks
+                      if (result == true) {
+                        await controller
+                            .fetchCustomers(); // Refresh data if changes were made
+                      }
                     },
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                   ),
-                 IconButton(
-                  icon: const Icon(Icons.delete, size: 20),
-                  onPressed: () {
-                    // Confirm deletion
-                    Get.defaultDialog(
-                      title: 'Confirm Deletion',
-                      middleText: 'Are you sure you want to delete this customer?',
-                      onCancel: () => Get.back(),
-                      onConfirm: () {
-                        controller.deleteCustomer(profile); // Pass the document ID here
-                        Get.back(); // Close the dialog
-                      },
-                    );
-                  },
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                ),
+                  IconButton(
+                    icon: const Icon(Icons.delete, size: 20),
+                    onPressed: () {
+                      // Confirm deletion
+                      Get.defaultDialog(
+                        title: 'Confirm Deletion',
+                        middleText:
+                            'Are you sure you want to delete this customer?',
+                        onCancel: () => Get.back(),
+                        onConfirm: () {
+                          controller.deleteCustomer(
+                              profile); // Pass the document ID here
+                          Get.back(); // Close the dialog
+                        },
+                      );
+                    },
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  ),
                 ],
               ),
             ],

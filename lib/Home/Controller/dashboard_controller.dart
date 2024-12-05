@@ -34,9 +34,9 @@ class DashboardController extends GetxController {
           .where('status', isEqualTo: 'stock')
           .get();
       // Map the documents to InventoryModel instances
-      List<InventoryModel> inventories = snapshot.docs.map((doc) {
-        return InventoryModel.fromJson(doc.data() as Map<String, dynamic>);
-      }).toList();
+      List<InventoryModel> inventories = snapshot.docs
+    .map((doc) => InventoryModel.fromFirestore(doc))
+    .toList();
 
       count.value = inventories.length;
       totalPurchaseAmount.value = inventories.fold(
@@ -63,9 +63,9 @@ class DashboardController extends GetxController {
           .where('createdAt', isLessThan: endTimestamp)
           .get();
       // Map the documents to InventoryModel instances
-      List<InventoryModel> inventories = snapshot.docs.map((doc) {
-        return InventoryModel.fromJson(doc.data() as Map<String, dynamic>);
-      }).toList();
+      List<InventoryModel> inventories = snapshot.docs
+    .map((doc) => InventoryModel.fromFirestore(doc))
+    .toList();
       totalSelleAmount.value = inventories.fold(
         0.0,
         (sum, inventory) => sum + (inventory.sellAmountNum ?? 0.0),

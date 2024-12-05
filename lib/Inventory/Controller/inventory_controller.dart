@@ -37,9 +37,9 @@ fetchInventory();
   Future<void> fetchInventory() async {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('inventories').get();
-      List<InventoryModel> inventories = snapshot.docs.map((doc) {
-        return InventoryModel.fromJson(doc.data() as Map<String, dynamic>);
-      }).toList();
+      List<InventoryModel> inventories = snapshot.docs
+    .map((doc) => InventoryModel.fromFirestore(doc))
+    .toList();
 
       inventoryList.assignAll(inventories);
       filterInventory();
@@ -73,18 +73,31 @@ fetchInventory();
     }
   }
 
-  void addItem() {
-    Get.to(() => InventoryFormScreen());
+  Future<void> addItem() async {
+   final result = await Get.to(() => InventoryFormScreen());
+     // ignore: unrelated_type_equality_checks
+     if (result == true) {
+      await fetchInventory(); // Refresh data if changes were made
+    }
   }
 
   void editItem(int index, String newItemCode) {
     // Example edit logic
-   inventoryList[index].itemCode = newItemCode;
+  
     // fetchInventoryList(filterType: selectedButton.value); // Update the view
   }
 
-  void deleteItem(int index) {
-    inventoryList.removeAt(index);
-    // fetchInventoryList(filterType: selectedButton.value); // Update the view
+  Future<void> deleteItem(InventoryModel m) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('inventories')
+          .doc(m.id) // Use the document ID to delete
+          .delete();
+      print("Inventory deleted successfully.");
+      // Optionally refresh the customer list
+      await fetchInventory(); // Ensure you have this method to fetch the updated list
+    } catch (e) {
+      print("Error deleting customer: $e");
+    }
   }
 }

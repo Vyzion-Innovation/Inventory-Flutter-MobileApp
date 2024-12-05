@@ -148,9 +148,15 @@ class SupllierScreen extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.edit, size: 20),
-                    onPressed: () {
-                      // Assuming 'customer' is the current customer object you want to edit
-                      Get.to(() => AddSupplierScreen(supplier: profile));
+                    onPressed: () async {
+                     
+                      final result =
+                         await Get.to(() => AddSupplierScreen(supplier: profile));
+                      // ignore: unrelated_type_equality_checks
+                      if (result == true) {
+                        await controller
+                            .fetchSuppliers(); // Refresh data if changes were made
+                      }
                     },
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                   ),

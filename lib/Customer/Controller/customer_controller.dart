@@ -63,10 +63,11 @@ class CustomerController extends GetxController {
     final result = await Get.to(() => AddCustomerScreen());
      // ignore: unrelated_type_equality_checks
      if (result == true) {
-      fetchCustomers(); // Refresh data if changes were made
+      await fetchCustomers(); // Refresh data if changes were made
     }
 
   }
+  
 
    Future<void> deleteCustomer(CustomerModel m) async {
     try {

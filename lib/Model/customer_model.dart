@@ -5,8 +5,8 @@ class CustomerModel {
   final String? phone;
   final String? billingAddress;
   final String? name;
-  final DateTime? updatedAt;
-  final DateTime? createdAt;
+  final int? updatedAt;
+  final int? createdAt;
 
   CustomerModel({
      this.id,
@@ -20,35 +20,19 @@ class CustomerModel {
   // Factory method to create a Customer instance from a Firestore document snapshot
   factory CustomerModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
+      return CustomerModel.fromMap(data, doc.id);
+  }
+  factory CustomerModel.fromMap(Map<String, dynamic> data, [String? id]) {
     return CustomerModel(
-      id: doc.id, // Get the document ID from the snapshot
+      id: id, // Get the document ID from the snapshot
       phone: data['phone'] as String?,
       billingAddress: data['billing_address'] as String?,
       name: data['name'] as String?,
-      updatedAt: data['updated_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(data['updated_at'] as int)
-          : null,
-      createdAt: data['created_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(data['created_at'] as int)
-          : null,
+       updatedAt: data['updated_at'] != null ? data['updated_at'] as int : null,
+     createdAt: data['created_at'] != null ? data['created_at'] as int : null,
     );
   }
 
-  // Factory method to create a Customer instance from a JSON map
-  factory CustomerModel.fromJson(Map<String, dynamic> json, String documentId) {
-    return CustomerModel(
-      id: documentId, // Pass the document ID from the caller
-      phone: json['phone'] as String?,
-      billingAddress: json['billing_address'] as String?,
-      name: json['name'] as String?,
-      updatedAt: json['updated_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(json['updated_at'] as int)
-          : null,
-      createdAt: json['created_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(json['created_at'] as int)
-          : null,
-    );
-  }
 
   // Method to convert a Customer instance to a JSON map
   Map<String, dynamic> toJson() {
@@ -56,8 +40,8 @@ class CustomerModel {
       'phone': phone,
       'billing_address': billingAddress,
       'name': name,
-      'updated_at': updatedAt?.millisecondsSinceEpoch,
-      'created_at': createdAt?.millisecondsSinceEpoch,
+      'updated_at': updatedAt,
+      'created_at': createdAt,
     };
   }
 }

@@ -22,7 +22,7 @@ class CustomerDetailsScreen extends StatelessWidget {
             const SizedBox(height: 8),
             Text("Billing Address: ${customer.billingAddress ?? 'N/A'}", style: const TextStyle(fontSize: 16)),
            const SizedBox(height: 8),
-            Text("Created At: ${customer.createdAt?.toIso8601String()}", style: const TextStyle(fontSize: 16)),
+            Text("Created At: ${customer.createdAt}", style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 8),
         
           ],

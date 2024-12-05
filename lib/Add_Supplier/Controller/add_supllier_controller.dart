@@ -60,16 +60,12 @@ class SupplierFormController extends GetxController {
   // Save supplier data to Firestore
   Future<void> _saveSupplier() async {
     try {
-      // Get current date and adjust for previous month
-      DateTime now = DateTime.now();
-      DateTime createdAt = DateTime(now.year, now.month - 1, 1);
-
-      // Create a SupplierModel object
+     
       SupplierModel supplier = SupplierModel(
         name: supplierName.text,
         phone: phoneNumberController.text,
         supplierAddress: supplierAddressController.text,
-        createdAt: createdAt,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
         updatedAt: null,
       );
 
@@ -97,7 +93,7 @@ class SupplierFormController extends GetxController {
         'phone': phoneNumberController.text,
         'name': supplierName.text,
         'address': supplierAddressController.text,
-        'updated_At': DateTime.now(), // Update timestamp
+        'updated_at': DateTime.now().millisecondsSinceEpoch, // Update timestamp
       };
 
       await supplierRef.update(updatedData);
