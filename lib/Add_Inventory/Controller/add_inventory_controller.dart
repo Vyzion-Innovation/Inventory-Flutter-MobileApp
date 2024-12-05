@@ -26,7 +26,7 @@ class InventoryFormController extends GetxController {
   final buyerAddressController = TextEditingController();
 
   // Dropdown state
-  RxString selectedDropdownItem = ''.obs;
+
    Rx<CustomerModel?> selectedBuyer = Rx<CustomerModel?>(null);
    Rx<SupplierModel?> selectedSeller = Rx<SupplierModel?>(null);
    var selectedStatus = ''.obs;
@@ -76,10 +76,10 @@ class InventoryFormController extends GetxController {
     modelNumberController.text = inventory.modelNumber!;
     configurationController.text = inventory.configuration!;
     serialNumberController.text = inventory.serialNumber!;
-    statusController.text = inventory.status!;
+    selectedStatus.value = inventory.status!;
     purchaseDateController.text = inventory.purchaseDate!;
     purchaseAmountController.text = inventory.purchaseAmount!;
-    selectedSeller = inventory.seller as Rx<SupplierModel?>;
+    selectedSeller.value = inventory.seller;
     // sellerAddressController.text = inventory.seller.toString();
     // sellDateController.text = inventory.sellDate!;
     // sellAmountController.text = inventory.sellAmount!;
@@ -201,7 +201,7 @@ Future<void> _updateIntemInventory() async {
  Map<String, dynamic> inventoryData = inventory.toJson();
  
       await customerRef.update(inventoryData);
-
+      
       print("Customer data updated successfully.");
     } catch (e) {
       print("Error updating customer data: $e");
