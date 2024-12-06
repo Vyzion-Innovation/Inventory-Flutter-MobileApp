@@ -49,9 +49,8 @@ class RepairController extends GetxController {
       QuerySnapshot snapshot = await query.get();
 
       // Map Firestore documents to `RepairModel` list
-      List<RepairModel> repairs = snapshot.docs.map((doc) {
-        return RepairModel.fromJson(doc.data() as Map<String, dynamic>);
-      }).toList();
+      List<RepairModel> repairs = snapshot.docs.map((doc) => RepairModel.fromFirestore(doc))
+    .toList();
       
       count.value = repairs.length;
       // Update the repair list and apply filters
@@ -81,18 +80,27 @@ class RepairController extends GetxController {
   }
 
   /// Navigates to the add repair form screen
-  void addItem() {
-    Get.to(() => RepairFormScreen());
+  Future<void> addItem() async {
+   final result = await Get.to(() => RepairFormScreen());
+     // ignore: unrelated_type_equality_checks
+     if (result == true) {
+      await fetchRepairList(selectedButton.value); // Refresh data if changes were made
+    }
   }
 
-  /// Placeholder for editing item logic
-  void editItem() {
-    // Placeholder implementation
-  }
 
-  /// Placeholder for deleting item logic
-  void deleteItem() {
-    // Placeholder implementation
+ Future<void> deleteItem(RepairModel m) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('inventories')
+          .doc(m.id) // Use the document ID to delete
+          .delete();
+      print("Inventory deleted successfully.");
+      // Optionally refresh the customer list
+      await fetchRepairList(selectedButton.value);
+    } catch (e) {
+      print("Error deleting customer: $e");
+    }
   }
 
 }

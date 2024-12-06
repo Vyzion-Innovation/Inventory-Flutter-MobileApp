@@ -1,11 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class RepairModel {
+  final String? id;
   String? description;
   String? issue;
   String? phone;
   int? completeTimestamp;
   int? createdAt;
   int? estimatedCostNum;
+  String? estimatedCost;
   int? finalCostNum;
+  String? finalCost;
   String? completeDate;
   int? updatedAt;
   String? jobNumber;
@@ -15,6 +20,7 @@ class RepairModel {
 
   // Constructor
   RepairModel({
+     this.id,
     this.description,
     this.issue,
     this.phone,
@@ -22,6 +28,8 @@ class RepairModel {
     this.createdAt,
     this.estimatedCostNum,
     this.finalCostNum,
+     this.estimatedCost,
+    this.finalCost,
     this.completeDate,
     this.updatedAt,
     this.jobNumber,
@@ -31,21 +39,25 @@ class RepairModel {
   });
 
   // Factory method to create an instance from JSON
-  factory RepairModel.fromJson(Map<String, dynamic> json) {
-    return RepairModel(
-      description: json['description'] as String?,
-      issue: json['issue'] as String?,
-      phone: json['phone'] as String?,
-      completeTimestamp: json['complete_timestamp'] as int?,
-      createdAt: json['created_at'] as int?,
-      estimatedCostNum: json['estimated_cost_num'] as int?,
-      finalCostNum: json['final_cost_num'] as int?,
-      completeDate: json['complete_date'] as String?,
-      updatedAt: json['updated_at'] as int?,
-      jobNumber: json['job_number'] as String?,
-      model: json['model'] as String?,
-      customerName: json['customer_name'] as String?,
-      status: json['status'] as String?,
+  factory RepairModel.fromFirestore(DocumentSnapshot doc) {
+  final data = doc.data() as Map<String, dynamic>? ?? {};
+  return RepairModel(
+    id: doc.id,
+      description: data['description'] as String?,
+      issue: data['issue'] as String?,
+      phone: data['phone'] as String?,
+      completeTimestamp: data['complete_timestamp'] as int?,
+      createdAt: data['created_at'] as int?,
+      estimatedCostNum: data['estimated_cost_num'] as int?,
+       jobNumber: data['job_number'] as String?,
+        estimatedCost: data['estimated_cost'] as String?,
+      finalCostNum: data['final_cost_num'] as int?,
+      completeDate: data['complete_date'] as String?,
+      updatedAt: data['updated_at'] as int?,
+      finalCost: data['final_cost'] as String?,
+      model: data['model'] as String?,
+      customerName: data['customer_name'] as String?,
+      status: data['status'] as String?,
     );
   }
 
@@ -65,6 +77,8 @@ class RepairModel {
       'model': model,
       'customer_name': customerName,
       'status': status,
+      'estimated_cost': estimatedCost,
+      'final_cost': finalCost
     };
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryappflutter/Add_Repair/View/repair_screen.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Repair/Controller/repair%20controller.dart';
@@ -151,16 +152,33 @@ class RepairScreen extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.edit, size: 20,),
-                  onPressed: () {
-                   
-                  },
+                  onPressed: () async {
+                      final result = await Get.to(
+                          () => RepairFormScreen(repair: profile));
+                      // ignore: unrelated_type_equality_checks
+                      if (result == true) {
+                        await controller
+                            .fetchRepairList(controller.selectedButton.value); // Refresh data if changes were made
+                      }
+                    },
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete, size: 20,),
                   onPressed: () {
-                    // Call deleteItem with the index                   
-                  },
+                      // Confirm deletion
+                      Get.defaultDialog(
+                        title: 'Confirm Deletion',
+                        middleText:
+                            'Are you sure you want to delete this item?',
+                        onCancel: () => Get.back(),
+                        onConfirm: () {
+                          controller.deleteItem(
+                              profile); // Pass the document ID here
+                          Get.back(); // Close the dialog
+                        },
+                      );
+                    },
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                 ),
               ],

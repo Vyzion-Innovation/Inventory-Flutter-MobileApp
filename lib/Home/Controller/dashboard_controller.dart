@@ -99,7 +99,7 @@ class DashboardController extends GetxController {
 
       // Map Firestore documents to `RepairModel` list
       List<RepairModel> repairs = snapshot.docs.map((doc) {
-        return RepairModel.fromJson(doc.data() as Map<String, dynamic>);
+        return RepairModel.fromFirestore(doc);
       }).toList();
       currentMonthRepairAmount.value = repairs.fold(
         0.0,

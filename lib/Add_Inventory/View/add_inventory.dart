@@ -7,7 +7,6 @@ import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Extension/form_validator.dart';
 import 'package:inventoryappflutter/Model/customer_model.dart';
 import 'package:inventoryappflutter/Model/inventory_model.dart';
-import 'package:inventoryappflutter/Model/inventory_model.dart';
 import 'package:inventoryappflutter/Model/supplier_model.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
@@ -163,8 +162,12 @@ class InventoryFormScreen extends StatelessWidget {
                       Obx(() => CommonDropDownTextField<CustomerModel>(
                             labelText: "Buyer",
                             hintText: "Select Buyer",
-                            value: controller
-                                .selectedBuyer.value, // Bind the selected buyer
+                            value: (controller.selectedBuyer.value == null
+                                ? null
+                                : controller.buyers[controller.buyers
+                                    .indexWhere((item) =>
+                                        item.name ==
+                                        controller.selectedBuyer.value?.name)]),
                             items: controller.buyers
                                 .map((item) => DropdownMenuItem<CustomerModel>(
                                       value: item,
@@ -186,28 +189,28 @@ class InventoryFormScreen extends StatelessWidget {
                           )),
                       const SizedBox(height: 20),
                       Obx(() => CommonDropDownTextField(
-                    labelText: "Paid by",
-                    hintText: "Select Paid Method",
-                    value: controller.selectedPaidBy.value.isEmpty
-                        ? null
-                        : controller.selectedPaidBy.value,
-                    items: controller.paidBy
-                        .map((item) => DropdownMenuItem(
-                              value: item,
-                              child: Text(item),
-                            ))
-                        .toList(),
-                    onChanged: (value) =>
-                        controller.selectedPaidBy.value = value ?? '',
-                    validator: (value) =>
-                        value == null || value.isEmpty ? "Required" : null,
-                    fillColor: AppColors.colorWhite,
-                    borderSide: const BorderSide(
-                        color: AppColors.primaryColor, width: 1.0),
-                  )),
+                            labelText: "Paid by",
+                            hintText: "Select Paid Method",
+                            value: controller.selectedPaidBy.value.isEmpty
+                                ? null
+                                : controller.selectedPaidBy.value,
+                            items: controller.paidBy
+                                .map((item) => DropdownMenuItem(
+                                      value: item,
+                                      child: Text(item),
+                                    ))
+                                .toList(),
+                            onChanged: (value) =>
+                                controller.selectedPaidBy.value = value ?? '',
+                            validator: (value) => value == null || value.isEmpty
+                                ? "Required"
+                                : null,
+                            fillColor: AppColors.colorWhite,
+                            borderSide: const BorderSide(
+                                color: AppColors.primaryColor, width: 1.0),
+                          )),
                     ],
                   );
-
                 } else if (controller.selectedStatus.value == "Stock") {
                   return Column(
                     children: [
@@ -259,8 +262,14 @@ class InventoryFormScreen extends StatelessWidget {
                             labelText: 'Select Seller',
                             border: OutlineInputBorder(),
                           ),
-                          value: controller
-                              .selectedSeller.value, // Use the observable value
+                          value: (controller.selectedSeller.value == null
+                              ? null
+                              : controller.sellers[controller.sellers
+                                  .indexWhere((item) =>
+                                      item.name ==
+                                      controller.selectedSeller.value?.name)]),
+                          // controller
+                          //     .selectedSeller.value, // Use the observable value
                           items: controller.sellers.map((SupplierModel seller) {
                             return DropdownMenuItem<SupplierModel>(
                               value: seller,
@@ -269,6 +278,7 @@ class InventoryFormScreen extends StatelessWidget {
                           }).toList(),
                           onChanged: (value) {
                             if (value != null) {
+                              print(value);
                               controller.selectedSeller.value =
                                   value; // Update the observable
                             }
@@ -282,7 +292,7 @@ class InventoryFormScreen extends StatelessWidget {
                 }
                 return SizedBox();
               }),
-              SizedBox(height: 10),
+             const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment
                     .spaceBetween, // Adjust alignment as needed
@@ -296,6 +306,7 @@ class InventoryFormScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 10), // Spacing between buttons
+                  if(controller.inventoryData == null)...[
                   Expanded(
                     child: CustomButton(
                       title: Strings.saveNext,
@@ -304,6 +315,7 @@ class InventoryFormScreen extends StatelessWidget {
                       },
                     ),
                   ),
+                  ],
                   SizedBox(width: 10), // Spacing between buttons
                   Expanded(
                     child: CustomButton(

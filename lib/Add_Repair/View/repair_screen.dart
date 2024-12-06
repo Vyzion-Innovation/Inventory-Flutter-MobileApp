@@ -5,6 +5,7 @@ import 'package:inventoryappflutter/Add_Repair/Controller/repair_controller.dart
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Extension/form_validator.dart';
+import 'package:inventoryappflutter/Model/repair_model.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
@@ -13,12 +14,22 @@ import 'package:inventoryappflutter/common/customTextField.dart';
 
 class RepairFormScreen extends StatelessWidget {
   final RepairFormController controller = Get.put(RepairFormController());
+  RepairFormScreen({Key? key, RepairModel? repair}) : super(key: key) {
+    // If a customer object is passed, set it for editing
+    if (repair != null) {
+      controller.setRepairData(repair);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: const CustomAppBar(
-        title: AppText( Strings.addRepair , fontSize: 20, fontWeight: FontWeight.bold,),
+      appBar: const CustomAppBar(
+        title: AppText(
+          Strings.addRepair,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -57,7 +68,7 @@ class RepairFormScreen extends StatelessWidget {
                 labelText: "Estimated Cost",
                 hintText: "Enter Estimated Cost",
                 controller: controller.estimatedCostController,
-                 inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validateEstimatedCost,
@@ -71,42 +82,40 @@ class RepairFormScreen extends StatelessWidget {
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validateModelNumber,
               ),
-             
               const SizedBox(height: 20),
               Obx(() => CommonDropDownTextField(
                     labelText: "Status",
                     hintText: "Select Status",
-                    value: controller.selectedDropdownItem.value.isEmpty
+                    value: controller.selectedStatus.value.isEmpty
                         ? null
-                        : controller.selectedDropdownItem.value,
+                        : controller.selectedStatus.value,
                     items: controller.items
                         .map((item) => DropdownMenuItem(
-                              value: item,
+                              value: item.toLowerCase(), // Use lowercase
                               child: Text(item),
                             ))
                         .toList(),
                     onChanged: (value) =>
-                        controller.selectedDropdownItem.value = value ?? '',
+                        controller.selectedStatus.value = value ?? '',
                     validator: (value) =>
                         value == null || value.isEmpty ? "Required" : null,
                     fillColor: AppColors.colorWhite,
                     borderSide: const BorderSide(
                         color: AppColors.primaryColor, width: 1.0),
                   )),
-
               const SizedBox(height: 20),
-                CustomTextField(
-                        labelText: "Description",
-                        hintText: "Enter Description",
-                        controller: controller.descriptionController,
-                         MaxLine: 4,
-                        borderSide: const BorderSide(
-                            color: AppColors.primaryColor, width: 1.0),
-                        validator: FieldValidator.validateDescription,
-                      ),
-                        const SizedBox(height: 20),
+              CustomTextField(
+                labelText: "Description",
+                hintText: "Enter Description",
+                controller: controller.descriptionController,
+                MaxLine: 4,
+                borderSide:
+                    const BorderSide(color: AppColors.primaryColor, width: 1.0),
+                validator: FieldValidator.validateDescription,
+              ),
+              const SizedBox(height: 20),
               Obx(() {
-                if (controller.selectedDropdownItem.value == "Complete") {
+                if (controller.selectedStatus.value.toLowerCase() == "complete") {
                   return Column(
                     children: [
                       CustomTextField(
@@ -143,12 +152,13 @@ class RepairFormScreen extends StatelessWidget {
                         labelText: "Final Cost",
                         hintText: "Enter Final Cost",
                         controller: controller.finalCostController,
-                         inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
                         validator: FieldValidator.validateEstimatedCost,
                       ),
-                     
                     ],
                   );
                 }
@@ -163,25 +173,27 @@ class RepairFormScreen extends StatelessWidget {
                     child: CustomButton(
                       title: Strings.save,
                       onTap: () {
-                        controller.saveData();
+                        controller.saveData('save');
                       },
                     ),
                   ),
                   SizedBox(width: 10), // Spacing between buttons
+                   if(controller.repairData == null)...[
                   Expanded(
                     child: CustomButton(
                       title: Strings.saveNext,
                       onTap: () {
-                        controller.saveData();
+                        controller.saveData('save+next');
                       },
                     ),
                   ),
+                   ],
                   SizedBox(width: 10), // Spacing between buttons
                   Expanded(
                     child: CustomButton(
                       title: Strings.cancel,
                       onTap: () {
-                        controller.cancelsaving();
+                        controller.cancelSaving();
                       },
                     ),
                   ),
