@@ -122,22 +122,7 @@ class CustomerScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        AppText(
-                          'CreatedAt:  ',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                        AppText(
-                          profile.createdAt.toString().split(' ')[0],
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
+                   
                   ],
                 ),
               ),

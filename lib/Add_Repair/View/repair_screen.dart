@@ -24,9 +24,9 @@ class RepairFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar:  CustomAppBar(
         title: AppText(
-          Strings.addRepair,
+        controller.repairData == null ? Strings.addRepair : 'Edit Repair',
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
@@ -171,7 +171,7 @@ class RepairFormScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      title: Strings.save,
+                      title: controller.repairData == null ? Strings.save : 'Update',
                       onTap: () {
                         controller.saveData('save');
                       },

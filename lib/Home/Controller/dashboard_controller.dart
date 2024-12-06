@@ -18,8 +18,10 @@ class DashboardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+     fetchRepairList();
     fetchStockCountAndSum(); // Fetch inventory count on initialization
     fetchSellCountAndSum();
+   
   }
 
   @override
@@ -31,7 +33,7 @@ class DashboardController extends GetxController {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('inventories')
-          .where('status', isEqualTo: 'stock')
+          .where('status', isEqualTo: 'Stock')
           .get();
       // Map the documents to InventoryModel instances
       List<InventoryModel> inventories = snapshot.docs
@@ -58,9 +60,8 @@ class DashboardController extends GetxController {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('inventories')
-          .where('status', isEqualTo: 'sell')
+          .where('status', isEqualTo: 'Sell')
            .where('sell_timestamp', isGreaterThanOrEqualTo: startTimestamp)
-          .where('createdAt', isLessThan: endTimestamp)
           .get();
       // Map the documents to InventoryModel instances
       List<InventoryModel> inventories = snapshot.docs
@@ -75,40 +76,28 @@ class DashboardController extends GetxController {
     }
   }
 
-  void fetchRepairList(String status) async {
-    DateTime now = DateTime.now();
-    DateTime startOfMonth = DateTime(now.year, now.month, 1);
-    DateTime startOfNextMonth = DateTime(now.year, now.month + 1, 1);
+  void fetchRepairList() async {
+   DateTime now = DateTime.now();
+    DateTime startOfMonth = DateTime(now.year, now.month -1, 1);
+   
 
     int startTimestamp = startOfMonth.millisecondsSinceEpoch;
-    int endTimestamp = startOfNextMonth.millisecondsSinceEpoch;
-
-    try {
-      Query query = FirebaseFirestore.instance
+       try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('repairs')
-          .where('createdAt', isGreaterThanOrEqualTo: startTimestamp)
-          .where('createdAt', isLessThan: endTimestamp);
-
-      // Apply a filter based on the selected button
-
-      if (status.toLowerCase() == 'Complete'.toLowerCase()) {
-        query = query.where('status', isEqualTo: 'Complete'.toLowerCase());
-      }
-
-      QuerySnapshot snapshot = query.get() as QuerySnapshot<Object?>;
-
-      // Map Firestore documents to `RepairModel` list
-      List<RepairModel> repairs = snapshot.docs.map((doc) {
-        return RepairModel.fromFirestore(doc);
-      }).toList();
+          .where('status', isEqualTo: 'complete')
+           .where('complete_timestamp', isGreaterThanOrEqualTo: startTimestamp)
+          .get();
+      // Map the documents to InventoryModel instances
+      List<RepairModel> repairs = snapshot.docs
+    .map((doc) => RepairModel.fromFirestore(doc))
+    .toList();
       currentMonthRepairAmount.value = repairs.fold(
         0.0,
-        (sum, repairs) => sum + (repairs.finalCostNum ?? 0.0),
+        (sum, repair) => sum + (repair.finalCostNum ?? 0.0),
       );
-
-      // Update the repair list and apply filters
     } catch (e) {
-      print("Error fetching repair list: $e");
+      print("Error fetching repair: $e");
     }
   }
 

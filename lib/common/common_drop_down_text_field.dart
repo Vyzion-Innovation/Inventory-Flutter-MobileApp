@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventoryappflutter/Constant/app_colors.dart';
 
 class CommonDropDownTextField<T> extends StatelessWidget {
   final String labelText;
@@ -8,7 +9,7 @@ class CommonDropDownTextField<T> extends StatelessWidget {
   final ValueChanged<T?>? onChanged;
   final String? Function(T?)? validator;
   final Color fillColor;
-  final BorderSide borderSide;
+final BorderSide? borderSide;
 
   const CommonDropDownTextField({
     Key? key,
@@ -19,7 +20,7 @@ class CommonDropDownTextField<T> extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.fillColor = Colors.white,
-    this.borderSide = const BorderSide(color: Colors.black),
+    this.borderSide = BorderSide.none,
   }) : super(key: key);
 
   @override
@@ -30,11 +31,24 @@ class CommonDropDownTextField<T> extends StatelessWidget {
         hintText: hintText,
         filled: true,
         fillColor: fillColor,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(6),
-          borderSide: borderSide,
-        ),
+        
+        border:  OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      borderSide: borderSide!),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: borderSide!,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10))),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: borderSide!,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10))
+                          )
       ),
+       style: const TextStyle(
+                  color: AppColors.colorBlack,
+                  fontSize: 16,
+                  fontFamily: "poppoins"),
       value: value,
       items: items,
       onChanged: onChanged,

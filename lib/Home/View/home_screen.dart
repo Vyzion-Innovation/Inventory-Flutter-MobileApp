@@ -98,7 +98,7 @@ class HomePage extends StatelessWidget {
         ),
         CommonCard(
           padding: const EdgeInsets.all(12),
-          title: 'Current Month Inv.',
+          title: 'Current Month Sale',
           additionalWidgets: [
             Obx(
               () => Center(
@@ -130,13 +130,15 @@ class HomePage extends StatelessWidget {
           padding: EdgeInsets.all(12),
           title: 'Current Month Repair Job',
           additionalWidgets: [
-            Center(
+           Obx(
+              () => Center(
               child: AppText(
                   '${dashboardController.currentMonthRepairAmount}',
                   fontSize: 15,
                   color: AppColors.gradientOne,
                 ),
             ),
+           )
           ],
         ),
       ],

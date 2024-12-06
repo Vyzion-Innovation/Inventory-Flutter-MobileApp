@@ -25,9 +25,9 @@ class InventoryFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar:  CustomAppBar(
         title: AppText(
-          Strings.addInventory,
+         controller.inventoryData == null ? Strings.addInventory : 'Edit Inventory',
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
@@ -109,10 +109,11 @@ class InventoryFormScreen extends StatelessWidget {
                     validator: (value) =>
                         value == null || value.isEmpty ? "Required" : null,
                     fillColor: AppColors.colorWhite,
-                    borderSide: const BorderSide(
-                        color: AppColors.primaryColor, width: 1.0),
+                   borderSide:
+                    const BorderSide(color: AppColors.primaryColor, width: 1.0),
                   )),
               const SizedBox(height: 20),
+
               Obx(() {
                 if (controller.selectedStatus.value == "Sell") {
                   return Column(
@@ -185,7 +186,7 @@ class InventoryFormScreen extends StatelessWidget {
                                 value == null ? "Required" : null,
                             fillColor: Colors.white,
                             borderSide: const BorderSide(
-                                color: Colors.blue, width: 1.0),
+                                color: AppColors.primaryColor, width: 1.0),
                           )),
                       const SizedBox(height: 20),
                       Obx(() => CommonDropDownTextField(
@@ -257,11 +258,9 @@ class InventoryFormScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Obx(() {
-                        return DropdownButtonFormField<SupplierModel>(
-                          decoration: InputDecoration(
-                            labelText: 'Select Seller',
-                            border: OutlineInputBorder(),
-                          ),
+                        return CommonDropDownTextField<SupplierModel>(
+                          labelText: "Seller",
+                            hintText: "Select Seller",
                           value: (controller.selectedSeller.value == null
                               ? null
                               : controller.sellers[controller.sellers
@@ -283,6 +282,8 @@ class InventoryFormScreen extends StatelessWidget {
                                   value; // Update the observable
                             }
                           },
+                          borderSide: const BorderSide(
+                                color: AppColors.primaryColor, width: 1.0),
                           validator: (value) =>
                               value == null ? 'Please select a seller' : null,
                         );
@@ -299,7 +300,7 @@ class InventoryFormScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      title: Strings.save,
+                       title: controller.inventoryData == null ? Strings.save : 'Update',
                       onTap: () {
                         controller.saveData('save');
                       },
