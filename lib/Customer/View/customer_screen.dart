@@ -52,6 +52,7 @@ class CustomerScreen extends StatelessWidget {
         return const Center(child: Text('No data available'));
       }
       return ListView.builder(
+           controller: controller.scrollController,
         itemCount: controller.filteredCustomerList.length,
         itemBuilder: (context, index) {
           final profile = controller.filteredCustomerList[index];
@@ -195,6 +196,7 @@ class CustomerScreen extends StatelessWidget {
                       controller.searchController.clear();
                       controller.isSearchActive.value = false;
                       controller.focusNode.unfocus(); // Dismiss the keyboard
+                      controller.fetchCustomers();
                     },
                     icon: const Icon(Icons.cancel),
                   )

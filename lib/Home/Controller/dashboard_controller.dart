@@ -56,7 +56,7 @@ class DashboardController extends GetxController {
     DateTime startOfNextMonth = DateTime(now.year, now.month + 1, 1);
 
     int startTimestamp = startOfMonth.millisecondsSinceEpoch;
-    int endTimestamp = startOfNextMonth.millisecondsSinceEpoch;
+    
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('inventories')

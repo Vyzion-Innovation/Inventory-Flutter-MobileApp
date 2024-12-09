@@ -92,6 +92,7 @@ class AddSupplierScreen extends StatelessWidget {
                       title: Strings.cancel,
                       onTap: () {
                         controller.cancelsaving();
+                         Get.back(result: true);
                       },
                     ),
                   ),

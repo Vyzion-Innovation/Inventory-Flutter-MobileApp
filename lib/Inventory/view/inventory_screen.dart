@@ -15,10 +15,11 @@ import '../../common/app_common_appbar.dart';
 
 class InventoriesScreen extends StatelessWidget {
   final InventoriesController controller = Get.put(InventoriesController());
+ 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+        return Scaffold(
       appBar: CustomAppBar(
           title: const AppText(
             Strings.inventory,
@@ -46,17 +47,21 @@ class InventoriesScreen extends StatelessWidget {
     );
   }
 
-  Widget inventoryListBuilder() {
+   Widget inventoryListBuilder() {
     return Obx(() {
-      final inventory =
-          controller.filteredInventoryList; // Use the filtered list
-      if (inventory.isEmpty) {
+      final inventory = controller.inventoryList;
+      if (inventory.isEmpty && !controller.isFetching.value) {
         return const Center(child: Text('No data available'));
       }
       return ListView.builder(
-        itemCount: inventory.length,
+        controller: controller.scrollController,
+        itemCount: inventory.length, // Add 1 for the loader
         itemBuilder: (context, index) {
-          final profile = inventory[index];
+          if (index == inventory.length) {
+            // Display loading indicator at the end
+            return const Center(child: CircularProgressIndicator());
+          }
+          var profile = inventory[index];
           return inventoryItemCard(profile, index);
         },
       );
@@ -194,7 +199,7 @@ class InventoriesScreen extends StatelessWidget {
                       // ignore: unrelated_type_equality_checks
                       if (result == true) {
                         await controller
-                            .fetchInventory(); // Refresh data if changes were made
+                            .fetchInventories(); // Refresh data if changes were made
                       }
                     },
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -227,47 +232,29 @@ class InventoriesScreen extends StatelessWidget {
   }
 
   Widget filterButtons() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Obx(() => Expanded(
-                child: FilterButton(
-                  label: 'All',
-                  isSelected: controller.selectedButton.value == 'All',
-                  onTap: () {
-                    controller.selectedButton.value = 'All';
-                    controller.filterInventory();
-                  },
-                ),
-              )),
-          const SizedBox(width: 10),
-          Obx(() => Expanded(
-                child: FilterButton(
-                  label: 'Stock',
-                  isSelected: controller.selectedButton.value == 'Stock',
-                  onTap: () {
-                    controller.selectedButton.value = 'Stock';
-                    controller.filterInventory();
-                  },
-                ),
-              )),
-          const SizedBox(width: 10),
-          Obx(() => Expanded(
-                child: FilterButton(
-                  label: 'Sell',
-                  isSelected: controller.selectedButton.value == 'Sell',
-                  onTap: () {
-                    controller.selectedButton.value = 'Sell';
-                    controller.filterInventory();
-                  },
-                ),
-              )),
-        ],
-      ),
-    );
-  }
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: controller.tabList.map((tab) {
+        return Obx(() {
+          return Expanded(
+            child: FilterButton(
+              label: tab['name'] as String, // Dynamically set the label
+              isSelected: controller.selectedTab['id'] == tab['id'], // Check if tab is selected
+              onTap: () {
+                controller.inventoryList.clear();
+                controller.selectedTab.value = tab; // Update the selected tab
+                controller.fetchInventories(); // Call the appropriate fetch function
+              },
+            ),
+          );
+        });
+      }).toList(),
+    ),
+  );
+}
+
 
   Widget searchBar() {
     return Padding(
@@ -293,6 +280,7 @@ class InventoriesScreen extends StatelessWidget {
                       controller.searchController.clear();
                       controller.isSearchActive.value = false;
                       controller.focusNode.unfocus(); // Dismiss the keyboard
+                      controller.fetchInventories();
                     },
                     icon: const Icon(Icons.cancel),
                   )

@@ -48,13 +48,14 @@ class SupllierScreen extends StatelessWidget {
 
   Widget inventoryListBuilder() {
   return Obx(() {
-    if (controller.filteredSupplierList.isEmpty) {
+    if (controller.supplierList.isEmpty && !controller.isFetching.value) {
       return const Center(child: Text('No data available'));
     }
     return ListView.builder(
-      itemCount: controller.filteredSupplierList.length,
+       controller: controller.scrollController,
+      itemCount: controller.supplierList.length,
       itemBuilder: (context, index) {
-        var profile = controller.filteredSupplierList[index];
+        var profile = controller.supplierList[index];
         return inventoryItemCard(profile, index);
       },
     );
@@ -194,6 +195,7 @@ class SupllierScreen extends StatelessWidget {
                     controller.searchController.clear();
                     controller.isSearchActive.value = false;
                     controller.focusNode.unfocus(); // Dismiss the keyboard
+                     controller.fetchSuppliers();
                   },
                   icon: const Icon(Icons.cancel),
                 )
