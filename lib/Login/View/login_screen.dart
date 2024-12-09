@@ -18,7 +18,9 @@ class LoginScreenPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Colors.white,
-      body: Center(
+      body: Obx(() {
+        return loginController.isLoading.value ? Center(child: CircularProgressIndicator()):
+      Center(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -121,7 +123,9 @@ class LoginScreenPage extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      );
+      }
+      )
     );
   }
 }

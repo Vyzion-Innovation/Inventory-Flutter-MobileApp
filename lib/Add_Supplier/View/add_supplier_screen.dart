@@ -5,6 +5,7 @@ import 'package:inventoryappflutter/Add_Supplier/Controller/add_supllier_control
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Extension/form_validator.dart';
+import 'package:inventoryappflutter/Model/supplier_model.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
@@ -13,11 +14,18 @@ import 'package:inventoryappflutter/common/customTextField.dart';
 class AddSupplierScreen extends StatelessWidget {
   final SupplierFormController controller = Get.put(SupplierFormController());
 
+   AddSupplierScreen({Key? key, SupplierModel? supplier}) : super(key: key) {
+    // If a customer object is passed, set it for editing
+    if (supplier != null) {
+      controller.setSupplierData(supplier);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: const CustomAppBar(
-        title: AppText( Strings.addSupplier , fontSize: 20, fontWeight: FontWeight.bold,),
+     appBar:  CustomAppBar(
+        title: AppText(controller.supplierToEdit == null ? Strings.addSupplier : " Edit Supplier", fontSize: 20, fontWeight: FontWeight.bold,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -28,7 +36,7 @@ class AddSupplierScreen extends StatelessWidget {
               CustomTextField(
                 labelText: "Name",
                 hintText: "Enter name",
-                controller: controller.supllierName,
+                controller: controller.supplierName,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validateSupllierName,
@@ -61,21 +69,23 @@ class AddSupplierScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      title: Strings.save,
+                      title: controller.supplierToEdit == null ? Strings.save : 'Update',
                       onTap: () {
-                        controller.saveData();
+                        controller.saveData('save');
                       },
                     ),
                   ),
                   SizedBox(width: 10), // Spacing between buttons
+                    if(controller.supplierToEdit == null)...[
                   Expanded(
                     child: CustomButton(
                       title: Strings.saveNext,
                       onTap: () {
-                        controller.saveData();
+                        controller.saveData('save+next');
                       },
                     ),
                   ),
+                    ],
                   SizedBox(width: 10), // Spacing between buttons
                   Expanded(
                     child: CustomButton(

@@ -1,59 +1,27 @@
 import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Inventory/View/add_inventory.dart';
+import 'package:inventoryappflutter/Model/inventory_model.dart';
 
 class InventoriesController extends GetxController {
-  RxList<Map<String, String>> filteredInventoryList =
-      <Map<String, String>>[].obs;
+ var filteredInventoryList =
+      <InventoryModel>[].obs;
   TextEditingController searchController = TextEditingController();
   var selectedButton = 'All'.obs; // Tracks the selected filter button
   RxBool isSearchActive = false.obs;
   FocusNode focusNode = FocusNode();
-  var inventoryList = <Map<String, String>>[
-    {
-      'itemCode': 'A001',
-      'ModelNumber': 'MN0012',
-      'configuration': 'Config1',
-      'serialNumber': 'SN001',
-      'status': 'Sell',
-    },
-    {
-      'itemCode': 'A002',
-      'ModelNumber': 'MN002',
-      'configuration': 'Config2',
-      'serialNumber': 'SN002',
-      'status': 'Stock',
-    },
-    {
-      'itemCode': 'A003',
-      'ModelNumber': 'MN003',
-      'configuration': 'Config3',
-      'serialNumber': 'SN003',
-      'status': 'Sell',
-    },
-    {
-      'itemCode': 'A004',
-      'ModelNumber': 'MN004',
-      'configuration': 'Config4',
-      'serialNumber': 'SN004',
-      'status': 'Stock',
-    },
-    {
-      'itemCode': 'A005',
-      'ModelNumber': 'MN005',
-      'configuration': 'Config5',
-      'serialNumber': 'SN005',
-      'status': 'Sell',
-    },
-  ].obs;
+ var inventoryList = <InventoryModel>[
+    
+].obs;
 
   @override
   void onInit() {
     super.onInit();
-
+fetchInventory();
     searchController.addListener(filterInventory);
     filterInventory(); // Initialize with all data
   }
@@ -65,20 +33,20 @@ class InventoriesController extends GetxController {
     super.onClose();
   }
 
-  void fetchInventoryList({String filterType = 'All'}) {
-    // List<Map<String, String>> filtered = [];
-    // if (filterType == 'All') {
-    //   filtered = inventoryList;
-    // } else {
-    //   filtered = inventoryList.where((item) => item['status'] == filterType).toList();
-    // }
 
-    // Only update the list if it has changed
-    // if (!filteredInventoryList.equals(filtered)) {
-    //   filteredInventoryList.assignAll(filtered);
-    // }
+  Future<void> fetchInventory() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('inventories').get();
+      List<InventoryModel> inventories = snapshot.docs
+    .map((doc) => InventoryModel.fromFirestore(doc))
+    .toList();
 
-    filterInventory();
+      inventoryList.assignAll(inventories);
+      filterInventory();
+     
+    } catch (e) {
+      print("Error fetching inventory: $e");
+    }
   }
 
   void filterInventory() {
@@ -89,14 +57,14 @@ class InventoriesController extends GetxController {
     final currentList = selectedButton.value == 'All'
         ? inventoryList
         : inventoryList
-            .where((item) => item['status'] == selectedButton.value)
+            .where((item) => item.status?.toLowerCase() == selectedButton.value.toLowerCase())
             .toList();
 
-    final searched = query.isEmpty
+   final searched = query.isEmpty
         ? currentList
         : currentList.where((item) {
-            return (item['itemCode']?.toLowerCase().contains(query) ?? false) ||
-                (item['ModelNumber']?.toLowerCase().contains(query) ?? false);
+            return (item.itemCode?.toLowerCase().contains(query) ?? false) ||
+                (item.modelNumber?.toLowerCase().contains(query) ?? false);
           }).toList();
 
     if (!filteredInventoryList.equals(searched)) {
@@ -105,18 +73,31 @@ class InventoriesController extends GetxController {
     }
   }
 
-  void addItem() {
-    Get.to(() => InventoryFormScreen());
+  Future<void> addItem() async {
+   final result = await Get.to(() => InventoryFormScreen());
+     // ignore: unrelated_type_equality_checks
+     if (result == true) {
+      await fetchInventory(); // Refresh data if changes were made
+    }
   }
 
   void editItem(int index, String newItemCode) {
     // Example edit logic
-    inventoryList[index]['itemCode'] = newItemCode;
+  
     // fetchInventoryList(filterType: selectedButton.value); // Update the view
   }
 
-  void deleteItem(int index) {
-    inventoryList.removeAt(index);
-    // fetchInventoryList(filterType: selectedButton.value); // Update the view
+  Future<void> deleteItem(InventoryModel m) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('inventories')
+          .doc(m.id) // Use the document ID to delete
+          .delete();
+      print("Inventory deleted successfully.");
+      // Optionally refresh the customer list
+      await fetchInventory(); // Ensure you have this method to fetch the updated list
+    } catch (e) {
+      print("Error deleting customer: $e");
+    }
   }
 }

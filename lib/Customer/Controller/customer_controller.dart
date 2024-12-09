@@ -1,53 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Customer/View/add_customer_screen.dart';
 import 'package:inventoryappflutter/Add_Supplier/View/add_supplier_screen.dart';
+import 'package:inventoryappflutter/Model/customer_model.dart';
 
 class CustomerController extends GetxController {
 
-  var selectedButton = 'All'.obs;
   RxBool isSearchActive = false.obs;
   FocusNode focusNode = FocusNode();
   TextEditingController searchController = TextEditingController();
-   var supplierList = [  {
-        'Name': 'A001',
-        'Phone_Number': '9027417888',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-       
-      },
-      {
-        'Name': 'A002',
-        'Phone_Number': '4485529114',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },
-      {
-        'Name': 'A003',
-        'Phone_Number': '5485892247',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },
-      {
-        'Name': 'A004',
-        'Phone_Number': '5595158987',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },
-      {
-        'Name': 'A005',
-        'Phone_Number': '56699529852',
-        'Address': 'Config1',
-        'CreatedAt': 'SN001',
-      },].obs;
+  var customerList = <CustomerModel>[ 
+       ].obs;
 
-       RxList<Map<String, String>> filteredCustomerList = <Map<String, String>>[].obs;
+      var filteredCustomerList = <CustomerModel>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    searchController.addListener(filterSupplierList);
-    filterSupplierList(); // Fetch or simulate fetching inventory
+    fetchCustomers();
+    searchController.addListener(filterCustomerList);
+    filterCustomerList(); // Fetch or simulate fetching inventory
   }
 
   @override
@@ -56,19 +29,29 @@ class CustomerController extends GetxController {
     super.onClose();
   }
 
-  // void toggleSearch() {
-  //   isSearching.value = !isSearching.value; // Toggle search state
-  // }
+   Future<void> fetchCustomers() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('customers').get();
+    final List<CustomerModel> customers = snapshot.docs.map((doc) => CustomerModel.fromFirestore(doc)).toList();
 
-   void filterSupplierList() {
+      customerList.assignAll(customers);
+      filterCustomerList();
+      print(customerList);
+      // filteredSupplierList.assignAll(suppliers);  
+    } catch (e) {
+      print("Error fetching suppliers: $e");
+    }
+  }
+
+   void filterCustomerList() {
     final query = searchController.text.trim().toLowerCase();
     if (query.isEmpty) {
       // If the query is empty, show all items
-      filteredCustomerList.assignAll(supplierList);
+      filteredCustomerList.assignAll(customerList);
     } else {
       // Filter the list based on the query
-     filteredCustomerList.assignAll(supplierList.where((item) {
-  return (item['Name']?.toLowerCase().contains(query) ?? false);
+     filteredCustomerList.assignAll(customerList.where((item) {
+  return (item.name?.toLowerCase().contains(query) ?? false);
          
 }).toList());
     }
@@ -76,15 +59,27 @@ class CustomerController extends GetxController {
 
   
 
-  void addItem() {
-    Get.to(() => AddCustomerScreen());
-  }
+  void addItem() async {
+    final result = await Get.to(() => AddCustomerScreen());
+     // ignore: unrelated_type_equality_checks
+     if (result == true) {
+      await fetchCustomers(); // Refresh data if changes were made
+    }
 
-  void editItem() {
-    // Placeholder for editing item logic
   }
+  
 
-  void deleteItem() {
-    // Placeholder for deleting item logic
+   Future<void> deleteCustomer(CustomerModel m) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('customers')
+          .doc(m.id) // Use the document ID to delete
+          .delete();
+      print("Customer deleted successfully.");
+      // Optionally refresh the customer list
+      await fetchCustomers(); // Ensure you have this method to fetch the updated list
+    } catch (e) {
+      print("Error deleting customer: $e");
+    }
   }
 }

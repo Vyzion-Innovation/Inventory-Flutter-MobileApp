@@ -5,18 +5,32 @@ import 'package:inventoryappflutter/Add_Inventory/Controller/add_inventory_contr
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Extension/form_validator.dart';
+import 'package:inventoryappflutter/Model/customer_model.dart';
+import 'package:inventoryappflutter/Model/inventory_model.dart';
+import 'package:inventoryappflutter/Model/supplier_model.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/common_drop_down_text_field.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
+
 class InventoryFormScreen extends StatelessWidget {
   final InventoryFormController controller = Get.put(InventoryFormController());
+  InventoryFormScreen({Key? key, InventoryModel? inventory}) : super(key: key) {
+    // If a customer object is passed, set it for editing
+    if (inventory != null) {
+      controller.setInventoryData(inventory);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: const CustomAppBar(
-        title: AppText( Strings.addInventory , fontSize: 20, fontWeight: FontWeight.bold,),
+      appBar:  CustomAppBar(
+        title: AppText(
+         controller.inventoryData == null ? Strings.addInventory : 'Edit Inventory',
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -72,7 +86,7 @@ class InventoryFormScreen extends StatelessWidget {
               CustomTextField(
                 labelText: "Serial Number",
                 hintText: "Enter Serial Number",
-                controller: controller.modelNumberController,
+                controller: controller.serialNumberController,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validateSerialNumber,
@@ -81,9 +95,9 @@ class InventoryFormScreen extends StatelessWidget {
               Obx(() => CommonDropDownTextField(
                     labelText: "Status",
                     hintText: "Select Status",
-                    value: controller.selectedDropdownItem.value.isEmpty
+                    value: controller.selectedStatus.value.isEmpty
                         ? null
-                        : controller.selectedDropdownItem.value,
+                        : controller.selectedStatus.value,
                     items: controller.items
                         .map((item) => DropdownMenuItem(
                               value: item,
@@ -91,16 +105,17 @@ class InventoryFormScreen extends StatelessWidget {
                             ))
                         .toList(),
                     onChanged: (value) =>
-                        controller.selectedDropdownItem.value = value ?? '',
+                        controller.selectedStatus.value = value ?? '',
                     validator: (value) =>
                         value == null || value.isEmpty ? "Required" : null,
                     fillColor: AppColors.colorWhite,
-                    borderSide: const BorderSide(
-                        color: AppColors.primaryColor, width: 1.0),
+                   borderSide:
+                    const BorderSide(color: AppColors.primaryColor, width: 1.0),
                   )),
               const SizedBox(height: 20),
+
               Obx(() {
-                if (controller.selectedDropdownItem.value == "Sell") {
+                if (controller.selectedStatus.value == "Sell") {
                   return Column(
                     children: [
                       CustomTextField(
@@ -137,35 +152,67 @@ class InventoryFormScreen extends StatelessWidget {
                         labelText: "Sell Amount",
                         hintText: "Enter Sell Amount",
                         controller: controller.sellAmountController,
-                         inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
                         validator: FieldValidator.validateEstimatedCost,
                       ),
                       const SizedBox(height: 20),
-                      Obx(() => CommonDropDownTextField(
+                      Obx(() => CommonDropDownTextField<CustomerModel>(
                             labelText: "Buyer",
                             hintText: "Select Buyer",
-                            value: controller.selectedBuyer.value.isEmpty
+                            value: (controller.selectedBuyer.value == null
                                 ? null
-                                : controller.selectedBuyer.value,
-                            items: controller.buyer
+                                : controller.buyers[controller.buyers
+                                    .indexWhere((item) =>
+                                        item.name ==
+                                        controller.selectedBuyer.value?.name)]),
+                            items: controller.buyers
+                                .map((item) => DropdownMenuItem<CustomerModel>(
+                                      value: item,
+                                      child: Text(
+                                          '${item.name} ${item.phone}'), // Display name and phone
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              if (value != null) {
+                                controller.selectedBuyer.value =
+                                    value; // Update the observable
+                              } // Set the selected buyer
+                            },
+                            validator: (value) =>
+                                value == null ? "Required" : null,
+                            fillColor: Colors.white,
+                            borderSide: const BorderSide(
+                                color: AppColors.primaryColor, width: 1.0),
+                          )),
+                      const SizedBox(height: 20),
+                      Obx(() => CommonDropDownTextField(
+                            labelText: "Paid by",
+                            hintText: "Select Paid Method",
+                            value: controller.selectedPaidBy.value.isEmpty
+                                ? null
+                                : controller.selectedPaidBy.value,
+                            items: controller.paidBy
                                 .map((item) => DropdownMenuItem(
                                       value: item,
                                       child: Text(item),
                                     ))
                                 .toList(),
                             onChanged: (value) =>
-                                controller.selectedBuyer.value = value ?? '',
-                            validator: (value) =>
-                        value == null || value.isEmpty ? "Required" : null,
+                                controller.selectedPaidBy.value = value ?? '',
+                            validator: (value) => value == null || value.isEmpty
+                                ? "Required"
+                                : null,
                             fillColor: AppColors.colorWhite,
                             borderSide: const BorderSide(
                                 color: AppColors.primaryColor, width: 1.0),
                           )),
                     ],
                   );
-                } else if (controller.selectedDropdownItem.value == "Stock") {
+                } else if (controller.selectedStatus.value == "Stock") {
                   return Column(
                     children: [
                       CustomTextField(
@@ -201,66 +248,81 @@ class InventoryFormScreen extends StatelessWidget {
                       CustomTextField(
                         labelText: "Purchase Amount",
                         hintText: "Enter Purchase Amount",
-                        controller: controller.amountController,
-                         inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
+                        controller: controller.purchaseAmountController,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
                         validator: FieldValidator.validateEstimatedCost,
                       ),
                       const SizedBox(height: 20),
-                      Obx(() => CommonDropDownTextField(
-                            labelText: "Seller",
+                      Obx(() {
+                        return CommonDropDownTextField<SupplierModel>(
+                          labelText: "Seller",
                             hintText: "Select Seller",
-                            value: controller.selectedSeller.value.isEmpty
-                                ? null
-                                : controller.selectedSeller.value,
-                            items: controller.seller
-                                .map((item) => DropdownMenuItem(
-                                      value: item,
-                                      child: Text(item),
-                                    ))
-                                .toList(),
-                            onChanged: (value) =>
-                                controller.selectedSeller.value = value ?? '',
-                            validator: (value) =>
-                        value == null || value.isEmpty ? "Required" : null,
-                            fillColor: AppColors.colorWhite,
-                            borderSide: const BorderSide(
+                          value: (controller.selectedSeller.value == null
+                              ? null
+                              : controller.sellers[controller.sellers
+                                  .indexWhere((item) =>
+                                      item.name ==
+                                      controller.selectedSeller.value?.name)]),
+                          // controller
+                          //     .selectedSeller.value, // Use the observable value
+                          items: controller.sellers.map((SupplierModel seller) {
+                            return DropdownMenuItem<SupplierModel>(
+                              value: seller,
+                              child: Text('${seller.name} (${seller.phone})'),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            if (value != null) {
+                              print(value);
+                              controller.selectedSeller.value =
+                                  value; // Update the observable
+                            }
+                          },
+                          borderSide: const BorderSide(
                                 color: AppColors.primaryColor, width: 1.0),
-                          )),
+                          validator: (value) =>
+                              value == null ? 'Please select a seller' : null,
+                        );
+                      }),
                     ],
                   );
                 }
                 return SizedBox();
               }),
-              SizedBox(height: 10),
+             const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment
                     .spaceBetween, // Adjust alignment as needed
                 children: [
                   Expanded(
                     child: CustomButton(
-                      title: Strings.save,
+                       title: controller.inventoryData == null ? Strings.save : 'Update',
                       onTap: () {
-                        controller.saveData();
+                        controller.saveData('save');
                       },
                     ),
                   ),
                   SizedBox(width: 10), // Spacing between buttons
+                  if(controller.inventoryData == null)...[
                   Expanded(
                     child: CustomButton(
                       title: Strings.saveNext,
                       onTap: () {
-                        controller.saveData();
+                        controller.saveData('save+next');
                       },
                     ),
                   ),
+                  ],
                   SizedBox(width: 10), // Spacing between buttons
                   Expanded(
                     child: CustomButton(
                       title: Strings.cancel,
                       onTap: () {
-                        controller.cancelsaving();
+                        controller.cancelSaving();
                       },
                     ),
                   ),

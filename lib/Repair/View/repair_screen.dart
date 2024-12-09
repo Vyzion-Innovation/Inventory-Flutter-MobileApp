@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryappflutter/Add_Repair/View/repair_screen.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Repair/Controller/repair%20controller.dart';
+import 'package:inventoryappflutter/Model/repair_model.dart';
+import 'package:inventoryappflutter/Repair/View/full_details.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
@@ -37,15 +40,15 @@ class RepairScreen extends StatelessWidget {
         children: [
           searchBar(),
           filterButtons(),
-                   Expanded(child: inventoryListBuilder()),
+                   Expanded(child: repairListBuilder()),
         ],
       ),
     );
   }
-  Widget inventoryListBuilder() {
+  Widget repairListBuilder() {
     return Obx(() {
       if (controller.filteredRepairList.isEmpty) {
-        return const Center(child: Text('No data available'));
+        return  Center(child:  controller.isloading.value ? CircularProgressIndicator() : Text('No data available'));
       }
       return ListView.builder(
         itemCount: controller.filteredRepairList.length,
@@ -56,13 +59,13 @@ class RepairScreen extends StatelessWidget {
       );
     });
   }
- Widget inventoryItemCard(Map<String, String> profile, int index) {
+ Widget inventoryItemCard(RepairModel profile, int index) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: CommonCard(
       padding: const EdgeInsets.all(16),
       onTap: () {
-        print("Card clicked for item code: ${profile['itemCode']}");
+        Get.to(() => RepairDetailsScreen(repair: profile));
       },
       additionalWidgets: [
         Row(
@@ -76,12 +79,12 @@ class RepairScreen extends StatelessWidget {
                   Row(
                     children: [
                       const AppText(
-                        'Item Code:  ',
+                        'Customer Name:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                       AppText(
-                        '${profile['itemCode'] ?? ""}',
+                        profile.customerName ?? "",
                         fontWeight: FontWeight.normal,
                         fontSize: 16,
                       ),
@@ -96,7 +99,7 @@ class RepairScreen extends StatelessWidget {
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['ModelNumber'] ?? ""}',
+                          profile.model ?? "",
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -106,12 +109,12 @@ class RepairScreen extends StatelessWidget {
                   Row(
                     children: [
                       const AppText(
-                        'Configuration:  ',
+                        'Job Number:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['configuration'] ?? ""}',
+                           profile.jobNumber ?? "",
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -121,12 +124,12 @@ class RepairScreen extends StatelessWidget {
                   Row(
                     children: [
                       const AppText(
-                        'Serial Number:  ',
+                        'Phone Number:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
                       AppText(
-                        '${profile['serialNumber'] ?? ""}',
+                           profile.phone ?? "",
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -142,23 +145,40 @@ class RepairScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppText(
-                  '${profile['status'] ?? ""}',
+                     profile.status ?? "",
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
-                  color: profile['status']?.toLowerCase() == 'Complete'.toLowerCase() ? AppColors.successColor : Colors.red,
+                  color:    profile.status ?.toLowerCase() == 'Complete'.toLowerCase() ? AppColors.successColor : Colors.red,
                 ),
                 IconButton(
-                  icon: const Icon(Icons.edit, size: 20, color: AppColors.infoColor,),
-                  onPressed: () {
-                   
-                  },
+                  icon: const Icon(Icons.edit, size: 20,),
+                  onPressed: () async {
+                      final result = await Get.to(
+                          () => RepairFormScreen(repair: profile));
+                      // ignore: unrelated_type_equality_checks
+                      if (result == true) {
+                        await controller
+                            .fetchRepairList(controller.selectedButton.value); // Refresh data if changes were made
+                      }
+                    },
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete, size: 20, color: AppColors.warningColor,),
+                  icon: const Icon(Icons.delete, size: 20,),
                   onPressed: () {
-                    // Call deleteItem with the index                   
-                  },
+                      // Confirm deletion
+                      Get.defaultDialog(
+                        title: 'Confirm Deletion',
+                        middleText:
+                            'Are you sure you want to delete this item?',
+                        onCancel: () => Get.back(),
+                        onConfirm: () {
+                          controller.deleteItem(
+                              profile); // Pass the document ID here
+                          Get.back(); // Close the dialog
+                        },
+                      );
+                    },
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                 ),
               ],
@@ -180,8 +200,8 @@ class RepairScreen extends StatelessWidget {
                 label: repairTextStrings.btnTextALL,
                 isSelected: controller.selectedButton.value == 'All',
                 onTap: () {
-                  controller.selectedButton.value = 'All';
-                  controller.filterRepairList();
+                   controller.selectedButton.value = 'All';
+              controller.fetchRepairList(controller.selectedButton.value);
                 },
               ),
             )),
@@ -189,10 +209,10 @@ class RepairScreen extends StatelessWidget {
         Obx(() => Expanded(
               child: FilterButton(
                 label: repairTextStrings.btnTextRecieve,
-                isSelected: controller.selectedButton.value == 'Recieve',
+                isSelected: controller.selectedButton.value == 'Receive',
                 onTap: () {
-                  controller.selectedButton.value = 'Recieve';
-                  controller.filterRepairList();
+                  controller.selectedButton.value = 'Receive';
+              controller.fetchRepairList(controller.selectedButton.value); 
                 },
               ),
             )),
@@ -203,7 +223,7 @@ class RepairScreen extends StatelessWidget {
                 isSelected: controller.selectedButton.value == 'Complete',
                 onTap: () {
                   controller.selectedButton.value = 'Complete';
-                  controller.filterRepairList();
+              controller.fetchRepairList(controller.selectedButton.value);
                 },
               ),
             )),

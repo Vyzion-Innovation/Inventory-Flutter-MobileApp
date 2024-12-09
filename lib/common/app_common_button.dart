@@ -65,6 +65,7 @@ class CustomButton extends StatelessWidget {
 class AlertPopUp extends StatelessWidget {
   final Function()? onTap;
   final String? title;
+
   const AlertPopUp({
     super.key,
     this.onTap,
@@ -73,43 +74,31 @@ class AlertPopUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        showCupertinoModalPopup(
-          context: context,
-          builder: (BuildContext context) => CupertinoAlertDialog(
-            content: AppText(
-              title ?? "",
-              fontSize: 18,
-            ),
-            actions: <CupertinoDialogAction>[
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: AppText(
-                  "no",
-                  fontSize: 15,
-                ),
-              ),
-              CupertinoDialogAction(
-                isDestructiveAction: false,
-                onPressed: onTap,
-
-                // () async {
-                //   Navigator.pop(context);
-                //   model.logout();
-                // },
-                child: AppText(
-                  "Yes",
-                  fontSize: 15,
-                ),
-              ),
-            ],
+    return CupertinoAlertDialog(
+      content: AppText(
+        title ?? "",
+        fontSize: 18,
+      ),
+      actions: <CupertinoDialogAction>[
+        CupertinoDialogAction(
+          isDefaultAction: true,
+          onPressed: () {
+            Navigator.pop(context); // Close the dialog
+          },
+          child: AppText(
+            "No",
+            fontSize: 15,
           ),
-        );
-      },
+        ),
+        CupertinoDialogAction(
+          isDestructiveAction: true,
+          onPressed: onTap, // Call the provided function
+          child: AppText(
+            "Yes",
+            fontSize: 15,
+          ),
+        ),
+      ],
     );
   }
 }

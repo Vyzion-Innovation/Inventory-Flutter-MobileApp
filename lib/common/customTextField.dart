@@ -105,8 +105,8 @@ class _CustomTextFiledState extends State<CustomTextField> {
               obscuringCharacter: '*',
               autovalidateMode: AutovalidateMode.onUserInteraction,
               style: const TextStyle(
-                  color: AppColors.secondaryColor,
-                  fontSize: 15,
+                  color: AppColors.colorBlack,
+                  fontSize: 16,
                   fontFamily: "poppoins"),
               decoration: InputDecoration(
                   prefixIcon: widget.prefftext,
