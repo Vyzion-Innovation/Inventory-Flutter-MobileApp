@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:inventoryappflutter/Login/View/login_screen.dart';
+import 'package:inventoryappflutter/Profile/View/profile_screen.dart';
 
 class SidePanelController extends GetxController {
   var isVisible = false.obs; // Tracks visibility of the side panel
@@ -7,7 +7,7 @@ class SidePanelController extends GetxController {
   void togglePanel() {
     isVisible.value = !isVisible.value; // Toggles the panel visibility
   }
-   void logout() {
-    Get.offAll(LoginScreenPage());
+   void profileScreenRoute() {
+    Get.to(() => ProfileScreen());
   }
 }

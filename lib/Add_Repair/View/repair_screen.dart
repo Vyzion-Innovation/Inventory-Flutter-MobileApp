@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Add_Repair/Controller/repair_controller.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
-import 'package:inventoryappflutter/Constant/error_messages.dart';
 import 'package:inventoryappflutter/Extension/form_validator.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
@@ -18,7 +18,7 @@ class RepairFormScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
      appBar: const CustomAppBar(
-        title: AppText( Strings.repair , fontSize: 20, fontWeight: FontWeight.bold,),
+        title: AppText( Strings.addRepair , fontSize: 20, fontWeight: FontWeight.bold,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -32,7 +32,7 @@ class RepairFormScreen extends StatelessWidget {
                 controller: controller.customeNameController,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
-                validator: FieldValidator.validateItemCode,
+                validator: FieldValidator.validateCustomerName,
               ),
               const SizedBox(height: 20),
               CustomTextField(
@@ -41,7 +41,7 @@ class RepairFormScreen extends StatelessWidget {
                 controller: controller.phoneNumberController,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
-                validator: FieldValidator.validateCompanyName,
+                validator: FieldValidator.validatePhoneNumber,
               ),
               const SizedBox(height: 20),
               CustomTextField(
@@ -50,16 +50,17 @@ class RepairFormScreen extends StatelessWidget {
                 controller: controller.issueController,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
-                validator: FieldValidator.validateBrand,
+                validator: FieldValidator.validateIsuue,
               ),
               const SizedBox(height: 20),
               CustomTextField(
                 labelText: "Estimated Cost",
                 hintText: "Enter Estimated Cost",
                 controller: controller.estimatedCostController,
+                 inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
-                validator: FieldValidator.validateModelNumber,
+                validator: FieldValidator.validateEstimatedCost,
               ),
               const SizedBox(height: 20),
               CustomTextField(
@@ -68,7 +69,7 @@ class RepairFormScreen extends StatelessWidget {
                 controller: controller.modelNumberController,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
-                validator: FieldValidator.validateConfiguration,
+                validator: FieldValidator.validateModelNumber,
               ),
              
               const SizedBox(height: 20),
@@ -98,9 +99,10 @@ class RepairFormScreen extends StatelessWidget {
                         labelText: "Description",
                         hintText: "Enter Description",
                         controller: controller.descriptionController,
+                         MaxLine: 4,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
-                        validator: FieldValidator.validateItemCode,
+                        validator: FieldValidator.validateDescription,
                       ),
                         const SizedBox(height: 20),
               Obx(() {
@@ -134,16 +136,17 @@ class RepairFormScreen extends StatelessWidget {
                             Icons.calendar_month,
                           ),
                         ),
-                        validator: FieldValidator.validateItemCode,
+                        validator: FieldValidator.validateDate,
                       ),
                       const SizedBox(height: 20),
                       CustomTextField(
                         labelText: "Final Cost",
                         hintText: "Enter Final Cost",
                         controller: controller.finalCostController,
+                         inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
-                        validator: FieldValidator.validateItemCode,
+                        validator: FieldValidator.validateEstimatedCost,
                       ),
                      
                     ],

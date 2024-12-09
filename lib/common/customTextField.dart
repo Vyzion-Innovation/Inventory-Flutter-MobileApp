@@ -143,7 +143,9 @@ class _CustomTextFiledState extends State<CustomTextField> {
                   enabledBorder: OutlineInputBorder(
                       borderSide: widget.borderSide!,
                       borderRadius:
-                          const BorderRadius.all(Radius.circular(10)))),
+                          const BorderRadius.all(Radius.circular(10))
+                          )
+                          ),
             ),
           ],
         ));

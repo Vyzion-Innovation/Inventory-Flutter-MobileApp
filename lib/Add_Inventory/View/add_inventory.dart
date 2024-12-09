@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:inventoryappflutter/AddInventory/Controller/add_inventory_controller.dart';
+import 'package:inventoryappflutter/Add_Inventory/Controller/add_inventory_controller.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
-import 'package:inventoryappflutter/Constant/error_messages.dart';
 import 'package:inventoryappflutter/Extension/form_validator.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/common_drop_down_text_field.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
-
 class InventoryFormScreen extends StatelessWidget {
   final InventoryFormController controller = Get.put(InventoryFormController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
      appBar: const CustomAppBar(
-        title: AppText( Strings.inventory , fontSize: 20, fontWeight: FontWeight.bold,),
+        title: AppText( Strings.addInventory , fontSize: 20, fontWeight: FontWeight.bold,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -132,16 +130,17 @@ class InventoryFormScreen extends StatelessWidget {
                             Icons.calendar_month,
                           ),
                         ),
-                        validator: FieldValidator.validateItemCode,
+                        validator: FieldValidator.validateDate,
                       ),
                       const SizedBox(height: 20),
                       CustomTextField(
                         labelText: "Sell Amount",
                         hintText: "Enter Sell Amount",
                         controller: controller.sellAmountController,
+                         inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
-                        validator: FieldValidator.validateItemCode,
+                        validator: FieldValidator.validateEstimatedCost,
                       ),
                       const SizedBox(height: 20),
                       Obx(() => CommonDropDownTextField(
@@ -196,16 +195,17 @@ class InventoryFormScreen extends StatelessWidget {
                         ),
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
-                        validator: FieldValidator.validateItemCode,
+                        validator: FieldValidator.validateDate,
                       ),
                       const SizedBox(height: 20),
                       CustomTextField(
                         labelText: "Purchase Amount",
                         hintText: "Enter Purchase Amount",
                         controller: controller.amountController,
+                         inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
-                        validator: FieldValidator.validateItemCode,
+                        validator: FieldValidator.validateEstimatedCost,
                       ),
                       const SizedBox(height: 20),
                       Obx(() => CommonDropDownTextField(

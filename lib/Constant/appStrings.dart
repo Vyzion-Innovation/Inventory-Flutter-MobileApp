@@ -11,6 +11,13 @@ class Strings {
   static const supplier = "Supplier";
   static const repair = 'Repairs';
   static const customer = "Customer";
+   static const addInventory = ' Add Inventory';
+    static const addProfile = ' Add Profile';
+    static const saveProfile = ' Save Profile';
+  
+  static const addSupplier = "Add Supplier";
+  static const addRepair = 'Add Repairs';
+  static const addCustomer = "Add Customer";
   // static const welcome = "Welcome";
   static const back = "Back";
    static const rememberMe = "Remember me";
@@ -50,7 +57,7 @@ class inevontryTextStrings {
 
 }
 class repairTextStrings {
-  static const Searchhint = 'Search by item code';
+  static const SearchhintName = 'Search by item Name';
   static const btnTextALL = 'All';
   static const btnTextRecieve = 'Recieve';
   static const btnTextcomplete = "Complete";

@@ -2,23 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
-import 'package:inventoryappflutter/Inventory/Controller/inventory_controller.dart';
+import 'package:inventoryappflutter/Supplier/Controller/supplier_controller.dart';
 import 'package:inventoryappflutter/common/build_card.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
-import 'package:inventoryappflutter/common/filter_button.dart';
 
 import '../../common/app_common_appbar.dart';
 
-class InventoriesScreen extends StatelessWidget {
-  final InventoriesController controller = Get.put(InventoriesController());
+class SupllierScreen extends StatelessWidget {
+  final SupplierController controller = Get.put(SupplierController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
           title: const AppText(
-            Strings.inventory,
+            Strings.supplier,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -35,8 +34,9 @@ class InventoriesScreen extends StatelessWidget {
           ]),
       body: Column(
         children: [
+          // filterButtons(),
           searchBar(),
-          filterButtons(),
+
           Expanded(child: inventoryListBuilder()),
         ],
       ),
@@ -45,20 +45,18 @@ class InventoriesScreen extends StatelessWidget {
 
   Widget inventoryListBuilder() {
   return Obx(() {
-    final inventory = controller.filteredInventoryList; // Use the filtered list
-    if (inventory.isEmpty) {
+    if (controller.filteredSupplierList.isEmpty) {
       return const Center(child: Text('No data available'));
     }
     return ListView.builder(
-      itemCount: inventory.length,
+      itemCount: controller.filteredSupplierList.length,
       itemBuilder: (context, index) {
-        final profile = inventory[index];
+        final profile = controller.filteredSupplierList[index];
         return inventoryItemCard(profile, index);
       },
     );
   });
 }
-
 
   Widget inventoryItemCard(Map<String, String> profile, int index) {
     return Padding(
@@ -66,7 +64,7 @@ class InventoriesScreen extends StatelessWidget {
       child: CommonCard(
         padding: const EdgeInsets.all(16),
         onTap: () {
-          print("Card clicked for item code: ${profile['itemCode']}");
+          print("Card clicked for item code");
         },
         additionalWidgets: [
           Row(
@@ -80,12 +78,12 @@ class InventoriesScreen extends StatelessWidget {
                     Row(
                       children: [
                         const AppText(
-                          'Item Code:  ',
+                          'Name:  ',
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                         AppText(
-                          '${profile['itemCode'] ?? ""}',
+                          '${profile['Name'] ?? ""}',
                           fontWeight: FontWeight.normal,
                           fontSize: 16,
                         ),
@@ -95,12 +93,12 @@ class InventoriesScreen extends StatelessWidget {
                     Row(
                       children: [
                         const AppText(
-                          'Model Number:  ',
+                          'Phone_Number:  ',
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
                         AppText(
-                          '${profile['ModelNumber'] ?? ""}',
+                          '${profile['Phone_Number'] ?? ""}',
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
@@ -110,12 +108,12 @@ class InventoriesScreen extends StatelessWidget {
                     Row(
                       children: [
                         const AppText(
-                          'Configuration:  ',
+                          'Address:  ',
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
                         AppText(
-                          '${profile['configuration'] ?? ""}',
+                          '${profile['Address'] ?? ""}',
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
@@ -124,13 +122,13 @@ class InventoriesScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const AppText(
-                          'Serial Number:  ',
+                        AppText(
+                          'CreatedAt:  ',
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
                         AppText(
-                          '${profile['serialNumber'] ?? ""}',
+                          '${profile['CreatedAt'] ?? ""}',
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
@@ -145,28 +143,15 @@ class InventoriesScreen extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppText(
-                    '${profile['status'] ?? ""}',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: profile['status']?.toLowerCase() == 'stock'
-                        ? Colors.green
-                        : Colors.red,
-                  ),
                   IconButton(
                     icon: const Icon(Icons.edit, size: 20),
-                    onPressed: () {
-                      // Call editItem with the index and a new item code (for example purposes)
-                      controller.editItem(index,
-                          'A0001'); // Replace 'NewItemCode' with actual input
-                    },
+                    onPressed: () {},
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete, size: 20),
                     onPressed: () {
                       // Call deleteItem with the index
-                      controller.deleteItem(index);
                     },
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                   ),
@@ -179,51 +164,7 @@ class InventoriesScreen extends StatelessWidget {
     );
   }
 
- Widget filterButtons() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: 'All',
-                isSelected: controller.selectedButton.value == 'All',
-                onTap: () {
-                  controller.selectedButton.value = 'All';
-                  controller.fetchInventoryList(filterType: 'All');
-                },
-              ),
-            )),
-        const SizedBox(width: 10),
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: 'Stock',
-                isSelected: controller.selectedButton.value == 'Stock',
-                onTap: () {
-                  controller.selectedButton.value = 'Stock';
-                  controller.filterInventory();
-                },
-              ),
-            )),
-        const SizedBox(width: 10),
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: 'Sell',
-                isSelected: controller.selectedButton.value == 'Sell',
-                onTap: () {
-                  controller.selectedButton.value = 'Sell';
-                  controller.fetchInventoryList(filterType: 'Sell');
-                },
-              ),
-            )),
-      ],
-    ),
-  );
-}
-
-
-  Widget searchBar() {
+ Widget searchBar() {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 12),
     child: SizedBox(
@@ -235,7 +176,7 @@ class InventoriesScreen extends StatelessWidget {
             controller.isSearchActive.value = true; // Activate search
           },
           MaxLine: 1,
-          hintText: inevontryTextStrings.Searchhint,
+          hintText: repairTextStrings.SearchhintName,
           controller: controller.searchController,
           borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
           prefftext: const Icon(Icons.search),
@@ -255,6 +196,4 @@ class InventoriesScreen extends StatelessWidget {
     ),
   );
 }
-
-
 }

@@ -25,8 +25,7 @@ class LoginScreenPage extends StatelessWidget {
             child: Form(
               key: loginController.formKey, // Assign the form key
               child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(15.0),
@@ -39,12 +38,12 @@ class LoginScreenPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // const Center(
+                  const Center(
 
-                  //   child:
-                  //   AppText(Strings.welcome, fontSize:20),
+                    child:
+                    AppText(Strings.welcome, fontSize:20, fontWeight: FontWeight.bold,),
                     
-                  // ),
+                  ),
                   const CustomSizedBox(height: 30),
 
                   // Email Field
