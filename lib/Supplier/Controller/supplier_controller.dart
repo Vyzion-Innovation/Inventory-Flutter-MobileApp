@@ -15,7 +15,7 @@ class SupplierController extends GetxController {
   FocusNode focusNode = FocusNode();
   final RxBool isFetching = false.obs;
    DocumentSnapshot? lastDocument;
-  final int limit = 6;
+  final int limit = 5;
 
   TextEditingController searchController = TextEditingController();
 
@@ -24,24 +24,25 @@ class SupplierController extends GetxController {
     super.onInit();
     fetchSuppliers();
 
-    searchController.addListener(() {
-      if (searchController.text.isEmpty) {
-        // Refresh the full list when search is cleared
-        fetchSuppliers(isNextPage: false);
-      } else {
-        // Perform search filtering
-        fetchSuppliers(isNextPage: false);
-      }
-    });
+    searchController.addListener(fetchSuppliers);
 
     scrollController.addListener(() {
       if (!isFetching.value &&
           scrollController.position.pixels >=
               scrollController.position.maxScrollExtent - 50) {
+                print(isFetching);
         fetchSuppliers(isNextPage: true);
       }
     });
   }
+ @override
+  void onClose() {
+      searchController.dispose();
+       scrollController.dispose();
+        focusNode.dispose();
+    super.onClose();
+  }
+
 
  Future<void> fetchSuppliers({bool isNextPage = false}) async {
     try {
@@ -50,6 +51,9 @@ class SupplierController extends GetxController {
     isFetching.value = true;
    
     String searchQuery = searchController.text.trim().toLowerCase();
+    String capitalizedSearchQuery = searchQuery.isNotEmpty
+        ? searchQuery[0].toUpperCase() + searchQuery.substring(1)
+        : "";
 
     // Declare query variable
     Query query;
@@ -60,18 +64,7 @@ class SupplierController extends GetxController {
           .collection('suppliers').
                 orderBy('created_at')
           .limit(limit);
-    } else {
-      query = FirebaseFirestore.instance
-          .collection('suppliers')
-          .orderBy('name')
-         .orderBy('created_at') // Consistent sorting
-          .startAt([searchQuery])
-          .endAt(['$searchQuery\uf8ff'])
-          .limit(limit);
-    }
-
-    // Handle pagination
-    if (isNextPage && lastDocument != null) {
+          if (isNextPage && lastDocument != null) {
       query = query.startAfterDocument(lastDocument!);
     }
 
@@ -95,6 +88,60 @@ class SupplierController extends GetxController {
       // Clear the list if no results and not paginating
       supplierList.clear();
     }
+    } else {
+     List<Query> queries = [FirebaseFirestore.instance
+          .collection('suppliers')
+          .orderBy('name')
+         .orderBy('created_at') // Consistent sorting
+          .startAt([searchQuery])
+          .endAt(['$searchQuery\uf8ff'])
+          .limit(limit),
+          FirebaseFirestore.instance
+          .collection('suppliers')
+          .orderBy('name')
+         .orderBy('created_at') // Consistent sorting
+          .startAt([capitalizedSearchQuery])
+          .endAt(['$capitalizedSearchQuery\uf8ff'])
+          .limit(limit),
+          ];
+    
+
+    // Handle pagination
+      if (isNextPage && lastDocument != null) {
+          for (int i = 0; i < queries.length; i++) {
+            queries[i] = queries[i].startAfterDocument(lastDocument!);
+          }
+        }
+
+    // Execute the query
+    List<SupplierModel> allResults = [];
+        QueryDocumentSnapshot? lastFetchedDocument;
+        // Run all queries and combine results
+        for (var query in queries) {
+          QuerySnapshot snapshot = await query.get();
+          if (snapshot.docs.isNotEmpty) {
+            allResults.addAll(snapshot.docs
+                .map((doc) => SupplierModel.fromFirestore(doc))
+                .toList());
+            lastFetchedDocument = snapshot.docs.last;
+          }
+        }
+
+final uniqueResults = allResults.toSet().toList();
+
+      if (isNextPage) {
+        supplierList.addAll(uniqueResults);
+      } else {
+        supplierList.assignAll(uniqueResults);
+      }
+
+      // Update last document for pagination
+      if (lastFetchedDocument != null) {
+          lastDocument = lastFetchedDocument;
+        } else if (!isNextPage) {
+          supplierList.clear();
+        }
+      }
   } catch (e) {
     print("Error fetching suppliers: $e");
   } finally {
