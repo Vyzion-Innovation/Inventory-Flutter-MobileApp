@@ -46,6 +46,7 @@ dependencies:
   dropdown_search: ^6.0.1
   popup_menu: ^2.1.0
   algolia: ^1.1.2
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:

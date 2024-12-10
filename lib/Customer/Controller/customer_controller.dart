@@ -24,7 +24,7 @@ class CustomerController extends GetxController {
     fetchCustomers();
 
     // Add listener for search input
-    searchController.addListener(_onSearchChanged);
+    searchController.addListener(fetchCustomers);
 
     // Add listener for pagination
     scrollController.addListener(() {
@@ -45,16 +45,7 @@ class CustomerController extends GetxController {
   }
 
   /// Handles search input changes
-  void _onSearchChanged() {
-    final searchText = searchController.text.trim();
-    if (searchText.isEmpty) {
-      // Clear the search and fetch all customers
-      fetchCustomers();
-    } else {
-      // Trigger search query
-      fetchCustomers();
-    }
-  }
+ 
 
   /// Fetch customers with or without search filter
   Future<void> fetchCustomers({bool isNextPage = false}) async {
@@ -64,6 +55,9 @@ class CustomerController extends GetxController {
       isFetching.value = true;
 
       String searchQuery = searchController.text.trim().toLowerCase();
+      String capitalizedSearchQuery = searchQuery.isNotEmpty
+        ? searchQuery[0].toUpperCase() + searchQuery.substring(1)
+        : "";
 
       // Define the query
       Query query;
@@ -74,19 +68,7 @@ class CustomerController extends GetxController {
             .collection('customers')
             .orderBy('created_at') // Default ordering
             .limit(limit);
-      } else {
-        // Query with search filtering
-        query = FirebaseFirestore.instance
-            .collection('customers')
-            .orderBy('name') // Required for search
-
-            .startAt([searchQuery])
-            .endAt(['$searchQuery\uf8ff'])
-            .limit(limit);
-      }
-
-      // Apply pagination if applicable
-      if (isNextPage && lastDocument != null) {
+             if (isNextPage && lastDocument != null) {
         query = query.startAfterDocument(lastDocument!);
       } else if (!isNextPage) {
         lastDocument = null; // Reset last document for new search
@@ -108,11 +90,69 @@ class CustomerController extends GetxController {
 
         // Update last document for pagination
         lastDocument = snapshot.docs.last;
+        print(filteredCustomerList.length);
       } else if (!isNextPage) {
         // Clear the list if no results found in a new search
         filteredCustomerList.clear();
       }
-    } catch (e) {
+
+      }
+       else
+        {
+        // Query with search filtering
+        List<Query> queries = [FirebaseFirestore.instance
+            .collection('customers')
+            .orderBy('name') // Required for search
+
+            .startAt([searchQuery])
+            .endAt(['$searchQuery\uf8ff'])
+            .limit(limit),
+            FirebaseFirestore.instance
+            .collection('customers')
+            .orderBy('name') // Required for search
+
+            .startAt([capitalizedSearchQuery])
+            .endAt(['$capitalizedSearchQuery\uf8ff'])
+            .limit(limit)];
+      
+
+      // Apply pagination if applicable
+     if (isNextPage && lastDocument != null) {
+          for (int i = 0; i < queries.length; i++) {
+            queries[i] = queries[i].startAfterDocument(lastDocument!);
+          }
+        }
+      // Execute the query
+     List<CustomerModel> allResults = [];
+        QueryDocumentSnapshot? lastFetchedDocument;
+        // Run all queries and combine results
+        for (var query in queries) {
+          QuerySnapshot snapshot = await query.get();
+          if (snapshot.docs.isNotEmpty) {
+            allResults.addAll(snapshot.docs
+                .map((doc) => CustomerModel.fromFirestore(doc))
+                .toList());
+            lastFetchedDocument = snapshot.docs.last;
+          }
+          }
+          
+  final uniqueResults = allResults.toSet().toList();
+
+      if (isNextPage) {
+        filteredCustomerList.addAll(uniqueResults);
+      } else {
+        filteredCustomerList.assignAll(uniqueResults);
+      }
+
+      // Update last document for pagination
+      if (lastFetchedDocument != null) {
+          lastDocument = lastFetchedDocument;
+        } else if (!isNextPage) {
+          filteredCustomerList.clear();
+        }
+      }
+    }
+    catch (e) {
       print("Error fetching customers: $e");
     } finally {
       isFetching.value = false; // Reset fetching state

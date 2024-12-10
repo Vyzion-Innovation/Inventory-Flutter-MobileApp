@@ -9,6 +9,7 @@ import 'package:inventoryappflutter/Model/repair_model.dart';
 
 class DashboardController extends GetxController {
   var count = 0.obs; // Observable count variable
+  var repairCount = 0.obs;
   var isVisible = false.obs; // Tracks visibility of the side panel
   var totalPurchaseAmount = 0.0.obs;
   var sellCount = 0.obs;
@@ -21,7 +22,7 @@ class DashboardController extends GetxController {
      fetchRepairList();
     fetchStockCountAndSum(); // Fetch inventory count on initialization
     fetchSellCountAndSum();
-   
+   fetchRepairListCount();
   }
 
   @override
@@ -96,6 +97,23 @@ class DashboardController extends GetxController {
         0.0,
         (sum, repair) => sum + (repair.finalCostNum ?? 0.0),
       );
+    } catch (e) {
+      print("Error fetching repair: $e");
+    }
+  }
+  void fetchRepairListCount() async {
+   DateTime now = DateTime.now();
+    DateTime startOfMonth = DateTime(now.year, now.month -1, 1);
+            try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('repairs')
+          .where('status', isEqualTo: 'receive')
+          .get();
+      // Map the documents to InventoryModel instances
+      List<RepairModel> repairs = snapshot.docs
+    .map((doc) => RepairModel.fromFirestore(doc))
+    .toList();
+      repairCount.value = repairs.length;
     } catch (e) {
       print("Error fetching repair: $e");
     }

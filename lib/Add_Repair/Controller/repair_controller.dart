@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryappflutter/Constant/firebase_collection.dart';
 import 'package:inventoryappflutter/Model/repair_model.dart';
 
 class RepairFormController extends GetxController {
@@ -84,7 +85,8 @@ class RepairFormController extends GetxController {
       Map<String, dynamic> repairData = repair.toJson();
 
       // Add the inventory data to Firestore
-      await FirebaseFirestore.instance.collection('repairs').add(repairData);
+      await FirestoreCollections.repairs.add(repairData);
+
       print("Inventory data saved successfully.");
     } catch (e) {
       print("Error saving inventory data: $e");
@@ -132,9 +134,7 @@ class RepairFormController extends GetxController {
       Map<String, dynamic> updatedRepairData = updatedRepair.toJson();
 
       // Update the document in Firestore
-      DocumentReference repairRef = FirebaseFirestore.instance
-          .collection('repairs') // Correct collection name
-          .doc(repairData!.id);
+      DocumentReference repairRef =  FirestoreCollections.repairs.doc(repairData?.id);
 
       await repairRef.update(updatedRepairData);
 

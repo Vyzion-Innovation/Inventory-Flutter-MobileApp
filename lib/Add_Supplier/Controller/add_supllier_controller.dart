@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryappflutter/Constant/firebase_collection.dart';
 import 'package:inventoryappflutter/Model/supplier_model.dart';
 
 class SupplierFormController extends GetxController {
@@ -73,21 +74,20 @@ class SupplierFormController extends GetxController {
       Map<String, dynamic> supplierData = supplier.toJson();
 
       // Add the supplier data to Firestore
-      await FirebaseFirestore.instance.collection('suppliers').add(supplierData);
+       await FirestoreCollections.suppliers.add(supplierData);
       print("Supplier data saved successfully.");
     } catch (e) {
       print("Error saving supplier data: $e");
     }
   }
+
    Future<void> _updateSupplier() async {
     try {
       if (supplierToEdit == null) return; 
 
       // Get the document reference using the customer's ID
-      DocumentReference supplierRef = FirebaseFirestore.instance
-          .collection('suppliers')
-          .doc(supplierToEdit
-              ?.id); // Assuming your CustomerModel has an 'id' field
+    DocumentReference supplierRef =
+          FirestoreCollections.suppliers.doc(supplierToEdit!.id); // Assuming your CustomerModel has an 'id' field
 
       Map<String, dynamic> updatedData = {
         'phone': phoneNumberController.text,

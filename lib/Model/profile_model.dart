@@ -6,19 +6,19 @@ class ProfileModel {
   final String? pincode;
    final String? role;
    final String? uid;
-  final DateTime updatedAt;
-  final DateTime createdAt;
+  final int? updatedAt;
+  final int? createdAt;
 
   ProfileModel({
-    required this.phone,
-    required this.city,
-    required this.name,
-     required this.pincode,
-    required this.gstNumber,
-    required this.uid,
-      required this.role,
-      required this.updatedAt,
-    required this.createdAt,
+     this.phone,
+     this.city,
+     this.name,
+      this.pincode,
+     this.gstNumber,
+     this.uid,
+       this.role,
+       this.updatedAt,
+     this.createdAt,
   });
 
   // Factory method to create a Customer instance from a JSON map
@@ -31,8 +31,8 @@ class ProfileModel {
       gstNumber: json['gstNumber'] as String?,
        role: json['role'] as String?,
       uid: json['uid'] as String?,
-        updatedAt: DateTime.fromMillisecondsSinceEpoch(json['updated_at'] as int),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(json['created_at'] as int),
+       updatedAt: json['updated_at'] != null ? json['updated_at'] as int : null,
+     createdAt: json['created_at'] != null ? json['created_at'] as int : null,
     );
   }
 
@@ -46,8 +46,8 @@ class ProfileModel {
        'role': role,
       'gstNumber': gstNumber,
       'uid': uid,
-      'updated_at': updatedAt.millisecondsSinceEpoch,
-      'created_at': createdAt.millisecondsSinceEpoch,
+       'updated_at': updatedAt,
+      'created_at': createdAt,
     };
   }
 }

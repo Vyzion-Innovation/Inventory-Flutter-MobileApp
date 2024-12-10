@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:inventoryappflutter/Constant/firebase_collection.dart';
 import 'package:inventoryappflutter/Model/customer_model.dart';
 
 class AddCustomerController extends GetxController {
@@ -76,9 +77,7 @@ class AddCustomerController extends GetxController {
       );
 
       Map<String, dynamic> customerData = customer.toJson();
-      await FirebaseFirestore.instance
-          .collection('customers')
-          .add(customerData);
+       await FirestoreCollections.suppliers.add(customerData);
       print("Customer data saved successfully.");
     } catch (e) {
       print("Error saving customer data: $e");
@@ -94,10 +93,8 @@ class AddCustomerController extends GetxController {
       if (customerToEdit == null) return; // Ensure there's a customer to update
 
       // Get the document reference using the customer's ID
-      DocumentReference customerRef = FirebaseFirestore.instance
-          .collection('customers')
-          .doc(customerToEdit
-              ?.id); // Assuming your CustomerModel has an 'id' field
+     DocumentReference supplierRef =
+          FirestoreCollections.suppliers.doc(customerToEdit!.id); // Assuming your CustomerModel has an 'id' field
 
       Map<String, dynamic> updatedData = {
         'phone': phoneNumberController.text,
@@ -106,7 +103,7 @@ class AddCustomerController extends GetxController {
         'updated_at': DateTime.now().millisecondsSinceEpoch, // Update timestamp
       };
 
-      await customerRef.update(updatedData);
+      await supplierRef.update(updatedData);
       print("Customer data updated successfully.");
     } catch (e) {
       print("Error updating customer data: $e");
