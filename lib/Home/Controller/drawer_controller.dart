@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:inventoryappflutter/Model/profile_model.dart';
@@ -15,6 +17,17 @@ var profileData = <ProfileModel>[].obs;
     Get.to(() => AboutScreen());
   }
   
+   @override
+  void onInit() {
+    super.onInit();
+    fetchProfileData();
+  }
+
+  @override
+  void onClose() {
+   
+    super.onClose();
+  }
   Future<void> fetchProfileData() async {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('myprofile').get();
@@ -24,6 +37,7 @@ var profileData = <ProfileModel>[].obs;
       }).toList();
 
       profileData.assignAll(profile);
+   
     
        
     } catch (e) {

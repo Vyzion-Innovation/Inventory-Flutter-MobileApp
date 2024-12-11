@@ -15,6 +15,7 @@ class DashboardController extends GetxController {
   var sellCount = 0.obs;
   var totalSelleAmount = 0.0.obs;
   var currentMonthRepairAmount = 0.0.obs;
+   final RxList<InventoryModel> inventoryList = <InventoryModel>[].obs;
 
   @override
   void onInit() {
@@ -62,12 +63,14 @@ class DashboardController extends GetxController {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('inventories')
           .where('status', isEqualTo: 'sell')
+          .orderBy('sell_timestamp')
            .where('sell_timestamp', isGreaterThanOrEqualTo: startTimestamp)
           .get();
       // Map the documents to InventoryModel instances
       List<InventoryModel> inventories = snapshot.docs
     .map((doc) => InventoryModel.fromFirestore(doc))
     .toList();
+    inventoryList.assignAll(inventories);
       totalSelleAmount.value = inventories.fold(
         0.0,
         (sum, inventory) => sum + (inventory.sellAmountNum ?? 0.0),

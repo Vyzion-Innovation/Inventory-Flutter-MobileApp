@@ -7,7 +7,9 @@ import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Constant/app_logo.dart';
 import 'package:inventoryappflutter/Home/Controller/dashboard_controller.dart';
 import 'package:inventoryappflutter/Home/Controller/drawer_controller.dart';
+import 'package:inventoryappflutter/Inventory/view/inventory_details_screen.dart';
 import 'package:inventoryappflutter/Login/Controller/login_controller.dart';
+import 'package:inventoryappflutter/Model/inventory_model.dart';
 import 'package:inventoryappflutter/Repair/Controller/repair%20controller.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
@@ -50,7 +52,7 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20),
               _buildQuickActions(),
                const SizedBox(height: 20),
-              _recentSalesList()
+              inventoryListBuilder()
             ],
           ),
         ),
@@ -180,22 +182,115 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-   Widget _recentSalesList() {
-    return Center(
+ 
+Widget inventoryListBuilder() {
+  return Obx(() {
+    final inventory = dashboardController.inventoryList;
+
+    if (inventory.isEmpty) {
+      return const Center(
+        child: Text(
+          'No data available',
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    }
+
+    return Card(
+      elevation: 4, // Add elevation for a shadow effect
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8), // Rounded corners
+      ),
+      margin: const EdgeInsets.all(12), // Margin around the card
+      child: Padding(
+        padding: const EdgeInsets.all(8.0), // Padding inside the card
+        child: SizedBox(
+          height: 400, // Provide a fixed height for the ListView
+          child: ListView.builder(
+            itemCount: inventory.length, // Add 1 for the loader
+            itemBuilder: (context, index) {
+              // if (index == inventory.length) {
+              //   // Display loading indicator at the end
+              
+              // }
+
+              var profile = inventory[index];
+              return inventoryItemCard(profile, index);
+            },
+          ),
+        ),
+      ),
+    );
+  });
+}
+
+  Widget inventoryItemCard(InventoryModel profile, int index) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: CommonCard(
-        width: 400,
-         padding: const EdgeInsets.fromLTRB(70,12,12,0),
-        title: 'recent Sales List',
+        padding: const EdgeInsets.all(16),
+        onTap: () {
+         Get.to(() => InventoryDetailsScreen(inventory: profile));
+        },
         additionalWidgets: [
-         
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Left column for item details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const AppText(
+                          'Item Code:  ',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        Expanded(
+                          // Wrap with Expanded to prevent overflow
+                          child: AppText(
+                            profile.itemCode ?? "",
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const AppText(
+                          'Model Number:  ',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        Expanded(
+                          // Wrap with Expanded to prevent overflow
+                          child: AppText(
+                            profile.modelNumber ?? "",
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                                 
+                  ],
+                ),
+              ),
+                      
+            ],
+          ),
         ],
       ),
     );
   }
-
   // Drawer Widget
   Widget _buildDrawer(BuildContext context) {
-    return Drawer(
+    return Obx (() =>  Drawer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -214,19 +309,30 @@ class HomePage extends StatelessWidget {
                     matchTextDirection: true,
                   ),
                 ),
-                // const SizedBox(height: 10),
-                // const AppText(
-                //   'Pawan Ginti',
-                //   fontSize: 15,
-                //   fontWeight: FontWeight.bold,
-                //   color: AppColors.colorWhite,
-                // ),
-                // const SizedBox(height: 5),
-                // const AppText(
-                //   'P@p.com',
-                //   fontSize: 15,
-                //   color: AppColors.colorWhite,
-                // ),
+                const SizedBox(height: 10),
+                 Row(
+                   children: [
+                     AppText(
+                      sidePanelController.profileData[0].name![0].toUpperCase() + sidePanelController.profileData[0].name!.substring(1),
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.colorWhite,
+                                     ),
+                                     const SizedBox(width: 5),
+                                       AppText(
+                  '(${sidePanelController.profileData[0].role})',
+                  fontSize: 15,
+                  color: AppColors.colorWhite,
+                ),
+                   ],
+                 ), const SizedBox(height: 5),
+           
+                const SizedBox(height: 5),
+                 AppText(
+                  sidePanelController.profileData[0].phone ?? '',
+                  fontSize: 15,
+                  color: AppColors.colorWhite,
+                ),
               ],
             ),
           ),
@@ -275,6 +381,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-    );
+    )
+    ,);
   }
 }
