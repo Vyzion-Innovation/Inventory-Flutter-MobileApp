@@ -17,7 +17,7 @@ class SupplierDetails extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: const AppText(
-          Strings.customer,
+          Strings.supplier,
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
@@ -44,7 +44,7 @@ class SupplierDetails extends StatelessWidget {
                     children: [
                       _buildDetailRow(
                         icon: Icons.person,
-                        label: "Customer Name",
+                        label: "Supplier Name",
                         value: supplier.name ?? 'N/A',
                       ),
                       const Divider(),
@@ -57,7 +57,7 @@ class SupplierDetails extends StatelessWidget {
                       const Divider(),
                       _buildDetailRow(
                         icon: Icons.location_on,
-                        label: "Billing Address",
+                        label: "Address",
                         value: supplier.supplierAddress ?? 'N/A',
                       ),
                       const Divider(),
@@ -125,7 +125,7 @@ String formatTimestamp(int? timestamp) {
     return "N/A"; // Handle null timestamp
   }
   final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-  return DateFormat('yyyy-MM-dd HH:mm').format(dateTime); // Customize the format
+  return DateFormat('yyyy-MM-dd').format(dateTime); // Customize the format
 }
 
   Widget _buildDetailRowWithCopy({

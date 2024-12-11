@@ -197,11 +197,12 @@ Widget inventoryListBuilder() {
     }
 
     return Card(
-      elevation: 4, // Add elevation for a shadow effect
+      elevation: 2, // Add elevation for a shadow effect
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8), // Rounded corners
       ),
-      margin: const EdgeInsets.all(12), // Margin around the card
+      color: Colors.white,
+      // margin: const EdgeInsets.all(12), // Margin around the card
       child: Padding(
         padding: const EdgeInsets.all(8.0), // Padding inside the card
         child: SizedBox(
@@ -229,6 +230,7 @@ Widget inventoryListBuilder() {
       padding: const EdgeInsets.all(8.0),
       child: CommonCard(
         padding: const EdgeInsets.all(16),
+        color: AppColors.lightColor,
         onTap: () {
          Get.to(() => InventoryDetailsScreen(inventory: profile));
         },

@@ -84,8 +84,7 @@ class InventoryFormController extends GetxController {
   // Set the inventory data when editing
   void setInventoryData(InventoryModel inventory) {
     inventoryData = inventory;
-    print('xgxfgfgfgdfggf${inventory.seller}');
-    inventoryToEdit = inventory;
+      inventoryToEdit = inventory;
     itemCodeController.text = inventory.itemCode ?? '';
     companyNameController.text = inventory.companyName ?? '';
     brandController.text = inventory.brand!;

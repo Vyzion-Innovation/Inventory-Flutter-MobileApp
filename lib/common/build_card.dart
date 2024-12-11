@@ -7,11 +7,13 @@ class CommonCard extends StatelessWidget {
   final String? subtitle;
   final List<Widget>? additionalWidgets;
   final EdgeInsetsGeometry? padding;
+  final Color? color;
   final VoidCallback? onTap; // Callback for handling taps
 
   const CommonCard({
     Key? key,
     this.title,
+    this.color = Colors.white,
     this.subtitle,
     this.padding,
     this.width,
@@ -29,7 +31,7 @@ class CommonCard extends StatelessWidget {
           child: Container(
             width: width,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color:color,
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(

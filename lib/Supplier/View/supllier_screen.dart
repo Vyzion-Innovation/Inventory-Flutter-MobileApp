@@ -68,7 +68,7 @@ class SupllierScreen extends StatelessWidget {
     child: CommonCard(
       padding: const EdgeInsets.all(16),
       onTap: () {
-       Get.to(SupplierDetails(supplier: profile));
+      Get.to(() =>SupplierDetails(supplier: profile));
       },
       additionalWidgets: [
         Row(
