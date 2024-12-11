@@ -52,11 +52,11 @@ class InventoriesController extends GetxController {
   List<String> selectedTabStatus() {
     switch (selectedTab['id']) {
       case 2:
-        return ['Stock'];
+        return ['stock'];
       case 3:
-        return ['Sell'];
+        return ['sell'];
       default:
-        return ['Stock', 'Sell'];
+        return ['stock', 'sell'];
     }
   }
 

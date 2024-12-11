@@ -30,11 +30,10 @@ class SupplierController extends GetxController {
       if (!isFetching.value &&
           scrollController.position.pixels >=
               scrollController.position.maxScrollExtent - 50) {
-                print(isFetching);
-        fetchSuppliers(isNextPage: true);
+            fetchSuppliers(isNextPage: true);
       }
     });
-  }
+  }  
  @override
   void onClose() {
       searchController.dispose();
@@ -170,7 +169,7 @@ final uniqueResults = allResults.toSet().toList();
           .delete();
       print("Supplier deleted successfully.");
       // Optionally refresh the customer list
-      await fetchSuppliers(); // Ensure you have this method to fetch the updated list
+      await fetchSuppliers(); 
     } catch (e) {
       print("Error deleting suppliers: $e");
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // Assuming you're using GetX for state management
+import 'package:get/get.dart';
+import 'package:inventoryappflutter/common/app_text.dart'; // Assuming you're using GetX for state management
 
 class FilterButton extends StatelessWidget {
   final String label;
@@ -23,13 +24,13 @@ class FilterButton extends StatelessWidget {
       onTap: onTap,
       child: Column(
         children: [
-          Text(
+          AppText(
             label,
-            style: TextStyle(
+            
               color: isSelected ? selectedColor : unselectedColor,
               fontSize: 16,
               fontWeight: FontWeight.bold,
-            ),
+            
           ),
           // Underline
           Container(

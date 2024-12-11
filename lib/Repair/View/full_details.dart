@@ -28,89 +28,87 @@ class RepairDetailsScreen extends StatelessWidget {
          
           const SizedBox(height: 16),
           // Customer details card
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildDetailRow(
-                        icon: Icons.person,
-                        label: "Customer Name",
-                        value: repair.customerName ?? 'N/A',
-                      ),
-                      const Divider(),
-                      _buildDetailRowWithCopy(
-                        context: context,
-                        icon: Icons.phone,
-                        label: "Phone",
-                        value: repair.phone ?? 'N/A',
-                      ),
-                      const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.model_training,
-                        label: "Model Number",
-                        value: repair.model ?? 'N/A',
-                      ),
-                       const Divider(),
-                       _buildDetailRowWithCopy(
-                        context: context,
-                        icon: Icons.work_outline,
-                        label: "Job Number",
-                        value: repair.jobNumber ?? 'N/A',
-                      ),
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.sync_problem_outlined,
-                        label: "Issue",
-                        value: repair.issue ?? 'N/A',
-                      ),
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.description,
-                        label: "Description",
-                        value: repair.description ?? 'N/A',
-                      ),
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.monetization_on,
-                        label: "Estimated Cost",
-                        value: repair.estimatedCost ?? 'N/A',
-                      ),
-
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.monetization_on,
-                        label: "final Cost",
-                        value: repair.finalCost ?? 'N/A',
-                      ),
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.signal_wifi_statusbar_null_sharp,
-                        label: "Status",
-                        value: repair.status ?? 'N/A',
-                      ),
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.calendar_today,
-                        label: "Complete Date",
-                        value: repair.completeDate ?? 'N/A',
-                      ),
-                      const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.calendar_today,
-                        label: "Created At",
-                        value: formatTimestamp(repair.createdAt),
-                      ),
-                    ],
-                  ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildDetailRow(
+                      icon: Icons.person,
+                      label: "Customer Name",
+                      value: repair.customerName ?? 'N/A',
+                    ),
+                    const Divider(),
+                    _buildDetailRowWithCopy(
+                      context: context,
+                      icon: Icons.phone,
+                      label: "Phone",
+                      value: repair.phone ?? 'N/A',
+                    ),
+                    const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.model_training,
+                      label: "Model Number",
+                      value: repair.model ?? 'N/A',
+                    ),
+                     const Divider(),
+                     _buildDetailRowWithCopy(
+                      context: context,
+                      icon: Icons.work_outline,
+                      label: "Job Number",
+                      value: repair.jobNumber ?? 'N/A',
+                    ),
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.sync_problem_outlined,
+                      label: "Issue",
+                      value: repair.issue ?? 'N/A',
+                    ),
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.description,
+                      label: "Description",
+                      value: repair.description ?? 'N/A',
+                    ),
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.monetization_on,
+                      label: "Estimated Cost",
+                      value: repair.estimatedCost ?? 'N/A',
+                    ),
+          
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.monetization_on,
+                      label: "final Cost",
+                      value: repair.finalCost ?? 'N/A',
+                    ),
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.signal_wifi_statusbar_null_sharp,
+                      label: "Status",
+                      value: repair.status ?? 'N/A',
+                    ),
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.calendar_today,
+                      label: "Complete Date",
+                      value: repair.completeDate ?? 'N/A',
+                    ),
+                    const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.calendar_today,
+                      label: "Created At",
+                      value: formatTimestamp(repair.createdAt),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -96,7 +96,7 @@ class RepairFormController extends GetxController {
   Future<void> _updateRepairItem() async {
     try {
       if (repairData == null) {
-        print("Error: Missing repair data ID for update.");
+      
         return;
       }
 

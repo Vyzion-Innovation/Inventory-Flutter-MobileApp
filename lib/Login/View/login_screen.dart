@@ -10,9 +10,11 @@ import 'package:inventoryappflutter/common/app_common_button.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 import 'package:inventoryappflutter/common/common_sizedbox.dart';
 import 'package:inventoryappflutter/common/customTextField.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreenPage extends StatelessWidget {
   final LoginController loginController = Get.put(LoginController());
+    
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +104,7 @@ class LoginScreenPage extends StatelessWidget {
                           value: loginController.rememberMe.value,
                           onChanged: (value) {
                             loginController.toggleRememberMe(value ?? false);
+                          
                           },
                         ),
                       ),

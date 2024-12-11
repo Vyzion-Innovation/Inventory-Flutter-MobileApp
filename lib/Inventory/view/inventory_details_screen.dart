@@ -29,94 +29,92 @@ class InventoryDetailsScreen extends StatelessWidget {
          
           const SizedBox(height: 16),
           // Customer details card
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildDetailRowWithCopy(
-                        context: context,
-                        icon: Icons.code,
-                        label: "Item Code",
-                        value: inventory.itemCode ?? 'N/A',
-                      ),
-                      const Divider(),
-                      _buildDetailRow(
-                    icon: Icons.model_training,
-                        label: "Company Name",
-                        value: inventory.companyName ?? 'N/A',
-                      ),   const Divider(),
-                      _buildDetailRow(
-                    icon: Icons.model_training,
-                        label: "Model Number",
-                        value: inventory.modelNumber ?? 'N/A',
-                      ),
-                      const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.details_rounded,
-                        label: "Configuration",
-                        value: inventory.configuration ?? 'N/A',
-                      ),
-                       const Divider(),
-                       _buildDetailRowWithCopy(
-                        context: context,
-                        icon: Icons.numbers,
-                        label: "Serial Number",
-                        value: inventory.serialNumber ?? 'N/A',
-                      ),
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.money,
-                        label: "Purchase Amount",
-                        value: inventory.purchaseAmount ?? 'N/A',
-                      ),
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.money,
-                        label: "Sell Amount",
-                        value: inventory.sellAmount ?? 'N/A',
-                      ),
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.person_2_sharp,
-                        label: "Seller Name",
-                        value: inventory.seller?.name ?? 'N/A',
-                      ),
-
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.person,
-                        label: "Buyer Name",
-                        value: inventory.buyer?.name ?? 'N/A',
-                      ),
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.signal_wifi_statusbar_null_sharp,
-                        label: "Status",
-                        value: inventory.status ?? 'N/A',
-                      ),
-                       const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.calendar_today,
-                        label: "Purchase Date",
-                        value: inventory.purchaseDate ?? 'N/A',
-                      ),
-                      const Divider(),
-                      _buildDetailRow(
-                        icon: Icons.calendar_today,
-                        label: "Created At",
-                        value: formatTimestamp(inventory.createdAt),
-                      ),
-                    ],
-                  ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildDetailRowWithCopy(
+                      context: context,
+                      icon: Icons.code,
+                      label: "Item Code",
+                      value: inventory.itemCode ?? 'N/A',
+                    ),
+                    const Divider(),
+                    _buildDetailRow(
+                  icon: Icons.model_training,
+                      label: "Company Name",
+                      value: inventory.companyName ?? 'N/A',
+                    ),   const Divider(),
+                    _buildDetailRow(
+                  icon: Icons.model_training,
+                      label: "Model Number",
+                      value: inventory.modelNumber ?? 'N/A',
+                    ),
+                    const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.details_rounded,
+                      label: "Configuration",
+                      value: inventory.configuration ?? 'N/A',
+                    ),
+                     const Divider(),
+                     _buildDetailRowWithCopy(
+                      context: context,
+                      icon: Icons.numbers,
+                      label: "Serial Number",
+                      value: inventory.serialNumber ?? 'N/A',
+                    ),
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.money,
+                      label: "Purchase Amount",
+                      value: inventory.purchaseAmount ?? 'N/A',
+                    ),
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.money,
+                      label: "Sell Amount",
+                      value: inventory.sellAmount ?? 'N/A',
+                    ),
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.person_2_sharp,
+                      label: "Seller Name",
+                      value: inventory.seller?.name ?? 'N/A',
+                    ),
+          
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.person,
+                      label: "Buyer Name",
+                      value: inventory.buyer?.name ?? 'N/A',
+                    ),
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.signal_wifi_statusbar_null_sharp,
+                      label: "Status",
+                      value: inventory.status ?? 'N/A',
+                    ),
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.calendar_today,
+                      label: "Purchase Date",
+                      value: inventory.purchaseDate ?? 'N/A',
+                    ),
+                    const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.calendar_today,
+                      label: "Created At",
+                      value: formatTimestamp(inventory.createdAt),
+                    ),
+                  ],
                 ),
               ),
             ),

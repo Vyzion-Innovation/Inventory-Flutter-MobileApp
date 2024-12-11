@@ -102,7 +102,6 @@ class ProfileScreen extends StatelessWidget {
                     child: CustomButton(
                       title: Strings.saveProfile,
                       onTap: () {
-                        print('sfsdfsfsf');
                        controller.saveProfileData();
                       },
                     ),

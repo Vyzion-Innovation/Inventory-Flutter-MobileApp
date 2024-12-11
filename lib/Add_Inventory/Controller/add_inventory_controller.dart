@@ -92,7 +92,7 @@ class InventoryFormController extends GetxController {
     modelNumberController.text = inventory.modelNumber ?? '';
     configurationController.text = inventory.configuration ?? '';
     serialNumberController.text = inventory.serialNumber ?? '';
-    selectedStatus.value = inventory.status ?? '';
+    selectedStatus.value = inventory.status![0].toUpperCase() + inventory.status!.substring(1);
     purchaseDateController.text = inventory.purchaseDate ?? '';
     purchaseAmountController.text = inventory.purchaseAmount ?? '';
    
@@ -142,7 +142,7 @@ class InventoryFormController extends GetxController {
           modelNumber: modelNumberController.text,
           configuration: configurationController.text,
           serialNumber: serialNumberController.text,
-          status: selectedStatus.value,
+          status: selectedStatus.value.toLowerCase(),
           purchaseAmount: purchaseAmountController.text,
           purchaseAmountNum: int.tryParse(purchaseAmountController.text) ?? 0,
           seller: selectedSeller.value,
@@ -199,7 +199,7 @@ class InventoryFormController extends GetxController {
           modelNumber: modelNumberController.text,
           configuration: configurationController.text,
           serialNumber: serialNumberController.text,
-          status: selectedStatus.value,
+          status: selectedStatus.value.toLowerCase(),
           purchaseAmount: purchaseAmountController.text,
           purchaseAmountNum: int.tryParse(purchaseAmountController.text) ?? 0,
           seller: selectedSeller.value,

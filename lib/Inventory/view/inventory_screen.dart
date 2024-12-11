@@ -184,7 +184,7 @@ class InventoriesScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppText(
-                    profile.status ?? "",
+                    profile.status![0].toUpperCase() +  profile.status!.substring(1) ?? "",
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                     color: profile.status?.toLowerCase() == 'stock'

@@ -34,7 +34,7 @@ class DashboardController extends GetxController {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('inventories')
-          .where('status', isEqualTo: 'Stock')
+          .where('status', isEqualTo: 'stock')
           .get();
       // Map the documents to InventoryModel instances
       List<InventoryModel> inventories = snapshot.docs
@@ -61,7 +61,7 @@ class DashboardController extends GetxController {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('inventories')
-          .where('status', isEqualTo: 'Sell')
+          .where('status', isEqualTo: 'sell')
            .where('sell_timestamp', isGreaterThanOrEqualTo: startTimestamp)
           .get();
       // Map the documents to InventoryModel instances

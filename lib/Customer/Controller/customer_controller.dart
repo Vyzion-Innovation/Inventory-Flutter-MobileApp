@@ -90,8 +90,7 @@ class CustomerController extends GetxController {
 
         // Update last document for pagination
         lastDocument = snapshot.docs.last;
-        print(filteredCustomerList.length);
-      } else if (!isNextPage) {
+        } else if (!isNextPage) {
         // Clear the list if no results found in a new search
         filteredCustomerList.clear();
       }
