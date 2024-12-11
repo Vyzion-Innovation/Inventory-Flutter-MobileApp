@@ -58,6 +58,7 @@ class ProfileScreen extends StatelessWidget {
                 labelText: "Role",
                 hintText: "Admin",
                 controller: controller.roleName,
+                enabled: false,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validatePhoneNumber,
@@ -101,7 +102,8 @@ class ProfileScreen extends StatelessWidget {
                     child: CustomButton(
                       title: Strings.saveProfile,
                       onTap: () {
-                        controller.saveData();
+                        print('sfsdfsfsf');
+                       controller.saveProfileData();
                       },
                     ),
                   ),

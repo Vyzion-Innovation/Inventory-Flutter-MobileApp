@@ -47,19 +47,20 @@ class RepairScreen extends StatelessWidget {
   }
   Widget repairListBuilder() {
     return Obx(() {
-      if (controller.filteredRepairList.isEmpty) {
-        return  Center(child:  controller.isloading.value ? CircularProgressIndicator() : Text('No data available'));
+      if (controller.repairList.isEmpty && !controller.isFetching.value) {
+        return const Center(child: Text('No data available'));
       }
       return ListView.builder(
-        itemCount: controller.filteredRepairList.length,
+         controller: controller.scrollController,
+        itemCount: controller.repairList.length,
         itemBuilder: (context, index) {
-          final profile = controller.filteredRepairList[index];
-          return inventoryItemCard(profile, index);
+          final profile = controller.repairList[index];
+          return repairItemCard(profile, index);
         },
       );
     });
   }
- Widget inventoryItemCard(RepairModel profile, int index) {
+ Widget repairItemCard(RepairModel profile, int index) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: CommonCard(
@@ -158,7 +159,7 @@ class RepairScreen extends StatelessWidget {
                       // ignore: unrelated_type_equality_checks
                       if (result == true) {
                         await controller
-                            .fetchRepairList(controller.selectedButton.value); // Refresh data if changes were made
+                            .fetchRepairList(); // Refresh data if changes were made
                       }
                     },
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -189,48 +190,30 @@ class RepairScreen extends StatelessWidget {
     ),
   );
 }
-  Widget filterButtons() {
+Widget filterButtons() {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: repairTextStrings.btnTextALL,
-                isSelected: controller.selectedButton.value == 'All',
-                onTap: () {
-                   controller.selectedButton.value = 'All';
-              controller.fetchRepairList(controller.selectedButton.value);
-                },
-              ),
-            )),
-        const SizedBox(width: 10),
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: repairTextStrings.btnTextRecieve,
-                isSelected: controller.selectedButton.value == 'Receive',
-                onTap: () {
-                  controller.selectedButton.value = 'Receive';
-              controller.fetchRepairList(controller.selectedButton.value); 
-                },
-              ),
-            )),
-        const SizedBox(width: 10),
-        Obx(() => Expanded(
-              child: FilterButton(
-                label: repairTextStrings.btnTextcomplete,
-                isSelected: controller.selectedButton.value == 'Complete',
-                onTap: () {
-                  controller.selectedButton.value = 'Complete';
-              controller.fetchRepairList(controller.selectedButton.value);
-                },
-              ),
-            )),
-       ],
+      children: controller.tabList.map((tab) {
+        return Obx(() {
+          return Expanded(
+            child: FilterButton(
+              label: tab['name'] as String, // Dynamically set the label
+              isSelected: controller.selectedTab['id'] == tab['id'], // Check if tab is selected
+              onTap: () {
+                controller.repairList.clear();
+                controller.selectedTab.value = tab; // Update the selected tab
+                controller.fetchRepairList(); // Call the appropriate fetch function
+              },
+            ),
+          );
+        });
+      }).toList(),
     ),
   );
 }
+  
   Widget searchBar() {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -243,7 +226,7 @@ class RepairScreen extends StatelessWidget {
             controller.isSearchActive.value = true; // Activate search
           },
           MaxLine: 1,
-          hintText: inevontryTextStrings.Searchhint,
+          hintText: inevontryTextStrings.SearchhintRepair,
           controller: controller.searchController,
           borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
           prefftext: const Icon(Icons.search),

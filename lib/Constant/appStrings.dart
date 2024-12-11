@@ -47,6 +47,7 @@ class Strings {
 }
 class inevontryTextStrings {
   static const Searchhint = 'Search by item code';
+  static const SearchhintRepair = 'Search by job number';
   static const btnTextALL = 'All';
   static const btnTextStock = 'Stock';
   static const btnTextsell = "Sell";

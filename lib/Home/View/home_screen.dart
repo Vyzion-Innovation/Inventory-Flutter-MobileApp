@@ -118,7 +118,7 @@ class HomePage extends StatelessWidget {
             Obx(
               () => Center(
                 child: AppText(
-                  '${repairController.count}',
+                  '${dashboardController.repairCount}',
                   fontSize: 15,
                   color: AppColors.gradientOne,
                 ),
@@ -214,19 +214,19 @@ class HomePage extends StatelessWidget {
                     matchTextDirection: true,
                   ),
                 ),
-                const SizedBox(height: 10),
-                const AppText(
-                  'Pawan Ginti',
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.colorWhite,
-                ),
-                const SizedBox(height: 5),
-                const AppText(
-                  'P@p.com',
-                  fontSize: 15,
-                  color: AppColors.colorWhite,
-                ),
+                // const SizedBox(height: 10),
+                // const AppText(
+                //   'Pawan Ginti',
+                //   fontSize: 15,
+                //   fontWeight: FontWeight.bold,
+                //   color: AppColors.colorWhite,
+                // ),
+                // const SizedBox(height: 5),
+                // const AppText(
+                //   'P@p.com',
+                //   fontSize: 15,
+                //   color: AppColors.colorWhite,
+                // ),
               ],
             ),
           ),

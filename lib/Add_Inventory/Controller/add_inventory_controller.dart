@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryappflutter/Constant/firebase_collection.dart';
 import 'package:inventoryappflutter/Model/customer_model.dart';
 import 'package:inventoryappflutter/Model/inventory_model.dart';
 import 'package:inventoryappflutter/Model/supplier_model.dart';
@@ -154,9 +155,8 @@ class InventoryFormController extends GetxController {
       Map<String, dynamic> inventoryData = inventory.toJson();
 
       // Add the inventory data to Firestore
-      await FirebaseFirestore.instance
-          .collection('inventories')
-          .add(inventoryData);
+     await FirestoreCollections.inventory.add(inventoryData);
+         
       print("Inventory data saved successfully.");
     } catch (e) {
       print("Error saving inventory data: $e");
@@ -188,9 +188,8 @@ class InventoryFormController extends GetxController {
         return; // Ensure there's a customer to update
 
       // Get the document reference using the customer's ID
-      DocumentReference customerRef = FirebaseFirestore.instance
-          .collection('inventories')
-          .doc(inventoryToEdit
+     DocumentReference inventoryRef =
+          FirestoreCollections.inventory.doc(inventoryToEdit
               ?.id); // Assuming your CustomerModel has an 'id' field
 
       InventoryModel inventory = InventoryModel(
@@ -215,7 +214,7 @@ class InventoryFormController extends GetxController {
           paidBy: selectedPaidBy.value);
       Map<String, dynamic> inventoryData = inventory.toJson();
 
-      await customerRef.update(inventoryData);
+      await inventoryRef.update(inventoryData);
 
       print("Customer data updated successfully.");
     } catch (e) {
