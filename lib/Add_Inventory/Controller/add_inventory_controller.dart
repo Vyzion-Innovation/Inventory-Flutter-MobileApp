@@ -102,6 +102,7 @@ class InventoryFormController extends GetxController {
   } 
   @override
   void refresh() {
+    FocusScope.of(Get.context!).unfocus();
      formKey.currentState?.reset();
    
    companyNameController.clear();

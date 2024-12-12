@@ -271,14 +271,14 @@ class HomePage extends StatelessWidget {
                     Row(
                       children: [
                         const AppText(
-                          'Model Number:  ',
+                          'Sell Amount:  ',
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
                         Expanded(
                           // Wrap with Expanded to prevent overflow
                           child: AppText(
-                            profile.modelNumber ?? "",
+                            profile.sellAmount ?? "",
                             fontWeight: FontWeight.normal,
                             fontSize: 14,
                           ),
