@@ -212,7 +212,7 @@ class HomePage extends StatelessWidget {
                  SizedBox(
             height: 400,
                child:  ListView.builder(
-                  itemCount: 4, // Add 1 for the loader
+                  itemCount: inventory.length, // Add 1 for the loader
                   itemBuilder: (context, index) {
                     // if (index == inventory.length) {
                     //   // Display loading indicator at the end

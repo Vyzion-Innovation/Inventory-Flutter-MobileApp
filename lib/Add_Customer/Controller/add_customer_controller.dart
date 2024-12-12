@@ -27,7 +27,9 @@ class AddCustomerController extends GetxController {
   }
 
   // Clear input fields
+  @override
   void refresh() {
+    
     customerName.clear();
     phoneNumberController.clear();
     customerAddressController.clear();
@@ -77,7 +79,7 @@ class AddCustomerController extends GetxController {
       );
 
       Map<String, dynamic> customerData = customer.toJson();
-       await FirestoreCollections.suppliers.add(customerData);
+       await FirestoreCollections.customers.add(customerData);
       print("Customer data saved successfully.");
     } catch (e) {
       print("Error saving customer data: $e");
@@ -94,7 +96,7 @@ class AddCustomerController extends GetxController {
 
       // Get the document reference using the customer's ID
      DocumentReference supplierRef =
-          FirestoreCollections.suppliers.doc(customerToEdit!.id); // Assuming your CustomerModel has an 'id' field
+          FirestoreCollections.customers.doc(customerToEdit!.id); // Assuming your CustomerModel has an 'id' field
 
       Map<String, dynamic> updatedData = {
         'phone': phoneNumberController.text,

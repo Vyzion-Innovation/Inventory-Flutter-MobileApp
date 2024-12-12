@@ -99,6 +99,30 @@ class InventoryFormController extends GetxController {
       sellAmountController.text = inventory.sellAmount ?? '';
       selectedPaidBy.value = inventory.paidBy ?? '';
     
+  } 
+  @override
+  void refresh() {
+     formKey.currentState?.reset();
+   
+   companyNameController.clear();
+   brandController.clear();
+   modelNumberController.clear();
+   configurationController.clear();
+   serialNumberController.clear();
+   statusController.clear();
+   purchaseDateController.clear();
+   purchaseAmountController.clear();
+   sellDateController.clear();
+   sellAmountController.clear();
+   buyerNameController.clear();
+   buyerPhoneNumberController.clear();
+   buyerAddressController.clear();
+   selectedStatus.value = '';
+   selectedPaidBy.value = '';
+    selectedSeller.value = null;
+      selectedBuyer.value = null;
+      itemCodeController.clear();
+
   }
 
   // Save Data Method
@@ -115,7 +139,7 @@ class InventoryFormController extends GetxController {
     } else if (buttonType.toLowerCase() == 'save+next') {
       if (formKey.currentState!.validate()) {
         await _saveInventory(); // Save inventory data
-        refresh(); // Reset form for new entry
+        refresh(); 
       }
     }
   }
@@ -210,12 +234,13 @@ class InventoryFormController extends GetxController {
           sellDate: sellDateController.text,
           sellTimestamp: sellTimestamp,
           updatedAt: DateTime.now().millisecondsSinceEpoch,
-          paidBy: selectedPaidBy.value);
+          paidBy: selectedPaidBy.value,
+           createdAt: inventoryToEdit?.createdAt);
       Map<String, dynamic> inventoryData = inventory.toJson();
 
       await inventoryRef.update(inventoryData);
 
-      print("Customer data updated successfully.");
+      print("inventory data updated successfully.");
     } catch (e) {
       print("Error updating customer data: $e");
     } finally {}

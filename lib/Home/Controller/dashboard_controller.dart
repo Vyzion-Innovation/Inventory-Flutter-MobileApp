@@ -59,22 +59,39 @@ class DashboardController extends GetxController {
 
     int startTimestamp = startOfMonth.millisecondsSinceEpoch;
     
-    try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('inventories')
-          .where('status', isEqualTo: 'sell')
-          .orderBy('sell_timestamp')
-           .where('sell_timestamp', isGreaterThanOrEqualTo: startTimestamp)
-          .get();
-      // Map the documents to InventoryModel instances
-      List<InventoryModel> inventories = snapshot.docs
-    .map((doc) => InventoryModel.fromFirestore(doc))
-    .toList();
-    inventoryList.assignAll(inventories);
-      totalSelleAmount.value = inventories.fold(
-        0.0,
-        (sum, inventory) => sum + (inventory.sellAmountNum ?? 0.0),
-      );
+   try {
+  // Fetch all sell records to calculate the total sell amount
+  QuerySnapshot allRecordsSnapshot = await FirebaseFirestore.instance
+      .collection('inventories')
+      .where('status', isEqualTo: 'sell')
+      .where('sell_timestamp', isGreaterThanOrEqualTo: startTimestamp)
+      .get();
+
+  // Calculate the total sell amount for all records
+  List<InventoryModel> allInventories = allRecordsSnapshot.docs
+      .map((doc) => InventoryModel.fromFirestore(doc))
+      .toList();
+
+  totalSelleAmount.value = allInventories.fold(
+    0.0,
+    (sum, inventory) => sum + (inventory.sellAmountNum ?? 0.0),
+  );
+
+  // Fetch only the 5 most recent sell records for display
+  QuerySnapshot recentRecordsSnapshot = await FirebaseFirestore.instance
+      .collection('inventories')
+      .where('status', isEqualTo: 'sell')
+      .orderBy('sell_timestamp', descending: true) // Order by most recent
+      .where('sell_timestamp', isGreaterThanOrEqualTo: startTimestamp)
+      .limit(5) // Limit to the most recent 5 records
+      .get();
+
+  // Map the recent records to InventoryModel instances
+  List<InventoryModel> recentInventories = recentRecordsSnapshot.docs
+      .map((doc) => InventoryModel.fromFirestore(doc))
+      .toList();
+
+  inventoryList.assignAll(recentInventories);
     } catch (e) {
       print("Error fetching inventory: $e");
     }

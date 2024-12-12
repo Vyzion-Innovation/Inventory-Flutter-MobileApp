@@ -41,6 +41,23 @@ class RepairFormController extends GetxController {
       finalCostController.text = repair.finalCost ?? '';
     
   }
+   @override
+  void refresh() {
+     formKey.currentState?.reset();
+     customeNameController.clear();
+   phoneNumberController.clear();
+   issueController.clear();
+   modelNumberController.clear();
+   estimatedCostController.clear();
+   modelNumberController.clear();
+   statusController.clear();
+   descriptionController.clear();
+   dateController.clear();
+   finalCostController.clear();
+  
+   selectedStatus.value = '';
+ 
+  }
 
   // Save Data Method
   Future<void> saveData(String buttonType) async {

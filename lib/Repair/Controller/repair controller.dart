@@ -85,8 +85,8 @@ class RepairController extends GetxController {
         query = FirebaseFirestore.instance
             .collection('repairs')
             .where('status', whereIn: status)
-            .orderBy('job_number')
-            .orderBy('created_at')
+            // .orderBy('job_number')
+            .orderBy('created_at', descending: true)
             .limit(limit);
         if (isNextPage && lastDocument != null) {
           query = query.startAfterDocument(lastDocument!);

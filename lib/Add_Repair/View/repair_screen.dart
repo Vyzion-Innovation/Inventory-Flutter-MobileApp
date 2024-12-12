@@ -37,6 +37,7 @@ class RepairFormScreen extends StatelessWidget {
           key: controller.formKey,
           child: ListView(
             children: [
+               const SizedBox(height: 10),
               CustomTextField(
                 labelText: "Customer Name",
                 hintText: "Enter name",

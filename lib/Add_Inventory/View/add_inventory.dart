@@ -38,6 +38,7 @@ class InventoryFormScreen extends StatelessWidget {
           key: controller.formKey,
           child: ListView(
             children: [
+               const SizedBox(height: 10),
               CustomTextField(
                 labelText: "Item Code",
                 hintText: "Enter Item Code",
