@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ProfileModel {
   final String? phone;
   final String? city;
@@ -5,7 +7,9 @@ class ProfileModel {
    final String? name;
   final String? pincode;
    final String? role;
-   final String? uid;
+   final String? id;
+    final String? uid;
+   final String? address;
   final int? updatedAt;
   final int? createdAt;
 
@@ -14,7 +18,9 @@ class ProfileModel {
      this.city,
      this.name,
       this.pincode,
+       this.address,
      this.gstNumber,
+     this.id,
      this.uid,
        this.role,
        this.updatedAt,
@@ -22,21 +28,26 @@ class ProfileModel {
   });
 
   // Factory method to create a Customer instance from a JSON map
-  factory ProfileModel.fromJson(Map<String, dynamic> json) {
-    return ProfileModel(
-      phone: json['phone'] as String?,
-      city: json['city'] as String?,
-      name: json['name'] as String?,
-          pincode: json['pinCode'] as String?,
-      gstNumber: json['gstNumber'] as String?,
-       role: json['role'] as String?,
-      uid: json['uid'] as String?,
-       updatedAt: json['updated_at'] != null ? json['updated_at'] as int : null,
-     createdAt: json['created_at'] != null ? json['created_at'] as int : null,
-    );
+    factory ProfileModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return ProfileModel.fromMap(data, doc.id);
   }
 
-  // Method to convert a Customer instance to a JSON map
+   factory ProfileModel.fromMap(Map<String, dynamic> data, [String? id]) {
+    return ProfileModel(
+      id: id,
+      phone: data['phone'] as String?,
+      address: data['address'] as String?,
+      name: data['name'] as String?,
+       pincode: data['pinCode'] as String?,
+      gstNumber: data['gstNumber'] as String?,
+      role: data['role'] as String?,
+        city: data['city'] as String?,
+         uid: data['uid'] as String?,
+      updatedAt: data['updated_at'] != null ? data['updated_at'] as int : null,
+    createdAt: data['created_at'] != null ? data['created_at'] as int : null,
+    );
+  }
   Map<String, dynamic> toJson() {
     return {
       'phone': phone,
@@ -46,6 +57,7 @@ class ProfileModel {
        'role': role,
       'gstNumber': gstNumber,
       'uid': uid,
+      'address': address,
        'updated_at': updatedAt,
       'created_at': createdAt,
     };

@@ -48,6 +48,9 @@ class SupllierScreen extends StatelessWidget {
 
   Widget inventoryListBuilder() {
   return Obx(() {
+     if (controller.supplierList.isEmpty && controller.isFetching.value) {
+      return const Center(child: CircularProgressIndicator());
+    }
     if (controller.supplierList.isEmpty && !controller.isFetching.value) {
       return const Center(child: Text('No data available'));
     }

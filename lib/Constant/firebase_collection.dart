@@ -10,6 +10,9 @@ class FirestoreCollections {
       FirebaseFirestore.instance.collection('inventories');
   static final CollectionReference repairs =
       FirebaseFirestore.instance.collection('repairs');
+      static final CollectionReference profile =
+     FirebaseFirestore.instance
+            .collection('myprofile');
 
   // Add other collection references here
 }

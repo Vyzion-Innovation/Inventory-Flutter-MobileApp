@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Extension/form_validator.dart';
+import 'package:inventoryappflutter/Model/profile_model.dart';
 import 'package:inventoryappflutter/Profile/Controller/profile_controller.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
@@ -12,7 +13,12 @@ import 'package:inventoryappflutter/common/customTextField.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ProfileController controller = Get.put(ProfileController());
-
+ ProfileScreen({Key? key, ProfileModel? profileData}) : super(key: key) {
+    // If a customer object is passed, set it for editing
+    if (profileData != null) {
+      controller.setProfileData(profileData);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,9 +106,9 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      title: Strings.saveProfile,
+                      title: controller.adminProfileData != null ? 'Update' : Strings.saveProfile,
                       onTap: () {
-                       controller.saveProfileData();
+                       controller.saveData();
                       },
                     ),
                   ),

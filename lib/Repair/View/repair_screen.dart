@@ -47,6 +47,9 @@ class RepairScreen extends StatelessWidget {
   }
   Widget repairListBuilder() {
     return Obx(() {
+       if (controller.repairList.isEmpty && controller.isFetching.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
       if (controller.repairList.isEmpty && !controller.isFetching.value) {
         return const Center(child: Text('No data available'));
       }
