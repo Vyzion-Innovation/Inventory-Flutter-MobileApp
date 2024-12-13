@@ -55,9 +55,10 @@ class DashboardController extends GetxController {
    Future<void> fetchSellCountAndSum() async {
      DateTime now = DateTime.now();
     DateTime startOfMonth = DateTime(now.year, now.month -1, 1);
-    DateTime startOfNextMonth = DateTime(now.year, now.month + 1, 1);
+    DateTime sevenDaysBack = now.subtract(Duration(days: 7));
 
     int startTimestamp = startOfMonth.millisecondsSinceEpoch;
+     int sevenDaysBackTimeStamp = sevenDaysBack.millisecondsSinceEpoch;
     
    try {
   // Fetch all sell records to calculate the total sell amount
@@ -82,8 +83,8 @@ class DashboardController extends GetxController {
       .collection('inventories')
       .where('status', isEqualTo: 'sell')
       .orderBy('sell_timestamp', descending: true) // Order by most recent
-      .where('sell_timestamp', isGreaterThanOrEqualTo: startTimestamp)
-      .limit(5) // Limit to the most recent 5 records
+      .where('sell_timestamp', isGreaterThanOrEqualTo: sevenDaysBackTimeStamp)
+      .limit(10) // Limit to the most recent 5 records
       .get();
 
   // Map the recent records to InventoryModel instances

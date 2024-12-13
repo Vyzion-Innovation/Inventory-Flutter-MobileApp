@@ -39,6 +39,7 @@ class InventoryFormController extends GetxController {
   // List of buyers from the database
   List<CustomerModel> buyers = <CustomerModel>[].obs;
   List<SupplierModel> sellers = <SupplierModel>[].obs;
+  var isSaving = false.obs;
 
   @override
   void onInit() {
@@ -56,9 +57,7 @@ class InventoryFormController extends GetxController {
           snapshot.docs.map((doc) => CustomerModel.fromFirestore(doc)).toList();
 
       if (inventoryData != null) {
-       
-          selectedBuyer.value = inventoryData?.buyer;
-        
+        selectedBuyer.value = inventoryData?.buyer;
       }
     } catch (e) {
       print("Error fetching buyers: $e");
@@ -84,50 +83,50 @@ class InventoryFormController extends GetxController {
   // Set the inventory data when editing
   void setInventoryData(InventoryModel inventory) {
     inventoryData = inventory;
-      inventoryToEdit = inventory;
+    inventoryToEdit = inventory;
     itemCodeController.text = inventory.itemCode ?? '';
     companyNameController.text = inventory.companyName ?? '';
     brandController.text = inventory.brand!;
     modelNumberController.text = inventory.modelNumber ?? '';
     configurationController.text = inventory.configuration ?? '';
     serialNumberController.text = inventory.serialNumber ?? '';
-    selectedStatus.value = inventory.status![0].toUpperCase() + inventory.status!.substring(1);
+    selectedStatus.value =
+        inventory.status![0].toUpperCase() + inventory.status!.substring(1);
     purchaseDateController.text = inventory.purchaseDate ?? '';
     purchaseAmountController.text = inventory.purchaseAmount ?? '';
-   
-      sellDateController.text = inventory.sellDate ?? '';
-      sellAmountController.text = inventory.sellAmount ?? '';
-      selectedPaidBy.value = inventory.paidBy ?? '';
-    
-  } 
+
+    sellDateController.text = inventory.sellDate ?? '';
+    sellAmountController.text = inventory.sellAmount ?? '';
+    selectedPaidBy.value = inventory.paidBy ?? '';
+  }
+
   @override
   void refresh() {
     FocusScope.of(Get.context!).unfocus();
-     formKey.currentState?.reset();
-   
-   companyNameController.clear();
-   brandController.clear();
-   modelNumberController.clear();
-   configurationController.clear();
-   serialNumberController.clear();
-   statusController.clear();
-   purchaseDateController.clear();
-   purchaseAmountController.clear();
-   sellDateController.clear();
-   sellAmountController.clear();
-   buyerNameController.clear();
-   buyerPhoneNumberController.clear();
-   buyerAddressController.clear();
-   selectedStatus.value = '';
-   selectedPaidBy.value = '';
+ itemCodeController.clear();
+    companyNameController.clear();
+    brandController.clear();
+    modelNumberController.clear();
+    configurationController.clear();
+    serialNumberController.clear();
+    statusController.clear();
+    purchaseDateController.clear();
+    purchaseAmountController.clear();
+    sellDateController.clear();
+    sellAmountController.clear();
+    buyerNameController.clear();
+    buyerPhoneNumberController.clear();
+    buyerAddressController.clear();
+    selectedStatus.value = '';
+    selectedPaidBy.value = '';
     selectedSeller.value = null;
-      selectedBuyer.value = null;
-      itemCodeController.clear();
-
+    selectedBuyer.value = null;
+   
   }
 
   // Save Data Method
   Future<void> saveData(String buttonType) async {
+  
     if (buttonType.toLowerCase() == 'save') {
       if (formKey.currentState!.validate()) {
         if (inventoryToEdit != null) {
@@ -138,10 +137,20 @@ class InventoryFormController extends GetxController {
         Get.back(result: true); // Close screen and pass success
       }
     } else if (buttonType.toLowerCase() == 'save+next') {
-      if (formKey.currentState!.validate()) {
-        await _saveInventory(); // Save inventory data
-        refresh(); 
+      try {
+         isSaving.value = true;
+        if (formKey.currentState!.validate()) {
+          await _saveInventory();
+          formKey.currentState?.reset();
+          refresh();
+        }
+      } catch (e) {
+        // Handle error
+        print("Error saving inventory: $e");
       }
+      finally {
+    isSaving.value = false;
+  }
     }
   }
 
@@ -173,14 +182,13 @@ class InventoryFormController extends GetxController {
           purchaseDate: purchaseDateController.text,
           purchaseTimestamp: purchaseTimestamp,
           createdAt: DateTime.now().millisecondsSinceEpoch);
-          
 
       // Convert the object to JSON
       Map<String, dynamic> inventoryData = inventory.toJson();
 
       // Add the inventory data to Firestore
-     await FirestoreCollections.inventory.add(inventoryData);
-         
+      await FirestoreCollections.inventory.add(inventoryData);
+
       print("Inventory data saved successfully.");
     } catch (e) {
       print("Error saving inventory data: $e");
@@ -212,9 +220,8 @@ class InventoryFormController extends GetxController {
         return; // Ensure there's a customer to update
 
       // Get the document reference using the customer's ID
-     DocumentReference inventoryRef =
-          FirestoreCollections.inventory.doc(inventoryToEdit
-              ?.id); // Assuming your CustomerModel has an 'id' field
+      DocumentReference inventoryRef = FirestoreCollections.inventory.doc(
+          inventoryToEdit?.id); // Assuming your CustomerModel has an 'id' field
 
       InventoryModel inventory = InventoryModel(
           itemCode: itemCodeController.text,
@@ -236,7 +243,7 @@ class InventoryFormController extends GetxController {
           sellTimestamp: sellTimestamp,
           updatedAt: DateTime.now().millisecondsSinceEpoch,
           paidBy: selectedPaidBy.value,
-           createdAt: inventoryToEdit?.createdAt);
+          createdAt: inventoryToEdit?.createdAt);
       Map<String, dynamic> inventoryData = inventory.toJson();
 
       await inventoryRef.update(inventoryData);

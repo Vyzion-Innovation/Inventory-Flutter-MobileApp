@@ -32,7 +32,7 @@ class InventoryFormScreen extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      body: Padding(
+      body: controller.isSaving.value ? const Center(child: CircularProgressIndicator(),): Padding(
         padding: const EdgeInsets.all(20.0),
         child: Form(
           key: controller.formKey,
