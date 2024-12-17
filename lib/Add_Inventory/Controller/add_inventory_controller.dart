@@ -141,7 +141,9 @@ class InventoryFormController extends GetxController {
          isSaving.value = true;
         if (formKey.currentState!.validate()) {
           await _saveInventory();
+          
           formKey.currentState?.reset();
+          itemCodeController.clear();
           refresh();
         }
       } catch (e) {
