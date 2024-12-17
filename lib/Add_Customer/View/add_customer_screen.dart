@@ -31,6 +31,12 @@ class AddCustomerScreen extends StatelessWidget {
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
+         isLeading: true,
+        onTapLeading: () {
+          Get.back(result: true);
+          print('Leading widget tapped!');
+          // You can also navigate or perform other actions here
+        },
       ),
       body: controller.isLoader.value
           ? Center(child: CircularProgressIndicator())
@@ -54,7 +60,11 @@ class AddCustomerScreen extends StatelessWidget {
                       labelText: "Phone Number",
                       hintText: "Enter Phone Number",
                       controller: controller.phoneNumberController,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                     inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(10)
+                        ],
+                         input: TextInputType.number,
                       borderSide:
                           const BorderSide(color: AppColors.primaryColor, width: 1.0),
                       validator: FieldValidator.validatePhoneNumber,

@@ -51,7 +51,17 @@ class SupplierFormController extends GetxController {
     } else if (buttonType.toLowerCase() == 'save+next') {
       // Save + Next button: Validate, save, and reset form
       if (formKey.currentState!.validate()) {
-        await _saveSupplier(); // Save supplier data
+        await _saveSupplier(); 
+         Get.defaultDialog(
+          title: "Data Saved",
+          content: const Text("Your data has been saved successfully."),
+          confirm: ElevatedButton(
+            onPressed: () {
+              Get.back(); // Close the dialog
+            },
+            child: const Text("OK"),
+          ),
+        );
         refresh(); // Reset form for new entry
       }
     }
@@ -107,7 +117,7 @@ class SupplierFormController extends GetxController {
 
  
 
-  void cancelsaving() {
-    Get.back();
+ void cancelSaving() {
+    Get.back(result: true);
   }
 }

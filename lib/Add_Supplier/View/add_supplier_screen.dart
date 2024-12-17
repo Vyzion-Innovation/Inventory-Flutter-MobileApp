@@ -26,7 +26,13 @@ class AddSupplierScreen extends StatelessWidget {
     return Scaffold(
      appBar:  CustomAppBar(
         title: AppText(controller.supplierToEdit == null ? Strings.addSupplier : " Edit Supplier", fontSize: 20, fontWeight: FontWeight.bold,),
-      ),
+       isLeading: true,
+        onTapLeading: () {
+          Get.back(result: true);
+          print('Leading widget tapped!');
+          // You can also navigate or perform other actions here
+        },
+        ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Form(
@@ -47,7 +53,11 @@ class AddSupplierScreen extends StatelessWidget {
                 labelText: "Phone Number",
                 hintText: "Enter Phone Number",
                 controller: controller.phoneNumberController,
-                 inputFormatters: [FilteringTextInputFormatter.digitsOnly] ,
+                inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(10)
+                        ],
+                         input: TextInputType.number,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validatePhoneNumber,
@@ -92,8 +102,8 @@ class AddSupplierScreen extends StatelessWidget {
                     child: CustomButton(
                       title: Strings.cancel,
                       onTap: () {
-                        controller.cancelsaving();
-                         Get.back(result: true);
+                       controller.cancelSaving();
+                        
                       },
                     ),
                   ),

@@ -52,7 +52,7 @@ class CustomerDetailsScreen extends StatelessWidget {
                         context: context,
                         icon: Icons.phone,
                         label: "Phone",
-                        value: customer.phone ?? 'N/A',
+                        value:  '+91-${customer.phone ?? ''}',
                       ),
                       const Divider(),
                       _buildDetailRow(

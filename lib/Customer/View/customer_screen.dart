@@ -105,7 +105,7 @@ class CustomerScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                         AppText(
-                          profile.phone ?? '',
+                          '+91-${profile.phone ?? ''}',
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),

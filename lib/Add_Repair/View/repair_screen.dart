@@ -30,6 +30,11 @@ class RepairFormScreen extends StatelessWidget {
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
+         isLeading: true,
+        onTapLeading: () {
+          Get.back(result: true);
+      
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -51,6 +56,10 @@ class RepairFormScreen extends StatelessWidget {
                 labelText: "Phone Number",
                 hintText: "Enter Phone Number",
                 controller: controller.phoneNumberController,
+                inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                         input: TextInputType.number,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validatePhoneNumber,
@@ -69,7 +78,10 @@ class RepairFormScreen extends StatelessWidget {
                 labelText: "Estimated Cost",
                 hintText: "Enter Estimated Cost",
                 controller: controller.estimatedCostController,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+             inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                         input: TextInputType.number,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validateEstimatedCost,
@@ -156,6 +168,7 @@ class RepairFormScreen extends StatelessWidget {
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
+                         input: TextInputType.number,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
                         validator: FieldValidator.validateEstimatedCost,

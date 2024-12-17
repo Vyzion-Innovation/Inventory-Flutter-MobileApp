@@ -52,7 +52,7 @@ class SupplierDetails extends StatelessWidget {
                         context: context,
                         icon: Icons.phone,
                         label: "Phone",
-                        value: supplier.phone ?? 'N/A',
+                        value: '+91-${supplier.phone ?? ''}',
                       ),
                       const Divider(),
                       _buildDetailRow(
@@ -125,7 +125,7 @@ String formatTimestamp(int? timestamp) {
     return "N/A"; // Handle null timestamp
   }
   final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-  return DateFormat('yyyy-MM-dd').format(dateTime); // Customize the format
+  return DateFormat('yyyy-MM-dd HH:mm').format(dateTime); // Customize the format
 }
 
   Widget _buildDetailRowWithCopy({

@@ -73,6 +73,16 @@ class RepairFormController extends GetxController {
     } else if (buttonType.toLowerCase() == 'save+next') {
       if (formKey.currentState!.validate()) {
         await _saveRepairItem(); // Save inventory data
+         Get.defaultDialog(
+          title: "Data Saved",
+          content: const Text("Your data has been saved successfully."),
+          confirm: ElevatedButton(
+            onPressed: () {
+              Get.back(); // Close the dialog
+            },
+            child: const Text("OK"),
+          ),
+        );
         refresh(); // Reset form for new entry
       }
     }
@@ -162,6 +172,6 @@ class RepairFormController extends GetxController {
   }
 
   void cancelSaving() {
-    Get.back();
+    Get.back(result: true);
   }
 }

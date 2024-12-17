@@ -48,22 +48,28 @@ class SupllierScreen extends StatelessWidget {
 
   Widget inventoryListBuilder() {
   return Obx(() {
-     if (controller.supplierList.isEmpty && controller.isFetching.value) {
+    if (controller.supplierList.isEmpty && controller.isFetching.value) {
       return const Center(child: CircularProgressIndicator());
     }
     if (controller.supplierList.isEmpty && !controller.isFetching.value) {
       return const Center(child: Text('No data available'));
     }
-    return ListView.builder(
-       controller: controller.scrollController,
-      itemCount: controller.supplierList.length,
-      itemBuilder: (context, index) {
-        var profile = controller.supplierList[index];
-        return inventoryItemCard(profile, index);
+    return RefreshIndicator(
+      onRefresh: () async {
+        await controller.fetchSuppliers(); // Call fetchSuppliers without pagination
       },
+      child: ListView.builder(
+        controller: controller.scrollController,
+        itemCount: controller.supplierList.length,
+        itemBuilder: (context, index) {
+          var profile = controller.supplierList[index];
+          return inventoryItemCard(profile, index);
+        },
+      ),
     );
   });
 }
+
 
   Widget inventoryItemCard(SupplierModel profile, int index) {
   return Padding(
@@ -105,7 +111,7 @@ class SupllierScreen extends StatelessWidget {
                         fontSize: 14,
                       ),
                       AppText(
-                       profile.phone ?? '',  // Updated key
+                       '+91-${profile.phone ?? ''}',  // Updated key
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),

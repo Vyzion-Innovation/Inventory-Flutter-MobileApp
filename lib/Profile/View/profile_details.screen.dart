@@ -53,7 +53,7 @@ class ProfileDetails extends StatelessWidget {
                         context: context,
                         icon: Icons.phone,
                         label: "Phone",
-                        value: profile.phone ?? 'N/A',
+                        value: '+91-${profile.phone ?? 'N/A'}',
                       ),
                        _buildDetailRow(
                         icon: Icons.location_on,

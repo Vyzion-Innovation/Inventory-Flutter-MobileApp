@@ -65,8 +65,8 @@ class CustomerController extends GetxController {
       if (searchQuery.isEmpty) {
         // Default query when no search term is entered
         query = FirebaseFirestore.instance
-            .collection('customers')
-            .orderBy('created_at') // Default ordering
+            .collection('customers').
+              orderBy('created_at', descending: true)// Default ordering
             .limit(limit);
              if (isNextPage && lastDocument != null) {
         query = query.startAfterDocument(lastDocument!);

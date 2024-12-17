@@ -34,6 +34,12 @@ class SupplierController extends GetxController {
       }
     });
   }  
+   @override
+  void onReady() {
+    super.onReady();
+    fetchSuppliers(); // Fetch when the page is ready
+  }
+  
  @override
   void onClose() {
       searchController.dispose();
@@ -48,6 +54,9 @@ class SupplierController extends GetxController {
     if (isFetching.value) return;
 
     isFetching.value = true;
+     if (!isNextPage) {
+      lastDocument = null; // Reset for a fresh fetch
+    }
    
     String searchQuery = searchController.text.trim().toLowerCase();
     String capitalizedSearchQuery = searchQuery.isNotEmpty
@@ -61,7 +70,7 @@ class SupplierController extends GetxController {
     if (searchQuery.isEmpty) {
       query = FirebaseFirestore.instance
           .collection('suppliers').
-                orderBy('created_at')
+                orderBy('created_at', descending: true)
           .limit(limit);
           if (isNextPage && lastDocument != null) {
       query = query.startAfterDocument(lastDocument!);
