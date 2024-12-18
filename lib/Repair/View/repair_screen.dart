@@ -184,7 +184,7 @@ class RepairScreen extends StatelessWidget {
                     ],
                   ),
               
-                  const SizedBox(height: 8),
+                 
                 ],
               ),
             ),

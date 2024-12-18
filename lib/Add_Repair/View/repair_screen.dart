@@ -57,7 +57,8 @@ class RepairFormScreen extends StatelessWidget {
                 hintText: "Enter Phone Number",
                 controller: controller.phoneNumberController,
                 inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(10)
                         ],
                          input: TextInputType.number,
                 borderSide:
@@ -108,8 +109,11 @@ class RepairFormScreen extends StatelessWidget {
                               child: Text(item),
                             ))
                         .toList(),
-                    onChanged: (value) =>
-                        controller.selectedStatus.value = value ?? '',
+                    onChanged: (value) {
+                  controller.selectedStatus.value = value ?? '';
+                  // Trigger validation manually
+                  controller.formKey.currentState?.validate();
+                },
                     validator: (value) =>
                         value == null || value.isEmpty ? "Required" : null,
                     fillColor: AppColors.colorWhite,
@@ -186,6 +190,7 @@ class RepairFormScreen extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       title: controller.repairData == null ? Strings.save : 'Update',
+                         color: AppColors.primaryColor,
                       onTap: () {
                         controller.saveData('save');
                       },
@@ -196,6 +201,7 @@ class RepairFormScreen extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       title: Strings.saveNext,
+                        color: AppColors.primaryColor,
                       onTap: () {
                         controller.saveData('save+next');
                       },
@@ -206,6 +212,7 @@ class RepairFormScreen extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       title: Strings.cancel,
+                      color: AppColors.secondaryColor,
                       onTap: () {
                         controller.cancelSaving();
                       },

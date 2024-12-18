@@ -84,7 +84,7 @@ class DashboardController extends GetxController {
       .where('status', isEqualTo: 'sell')
       .orderBy('sell_timestamp', descending: true) // Order by most recent
       .where('sell_timestamp', isGreaterThanOrEqualTo: sevenDaysBackTimeStamp)
-      .limit(10) // Limit to the most recent 5 records
+      .limit(5) // Limit to the most recent 5 records
       .get();
 
   // Map the recent records to InventoryModel instances

@@ -46,6 +46,16 @@ class AddCustomerController extends GetxController {
       if (formKey.currentState!.validate()) {
         if (customerToEdit != null) {
           await _updateCustomer(); // Call to update the existing customer
+           await Get.defaultDialog(
+          title: "Customer updated",
+          content: const Text("Your data has been updated successfully."),
+          confirm: ElevatedButton(
+            onPressed: () {
+              Get.back(); // Close the dialog
+            },
+            child: const Text("OK"),
+          ),
+        );
         } else {
           await _saveCustomer(); // Call to save the new customer
         }

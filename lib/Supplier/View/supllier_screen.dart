@@ -106,7 +106,7 @@ class SupllierScreen extends StatelessWidget {
                   Row(
                     children: [
                       const AppText(
-                        'Phone_Number:  ',
+                        'Phone Number:  ',
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
@@ -169,7 +169,7 @@ class SupllierScreen extends StatelessWidget {
                       },
                     );
                   },
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  // padding: const EdgeInsets.symmetric(vertical: 8.0),
                 ),
                 ],
               ),

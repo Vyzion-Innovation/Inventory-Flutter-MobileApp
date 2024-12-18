@@ -86,6 +86,7 @@ class AddCustomerScreen extends StatelessWidget {
                         Expanded(
                           child: CustomButton(
                             title: controller.customerToEdit == null ? Strings.save : 'Update',
+                            color: AppColors.primaryColor,
                             onTap: () {
                               controller.saveData('save');
                             },
@@ -96,6 +97,7 @@ class AddCustomerScreen extends StatelessWidget {
                         Expanded(
                           child: CustomButton(
                             title: Strings.saveNext,
+                            color: AppColors.primaryColor,
                             onTap: () {
                               controller.saveData('save+next');
                             },
@@ -106,6 +108,7 @@ class AddCustomerScreen extends StatelessWidget {
                         Expanded(
                           child: CustomButton(
                             title: Strings.cancel,
+                            color: AppColors.secondaryColor,
                             onTap: () {
                               controller.cancelSaving();
                             },

@@ -23,8 +23,8 @@ class Strings {
    static const rememberMe = "Remember me";
   static const login = "Login";
    static const save = "Save";
-   static const saveNext = "Save+next";
-   static const cancel = "Cancel";
+   static const saveNext = "Save + next";
+   static const cancel = "Back";
    static const lableEmail = "Email";
   static const lablePassword = "Password";
    static const hintEmail = "Enter email";

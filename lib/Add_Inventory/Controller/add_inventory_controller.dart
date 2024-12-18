@@ -102,8 +102,11 @@ class InventoryFormController extends GetxController {
 
   @override
   void refresh() {
-    FocusScope.of(Get.context!).unfocus();
-    isValidating = false;
+   
+    FocusManager.instance.primaryFocus?.unfocus(); 
+
+        // Reset the form after unfocusing
+        formKey.currentState?.reset();
 
     companyNameController.clear();
     brandController.clear();
@@ -123,30 +126,45 @@ class InventoryFormController extends GetxController {
     selectedPaidBy.value = '';
     selectedSeller.value = null;
     selectedBuyer.value = null;
-     isValidating = true;
+  
    
   }
 
   // Save Data Method
- Future<void> saveData(String buttonType) async {
+ Future<void> saveData(int buttonType) async {
   isSaving.value = true;
 
-  if (buttonType.toLowerCase() == 'save') {
-    if (formKey.currentState!.validate()) {
-      if (inventoryToEdit != null) {
-        await _updateIntemInventory(); // Call to update the existing inventory
-      } else {
-        await _saveInventory(); // Call to save the new inventory
+  try {
+    // when user tap on save button
+    if (buttonType == 1) {
+      if (formKey.currentState!.validate()) {
+        if (inventoryToEdit != null) {
+          await _updateIntemInventory();
+
+          // Show success dialog after the update
+          await Get.defaultDialog(
+            title: "Inventory Updated",
+            content: const Text("Your data has been updated successfully."),
+            confirm: ElevatedButton(
+              onPressed: () {
+                Get.back(); // Close the dialog
+                Get.back(result: true); // Close the screen and pass success
+              },
+              child: const Text("OK"),
+            ),
+          );
+        } else {
+          await _saveInventory();
+          Get.back(result: true); // Close screen and pass success
+        }
       }
-      Get.back(result: true); // Close screen and pass success
-    }
-  } else if (buttonType.toLowerCase() == 'save+next') {
-    try {
+    } else if (buttonType == 2) {
+       // when user tap on save+next button
       if (formKey.currentState!.validate()) {
         await _saveInventory();
+        refresh();
 
-        // Show a dialog after saving
-        Get.defaultDialog(
+                await Get.defaultDialog(
           title: "Inventory Saved",
           content: const Text("Your data has been saved successfully."),
           confirm: ElevatedButton(
@@ -156,20 +174,17 @@ class InventoryFormController extends GetxController {
             child: const Text("OK"),
           ),
         );
-
-        // Reset the form for the next entry
-        formKey.currentState?.reset();
-        refresh();
-      }
-    } catch (e) {
-      // Handle error
-      print("Error saving inventory: $e");
-    } finally {
-      isSaving.value = false;
-      
+ formKey.currentState?.reset();
+             }
     }
+  } catch (e) {
+    print("Error saving inventory: $e");
+  } finally {
+    isSaving.value = false; // Ensure isSaving is set back to false
   }
 }
+
+
 
   // Save inventory data to Firestore
   Future<void> _saveInventory() async {

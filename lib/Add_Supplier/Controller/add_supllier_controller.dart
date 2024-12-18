@@ -42,6 +42,16 @@ class SupplierFormController extends GetxController {
          if (supplierToEdit != null)
          {
            await _updateSupplier(); // Call to update the existing customer
+       await Get.defaultDialog(
+          title: "Supplier updated",
+          content: const Text("Your data has been updated successfully."),
+          confirm: ElevatedButton(
+            onPressed: () {
+              Get.back(); // Close the dialog
+            },
+            child: const Text("OK"),
+          ),
+        );
         } else {
            await _saveSupplier();
          }

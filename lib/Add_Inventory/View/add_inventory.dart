@@ -56,7 +56,7 @@ class InventoryFormScreen extends StatelessWidget {
                 controller: controller.itemCodeController,
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
-                validator: FieldValidator.validateItemCode,
+                 validator: FieldValidator.validateItemCode,
               ),
               const SizedBox(height: 20),
               CustomTextField(
@@ -118,8 +118,11 @@ class InventoryFormScreen extends StatelessWidget {
                               child: Text(item),
                             ))
                         .toList(),
-                    onChanged: (value) =>
-                        controller.selectedStatus.value = value ?? '',
+                   onChanged: (value) {
+                  controller.selectedStatus.value = value ?? '';
+                  // Trigger validation manually
+                  // controller.formKey.currentState?.validate();
+                },
                     validator: (value) =>
                         value == null || value.isEmpty ? "Required" : null,
                     fillColor: AppColors.colorWhite,
@@ -194,7 +197,11 @@ class InventoryFormScreen extends StatelessWidget {
                             onChanged: (value) {
                               if (value != null) {
                                 controller.selectedBuyer.value =
-                                    value; // Update the observable
+                                    value; // Update the
+                                   
+                  // Trigger validation manually
+                  // controller.formKey.currentState?.validate();
+             
                               } // Set the selected buyer
                             },
                             validator: (value) =>
@@ -216,8 +223,11 @@ class InventoryFormScreen extends StatelessWidget {
                                       child: Text(item),
                                     ))
                                 .toList(),
-                            onChanged: (value) =>
-                                controller.selectedPaidBy.value = value ?? '',
+                            onChanged: (value) {
+                  controller.selectedPaidBy.value = value ?? '';
+                  // Trigger validation manually
+                  // controller.formKey.currentState?.validate();
+                },
                             validator: (value) => value == null || value.isEmpty
                                 ? "Required"
                                 : null,
@@ -296,6 +306,7 @@ class InventoryFormScreen extends StatelessWidget {
                               print(value);
                               controller.selectedSeller.value =
                                   value; // Update the observable
+                                    // controller.formKey.currentState?.validate();
                             }
                           },
                           borderSide: const BorderSide(
@@ -317,8 +328,9 @@ class InventoryFormScreen extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                        title: controller.inventoryData == null ? Strings.save : 'Update',
+                         color: AppColors.primaryColor,
                       onTap: () {
-                        controller.saveData('save');
+                        controller.saveData(1);
                       },
                     ),
                   ),
@@ -327,8 +339,9 @@ class InventoryFormScreen extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       title: Strings.saveNext,
+                       color: AppColors.primaryColor,
                       onTap: () {
-                        controller.saveData('save+next');
+                        controller.saveData(2);
                       },
                     ),
                   ),
@@ -336,7 +349,8 @@ class InventoryFormScreen extends StatelessWidget {
                   SizedBox(width: 10), // Spacing between buttons
                   Expanded(
                     child: CustomButton(
-                      title: Strings.cancel,
+                      title: Strings.back,
+                      color: AppColors.secondaryColor,
                       onTap: () {
                         controller.cancelSaving();
                       },
