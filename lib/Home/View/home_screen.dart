@@ -7,7 +7,11 @@ import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Constant/app_logo.dart';
 import 'package:inventoryappflutter/Home/Controller/dashboard_controller.dart';
 import 'package:inventoryappflutter/Home/Controller/drawer_controller.dart';
+import 'package:inventoryappflutter/Inventory/view/inventory_details_screen.dart';
 import 'package:inventoryappflutter/Login/Controller/login_controller.dart';
+import 'package:inventoryappflutter/Model/inventory_model.dart';
+import 'package:inventoryappflutter/Profile/View/profile_details.screen.dart';
+import 'package:inventoryappflutter/Profile/View/profile_screen.dart';
 import 'package:inventoryappflutter/Repair/Controller/repair%20controller.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_common_button.dart';
@@ -19,14 +23,12 @@ class HomePage extends StatelessWidget {
   final SidePanelController sidePanelController =
       Get.put(SidePanelController());
   final LoginController loginController = Get.put(LoginController());
-   final DashboardController dashboardController =
+  final DashboardController dashboardController =
       Get.put(DashboardController());
-      final RepairController repairController =
-      Get.put(RepairController());
-  
+  final RepairController repairController = Get.put(RepairController());
 
   @override
-   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
         title: AppText(
@@ -49,8 +51,8 @@ class HomePage extends StatelessWidget {
               _buildDashboardGrid(),
               const SizedBox(height: 20),
               _buildQuickActions(),
-               const SizedBox(height: 20),
-              _recentSalesList()
+              const SizedBox(height: 20),
+              inventoryListBuilder()
             ],
           ),
         ),
@@ -126,19 +128,19 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-         CommonCard(
+        CommonCard(
           padding: EdgeInsets.all(12),
           title: 'Current Month Repair Job',
           additionalWidgets: [
-           Obx(
+            Obx(
               () => Center(
-              child: AppText(
+                child: AppText(
                   '${dashboardController.currentMonthRepairAmount}',
                   fontSize: 15,
                   color: AppColors.gradientOne,
                 ),
-            ),
-           )
+              ),
+            )
           ],
         ),
       ],
@@ -149,7 +151,7 @@ class HomePage extends StatelessWidget {
     return Center(
       child: CommonCard(
         width: 400,
-        padding: const EdgeInsets.fromLTRB(70,12,12,0),
+        padding: const EdgeInsets.fromLTRB(70, 12, 12, 0),
         title: 'Quick Actions',
         additionalWidgets: [
           CustomTextButton(
@@ -180,14 +182,115 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-   Widget _recentSalesList() {
-    return Center(
+
+  Widget inventoryListBuilder() {
+    return Obx(() {
+      final inventory = dashboardController.inventoryList;
+
+      if (inventory.isEmpty) {
+        return const Center(
+          child: Text(
+            'No data available',
+            style: TextStyle(fontSize: 16),
+          ),
+        );
+      }
+
+      return Card(
+        elevation: 2, // Add elevation for a shadow effect
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8), // Rounded corners
+        ),
+        color: AppColors.infoColor,
+        // margin: const EdgeInsets.all(12), // Margin around the card
+        child: Padding(
+          padding: const EdgeInsets.all(8.0), // Padding inside the card
+          // Provide a fixed height for the ListView
+            child: Column(
+              children: [
+                AppText('Recent Sales List', fontSize: 20, fontWeight: FontWeight.bold,),
+                 SizedBox(
+            height: 400,
+               child:  ListView.builder(
+                  itemCount: inventory.length, // Add 1 for the loader
+                  itemBuilder: (context, index) {
+                    // if (index == inventory.length) {
+                    //   // Display loading indicator at the end
+                
+                    // }
+                
+                    var profile = inventory[index];
+                    return inventoryItemCard(profile, index);
+                  },
+                ),
+                 )
+              ],
+            
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget inventoryItemCard(InventoryModel profile, int index) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: CommonCard(
-        width: 400,
-         padding: const EdgeInsets.fromLTRB(70,12,12,0),
-        title: 'recent Sales List',
+        padding: const EdgeInsets.all(16),
+        color: AppColors.lightColor,
+        onTap: () {
+          Get.to(() => InventoryDetailsScreen(inventory: profile));
+        },
         additionalWidgets: [
-         
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Left column for item details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const AppText(
+                          'Item Code:  ',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        Expanded(
+                          // Wrap with Expanded to prevent overflow
+                          child: AppText(
+                            profile.itemCode ?? "",
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const AppText(
+                          'Sell Amount:  ',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        Expanded(
+                          // Wrap with Expanded to prevent overflow
+                          child: AppText(
+                            profile.sellAmount ?? "",
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -195,86 +298,120 @@ class HomePage extends StatelessWidget {
 
   // Drawer Widget
   Widget _buildDrawer(BuildContext context) {
-    return Drawer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 250,
-            color: AppColors.gradientOne,
-            padding: const EdgeInsets.fromLTRB(40.0, 50, 0, 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipOval(
-                  child: Image.asset(
-                    AppLogo.companyLogo,
-                    height: MediaQuery.of(context).size.height / 8,
-                    fit: BoxFit.scaleDown,
-                    matchTextDirection: true,
-                  ),
+    final profileData = sidePanelController.profileData;
+    return Obx(() => Drawer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 250,
+                color: AppColors.gradientOne,
+                padding: const EdgeInsets.fromLTRB(40.0, 50, 0, 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipOval(
+                      child: Image.asset(
+                        AppLogo.companyLogo,
+                        height: MediaQuery.of(context).size.height / 8,
+                        fit: BoxFit.scaleDown,
+                        matchTextDirection: true,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    if (profileData.isNotEmpty) ...[
+                      Row(
+                        children: [
+                          AppText(
+                            '${profileData[0].name?[0].toUpperCase()}${profileData[0].name?.substring(1)}',
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.colorWhite,
+                          ),
+                          const SizedBox(width: 5),
+                          AppText(
+                            '(${profileData[0].role ?? ''})',
+                            fontSize: 15,
+                            color: AppColors.colorWhite,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.person),
+                            onPressed: () {
+                              Get.to(() =>
+                                  ProfileDetails(profile: profileData.first));
+                            },
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                      AppText(
+                        profileData[0].phone ?? '',
+                        fontSize: 15,
+                        color: AppColors.colorWhite,
+                      ),
+                    ] else ...[
+                      AppText(
+                        'No Profile',
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.colorWhite,
+                      ),
+                    ],
+                  ],
                 ),
-                // const SizedBox(height: 10),
-                // const AppText(
-                //   'Pawan Ginti',
-                //   fontSize: 15,
-                //   fontWeight: FontWeight.bold,
-                //   color: AppColors.colorWhite,
-                // ),
-                // const SizedBox(height: 5),
-                // const AppText(
-                //   'P@p.com',
-                //   fontSize: 15,
-                //   color: AppColors.colorWhite,
-                // ),
-              ],
-            ),
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.person),
-            title: const AppText(
-              'Profile',
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
-            onTap: () {
-              sidePanelController.profileScreenRoute();
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.details_rounded),
-            title: const AppText(
-              'About App',
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
-            onTap: () {
-              sidePanelController.aboutScreenRoute();
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.exit_to_app),
-            title: const AppText(
-              'Logout',
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
-            onTap: () {
-              showCupertinoModalPopup(
-                context: context,
-                builder: (BuildContext context) => AlertPopUp(
-                  title: 'Do you really want to logout?',
-                  onTap: () {
-                    Navigator.pop(context); // Close the dialog
-                    loginController.logout(); // Perform logout
-                  },
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: AppText(
+                  profileData.isEmpty ? 'Add Profile' : "Edit Profile",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
                 ),
-              );
-            },
+                onTap: () async {
+                  final result = profileData.isEmpty
+                      ? await Get.to(() => ProfileScreen())
+                      : await Get.to(
+                          () => ProfileScreen(profileData: profileData[0]));
+
+                  if (result == true) {
+                    await sidePanelController.fetchProfileData();
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.details_rounded),
+                title: const AppText(
+                  'About App',
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+                onTap: () {
+                  sidePanelController.aboutScreenRoute();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.exit_to_app),
+                title: const AppText(
+                  'Logout',
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+                onTap: () {
+                  showCupertinoModalPopup(
+                    context: context,
+                    builder: (BuildContext context) => AlertPopUp(
+                      title: 'Do you really want to logout?',
+                      onTap: () {
+                        Navigator.pop(context); // Close the dialog
+                        loginController.logout(); // Perform logout
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }

@@ -48,136 +48,122 @@ class InventoriesController extends GetxController {
     focusNode.dispose(); // Dispose FocusNode
     super.onClose();
   }
+  
+   @override
+  void onReady() {
+    super.onReady();
+    fetchInventories(); // Fetch when the page is ready
+  }
+
 
   List<String> selectedTabStatus() {
     switch (selectedTab['id']) {
       case 2:
-        return ['Stock'];
+        return ['stock'];
       case 3:
-        return ['Sell'];
+        return ['sell'];
       default:
-        return ['Stock', 'Sell'];
+        return ['stock', 'sell'];
     }
   }
 
-  Future<void> fetchInventories({bool isNextPage = false}) async {
-    try {
-      if (isFetching.value) return;
+ Future<void> fetchInventories({bool isNextPage = false}) async {
+  try {
+    if (isFetching.value) return;
 
-      isFetching.value = true;
-      var status = selectedTabStatus();
-      String searchQuery = searchController.text.trim().toLowerCase();
+    isFetching.value = true;
+    var status = selectedTabStatus();
+    String searchQuery = searchController.text.trim().toLowerCase();
 
-      // Declare query variable
-      Query query;
-      String capitalizedSearchQuery = searchQuery.isNotEmpty
-          ? searchQuery[0].toUpperCase() + searchQuery.substring(1)
-          : "";
+    Query query;
+    String capitalizedSearchQuery = searchQuery.isNotEmpty
+        ? searchQuery[0].toUpperCase() + searchQuery.substring(1)
+        : "";
 
-      // Determine query based on search query
-      if (searchQuery.isEmpty) {
-        query = FirebaseFirestore.instance
+    if (searchQuery.isEmpty) {
+      query = FirebaseFirestore.instance
+          .collection('inventories')
+          .where('status', whereIn: status)
+          
+           .orderBy('created_at', descending: true)
+          .limit(limit);
+
+      if (isNextPage && lastDocument != null) {
+        query = query.startAfterDocument(lastDocument!);
+      }
+
+      QuerySnapshot snapshot = await query.get();
+      if (snapshot.docs.isNotEmpty) {
+        List<InventoryModel> allResults = snapshot.docs
+            .map((doc) => InventoryModel.fromFirestore(doc))
+            .toList();
+
+        if (isNextPage) {
+          inventoryList.addAll(allResults);
+        } else {
+          inventoryList.assignAll(allResults);
+        }
+
+        lastDocument = snapshot.docs.last;
+      } else if (!isNextPage) {
+        inventoryList.clear();
+      }
+    } else {
+      List<Query> queries = [
+        FirebaseFirestore.instance
             .collection('inventories')
             .where('status', whereIn: status)
             .orderBy('item_code')
-            .orderBy('created_at')
-            .limit(limit);
+            .startAt([searchQuery]).endAt([searchQuery + '\uf8ff']).limit(limit),
+        FirebaseFirestore.instance
+            .collection('inventories')
+            .where('status', whereIn: status)
+            .orderBy('serial_number')
+            .startAt([searchQuery]).endAt([searchQuery + '\uf8ff']).limit(limit),
+      ];
 
-        // Handle pagination
-        if (isNextPage && lastDocument != null) {
-          query = query.startAfterDocument(lastDocument!);
-        }
-
-        // Execute the query
-        QuerySnapshot snapshot = await query.get();
-
-        if (snapshot.docs.isNotEmpty) {
-          List<InventoryModel> allResults = snapshot.docs
-              .map((doc) => InventoryModel.fromFirestore(doc))
-              .toList();
-
-          if (isNextPage) {
-            inventoryList.addAll(allResults);
-          } else {
-            inventoryList.assignAll(allResults);
-          }
-
-          // Update last document for pagination
-          lastDocument = snapshot.docs.last;
-        } else if (!isNextPage) {
-          // Clear the list if no results and not paginating
-          inventoryList.clear();
-        }
-      } else {
-        // List of queries for 'or' search logic
-        List<Query> queries = [
-          FirebaseFirestore.instance
-              .collection('inventories')
-              .where('status', whereIn: status)
-              .orderBy('item_code')
-              .startAt([searchQuery]).endAt([searchQuery + '\uf8ff']).limit(
-                  limit),
-          FirebaseFirestore.instance
-              .collection('inventories')
-              .where('status', whereIn: status)
-              .orderBy('item_code')
-              .startAt([capitalizedSearchQuery]).endAt(
-                  [capitalizedSearchQuery + '\uf8ff']).limit(limit),
-          FirebaseFirestore.instance
-              .collection('inventories')
-              .where('status', whereIn: status)
-              .orderBy('serial_number')
-              .startAt([searchQuery]).endAt([searchQuery + '\uf8ff']).limit(
-                  limit),
-          FirebaseFirestore.instance
-              .collection('inventories')
-              .where('status', whereIn: status)
-              .orderBy('serial_number')
-              .startAt([capitalizedSearchQuery]).endAt(
-                  [capitalizedSearchQuery + '\uf8ff']).limit(limit),
-        ];
-
-        // Add pagination logic if needed
-        if (isNextPage && lastDocument != null) {
-          for (int i = 0; i < queries.length; i++) {
-            queries[i] = queries[i].startAfterDocument(lastDocument!);
-          }
-        }
-        List<InventoryModel> allResults = [];
-        QueryDocumentSnapshot? lastFetchedDocument;
-        // Run all queries and combine results
-        for (var query in queries) {
-          QuerySnapshot snapshot = await query.get();
-          if (snapshot.docs.isNotEmpty) {
-            allResults.addAll(snapshot.docs
-                .map((doc) => InventoryModel.fromFirestore(doc))
-                .toList());
-            lastFetchedDocument = snapshot.docs.last;
-          }
-        }
-        // Remove duplicate results based on document IDs
-        final uniqueResults = allResults.toSet().toList();
-
-        // Update inventory list
-        if (isNextPage) {
-          inventoryList.addAll(uniqueResults);
-        } else {
-          inventoryList.assignAll(uniqueResults);
-        }
-
-        // Update last document for pagination
-        if (lastFetchedDocument != null) {
-          lastDocument = lastFetchedDocument;
-        } else if (!isNextPage) {
-          inventoryList.clear();
+      if (isNextPage && lastDocument != null) {
+        for (int i = 0; i < queries.length; i++) {
+          queries[i] = queries[i].startAfterDocument(lastDocument!);
         }
       }
-    } catch (e) {
-      print("Error fetching inventory: $e");
-    } finally {
-      isFetching.value = false;
+
+      List<InventoryModel> allResults = [];
+      Set<String> seenIds = {};
+      QueryDocumentSnapshot? lastFetchedDocument;
+
+      for (var query in queries) {
+        QuerySnapshot snapshot = await query.get();
+        if (snapshot.docs.isNotEmpty) {
+          for (var doc in snapshot.docs) {
+            if (!seenIds.contains(doc.id)) {
+              allResults.add(InventoryModel.fromFirestore(doc));
+              seenIds.add(doc.id);
+            }
+          }
+          lastFetchedDocument = snapshot.docs.last;
+        }
+      }
+
+      if (isNextPage) {
+        inventoryList.addAll(allResults);
+      } else {
+        inventoryList.assignAll(allResults);
+      }
+
+      if (lastFetchedDocument != null) {
+        lastDocument = lastFetchedDocument;
+      } else if (!isNextPage) {
+        inventoryList.clear();
+      }
     }
+  } catch (e) {
+    print("Error fetching inventory: $e");
+  } finally {
+    isFetching.value = false;
   }
+}
+
 
   Future<void> addItem() async {
     final result = await Get.to(() => InventoryFormScreen());

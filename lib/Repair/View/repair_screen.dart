@@ -47,6 +47,9 @@ class RepairScreen extends StatelessWidget {
   }
   Widget repairListBuilder() {
     return Obx(() {
+       if (controller.repairList.isEmpty && controller.isFetching.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
       if (controller.repairList.isEmpty && !controller.isFetching.value) {
         return const Center(child: Text('No data available'));
       }
@@ -77,17 +80,32 @@ class RepairScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                    Row(
+                    children: [
+                      const AppText(
+                        'Job Number:  ',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      AppText(
+                           profile.jobNumber ?? "",
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                      ),
+                    ],
+                  ),
+                      const SizedBox(height: 8),
                   Row(
                     children: [
                       const AppText(
                         'Customer Name:  ',
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                       AppText(
                         profile.customerName ?? "",
                         fontWeight: FontWeight.normal,
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                     ],
                   ),
@@ -136,6 +154,36 @@ class RepairScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 8),
+                    Row(
+                    children: [
+                      const AppText(
+                        'Issue:  ',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      AppText(
+                           profile.issue ?? "",
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                      ),
+                    ],
+                  ),    const SizedBox(height: 8),
+                    Row(
+                    children: [
+                      const AppText(
+                        'Estimated Cost:  ',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      AppText(
+                           profile.estimatedCost ?? "",
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                      ),
+                    ],
+                  ),
+              
                   const SizedBox(height: 8),
                 ],
               ),

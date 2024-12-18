@@ -5,6 +5,7 @@ import 'package:inventoryappflutter/Add_Inventory/Controller/add_inventory_contr
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Constant/app_colors.dart';
 import 'package:inventoryappflutter/Extension/form_validator.dart';
+import 'package:inventoryappflutter/Inventory/Controller/inventory_controller.dart';
 import 'package:inventoryappflutter/Model/customer_model.dart';
 import 'package:inventoryappflutter/Model/inventory_model.dart';
 import 'package:inventoryappflutter/Model/supplier_model.dart';
@@ -16,6 +17,9 @@ import 'package:inventoryappflutter/common/customTextField.dart';
 
 class InventoryFormScreen extends StatelessWidget {
   final InventoryFormController controller = Get.put(InventoryFormController());
+
+   final InventoriesController inventorycontroller = Get.put(InventoriesController());
+
   InventoryFormScreen({Key? key, InventoryModel? inventory}) : super(key: key) {
     // If a customer object is passed, set it for editing
     if (inventory != null) {
@@ -26,18 +30,26 @@ class InventoryFormScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  CustomAppBar(
+       
         title: AppText(
          controller.inventoryData == null ? Strings.addInventory : 'Edit Inventory',
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
+         isLeading: true,
+        onTapLeading: () {
+          Get.back(result: true);
+         
+          // You can also navigate or perform other actions here
+        },
       ),
-      body: Padding(
+      body: controller.isSaving.value ? const Center(child: CircularProgressIndicator(),): Padding(
         padding: const EdgeInsets.all(20.0),
         child: Form(
           key: controller.formKey,
           child: ListView(
             children: [
+               const SizedBox(height: 10),
               CustomTextField(
                 labelText: "Item Code",
                 hintText: "Enter Item Code",
@@ -90,6 +102,8 @@ class InventoryFormScreen extends StatelessWidget {
                 borderSide:
                     const BorderSide(color: AppColors.primaryColor, width: 1.0),
                 validator: FieldValidator.validateSerialNumber,
+                 cap: TextCapitalization.characters, // Ensures keyboard starts in uppercase
+ 
               ),
               const SizedBox(height: 20),
               Obx(() => CommonDropDownTextField(
@@ -155,6 +169,7 @@ class InventoryFormScreen extends StatelessWidget {
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
+                         input: TextInputType.number,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
                         validator: FieldValidator.validateEstimatedCost,
@@ -252,6 +267,7 @@ class InventoryFormScreen extends StatelessWidget {
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
+                         input: TextInputType.number,
                         borderSide: const BorderSide(
                             color: AppColors.primaryColor, width: 1.0),
                         validator: FieldValidator.validateEstimatedCost,

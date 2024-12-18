@@ -13,33 +13,51 @@ class LoginController extends GetxController {
   var rememberMe = false.obs; 
   var passwordVisible = false.obs; 
    var isLoading = false.obs;
+final FirebaseAuth auth = FirebaseAuth.instance;
 
   void togglePasswordVisibility() {
     passwordVisible.value = !passwordVisible.value; // Toggle visibility
   }
 
-  final FirebaseAuth auth = FirebaseAuth.instance; // Initialize Firebase Auth
-
-  void toggleRememberMe(bool value) {
-    rememberMe.value = value; // Update the value when checkbox is toggled
+   // Initialize Firebase Auth
+   @override
+  void onInit() {
+    // TODO: implement onInit
+    loadSavedCredentials();
+    super.onInit();
   }
 
-    Future<void> login() async {
-    isLoading.value = true; // Set loading state to true
+   void loadSavedCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    rememberMe.value = prefs.getBool('rememberMe') ?? false;
+    if (rememberMe.value) {
+      emailController.text = prefs.getString('email') ?? '';
+      passwordController.text = prefs.getString('password') ?? '';
+    }
+  }
+
+  void toggleRememberMe(bool value) async {
+    rememberMe.value = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('rememberMe', value);
+  }
+
+  Future<void> login() async {
+    isLoading.value = true;
     if (formKey.currentState!.validate()) {
       try {
-        // Sign in with email and password
         UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
 
-        // Check if login was successful
         if (userCredential.user != null) {
-          // Save login state in shared preferences
           final prefs = await SharedPreferences.getInstance();
           await prefs.setBool(Strings.ifLogin, true);
-          // Navigate to Dashboard
+          if (rememberMe.value) {
+            await prefs.setString('email', emailController.text);
+            await prefs.setString('password', passwordController.text);
+          }
           Get.offAll(() => NavBarScreen());
         }
       } on FirebaseAuthException catch (e) {
@@ -52,18 +70,21 @@ class LoginController extends GetxController {
           Get.snackbar('Error', 'An error occurred. Please try again.');
         }
       } finally {
-        isLoading.value = false; // Set loading state to false
+        isLoading.value = false;
       }
     } else {
-      isLoading.value = false; // Set loading state to false if form is invalid
+      isLoading.value = false;
     }
   }
 
   Future<void> logout() async {
-    await auth.signOut(); // Sign out from Firebase
+    await auth.signOut();
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(Strings.ifLogin, false);
-    // Navigate back to Login Screen
+
+    // Clear saved credentials if "Remember Me" is not selected
+   
+
     Get.offAllNamed(RouteString.login);
   }
 }

@@ -39,7 +39,8 @@ class InventoryFormController extends GetxController {
   // List of buyers from the database
   List<CustomerModel> buyers = <CustomerModel>[].obs;
   List<SupplierModel> sellers = <SupplierModel>[].obs;
-
+  var isSaving = false.obs;
+  bool isValidating = true;
   @override
   void onInit() {
     super.onInit();
@@ -56,9 +57,7 @@ class InventoryFormController extends GetxController {
           snapshot.docs.map((doc) => CustomerModel.fromFirestore(doc)).toList();
 
       if (inventoryData != null) {
-       
-          selectedBuyer.value = inventoryData?.buyer;
-        
+        selectedBuyer.value = inventoryData?.buyer;
       }
     } catch (e) {
       print("Error fetching buyers: $e");
@@ -84,7 +83,6 @@ class InventoryFormController extends GetxController {
   // Set the inventory data when editing
   void setInventoryData(InventoryModel inventory) {
     inventoryData = inventory;
-    print('xgxfgfgfgdfggf${inventory.seller}');
     inventoryToEdit = inventory;
     itemCodeController.text = inventory.itemCode ?? '';
     companyNameController.text = inventory.companyName ?? '';
@@ -92,34 +90,86 @@ class InventoryFormController extends GetxController {
     modelNumberController.text = inventory.modelNumber ?? '';
     configurationController.text = inventory.configuration ?? '';
     serialNumberController.text = inventory.serialNumber ?? '';
-    selectedStatus.value = inventory.status ?? '';
+    selectedStatus.value =
+        inventory.status![0].toUpperCase() + inventory.status!.substring(1);
     purchaseDateController.text = inventory.purchaseDate ?? '';
     purchaseAmountController.text = inventory.purchaseAmount ?? '';
+
+    sellDateController.text = inventory.sellDate ?? '';
+    sellAmountController.text = inventory.sellAmount ?? '';
+    selectedPaidBy.value = inventory.paidBy ?? '';
+  }
+
+  @override
+  void refresh() {
+    FocusScope.of(Get.context!).unfocus();
+    isValidating = false;
+
+    companyNameController.clear();
+    brandController.clear();
+    modelNumberController.clear();
+     itemCodeController.clear();
+    configurationController.clear();
+    serialNumberController.clear();
+    statusController.clear();
+    purchaseDateController.clear();
+    purchaseAmountController.clear();
+    sellDateController.clear();
+    sellAmountController.clear();
+    buyerNameController.clear();
+    buyerPhoneNumberController.clear();
+    buyerAddressController.clear();
+    selectedStatus.value = '';
+    selectedPaidBy.value = '';
+    selectedSeller.value = null;
+    selectedBuyer.value = null;
+     isValidating = true;
    
-      sellDateController.text = inventory.sellDate ?? '';
-      sellAmountController.text = inventory.sellAmount ?? '';
-      selectedPaidBy.value = inventory.paidBy ?? '';
-    
   }
 
   // Save Data Method
-  Future<void> saveData(String buttonType) async {
-    if (buttonType.toLowerCase() == 'save') {
-      if (formKey.currentState!.validate()) {
-        if (inventoryToEdit != null) {
-          await _updateIntemInventory(); // Call to update the existing customer
-        } else {
-          await _saveInventory(); // Call to save the new customer
-        }
-        Get.back(result: true); // Close screen and pass success
+ Future<void> saveData(String buttonType) async {
+  isSaving.value = true;
+
+  if (buttonType.toLowerCase() == 'save') {
+    if (formKey.currentState!.validate()) {
+      if (inventoryToEdit != null) {
+        await _updateIntemInventory(); // Call to update the existing inventory
+      } else {
+        await _saveInventory(); // Call to save the new inventory
       }
-    } else if (buttonType.toLowerCase() == 'save+next') {
+      Get.back(result: true); // Close screen and pass success
+    }
+  } else if (buttonType.toLowerCase() == 'save+next') {
+    try {
       if (formKey.currentState!.validate()) {
-        await _saveInventory(); // Save inventory data
-        refresh(); // Reset form for new entry
+        await _saveInventory();
+
+        // Show a dialog after saving
+        Get.defaultDialog(
+          title: "Inventory Saved",
+          content: const Text("Your data has been saved successfully."),
+          confirm: ElevatedButton(
+            onPressed: () {
+              Get.back(); // Close the dialog
+            },
+            child: const Text("OK"),
+          ),
+        );
+
+        // Reset the form for the next entry
+        formKey.currentState?.reset();
+        refresh();
       }
+    } catch (e) {
+      // Handle error
+      print("Error saving inventory: $e");
+    } finally {
+      isSaving.value = false;
+      
     }
   }
+}
 
   // Save inventory data to Firestore
   Future<void> _saveInventory() async {
@@ -142,21 +192,20 @@ class InventoryFormController extends GetxController {
           modelNumber: modelNumberController.text,
           configuration: configurationController.text,
           serialNumber: serialNumberController.text,
-          status: selectedStatus.value,
+          status: selectedStatus.value.toLowerCase(),
           purchaseAmount: purchaseAmountController.text,
           purchaseAmountNum: int.tryParse(purchaseAmountController.text) ?? 0,
           seller: selectedSeller.value,
           purchaseDate: purchaseDateController.text,
           purchaseTimestamp: purchaseTimestamp,
           createdAt: DateTime.now().millisecondsSinceEpoch);
-          
 
       // Convert the object to JSON
       Map<String, dynamic> inventoryData = inventory.toJson();
 
       // Add the inventory data to Firestore
-     await FirestoreCollections.inventory.add(inventoryData);
-         
+      await FirestoreCollections.inventory.add(inventoryData);
+
       print("Inventory data saved successfully.");
     } catch (e) {
       print("Error saving inventory data: $e");
@@ -188,9 +237,8 @@ class InventoryFormController extends GetxController {
         return; // Ensure there's a customer to update
 
       // Get the document reference using the customer's ID
-     DocumentReference inventoryRef =
-          FirestoreCollections.inventory.doc(inventoryToEdit
-              ?.id); // Assuming your CustomerModel has an 'id' field
+      DocumentReference inventoryRef = FirestoreCollections.inventory.doc(
+          inventoryToEdit?.id); // Assuming your CustomerModel has an 'id' field
 
       InventoryModel inventory = InventoryModel(
           itemCode: itemCodeController.text,
@@ -199,7 +247,7 @@ class InventoryFormController extends GetxController {
           modelNumber: modelNumberController.text,
           configuration: configurationController.text,
           serialNumber: serialNumberController.text,
-          status: selectedStatus.value,
+          status: selectedStatus.value.toLowerCase(),
           purchaseAmount: purchaseAmountController.text,
           purchaseAmountNum: int.tryParse(purchaseAmountController.text) ?? 0,
           seller: selectedSeller.value,
@@ -211,18 +259,19 @@ class InventoryFormController extends GetxController {
           sellDate: sellDateController.text,
           sellTimestamp: sellTimestamp,
           updatedAt: DateTime.now().millisecondsSinceEpoch,
-          paidBy: selectedPaidBy.value);
+          paidBy: selectedPaidBy.value,
+          createdAt: inventoryToEdit?.createdAt);
       Map<String, dynamic> inventoryData = inventory.toJson();
 
       await inventoryRef.update(inventoryData);
 
-      print("Customer data updated successfully.");
+      print("inventory data updated successfully.");
     } catch (e) {
       print("Error updating customer data: $e");
     } finally {}
   }
 
   void cancelSaving() {
-    Get.back();
+    Get.back(result: true);
   }
 }

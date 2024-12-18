@@ -48,6 +48,9 @@ class CustomerScreen extends StatelessWidget {
 
   Widget inventoryListBuilder() {
     return Obx(() {
+       if (controller.filteredCustomerList.isEmpty && controller.isFetching.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
       if (controller.filteredCustomerList.isEmpty) {
         return const Center(child: Text('No data available'));
       }
@@ -102,7 +105,7 @@ class CustomerScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                         AppText(
-                          profile.phone ?? '',
+                          '+91-${profile.phone ?? ''}',
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),

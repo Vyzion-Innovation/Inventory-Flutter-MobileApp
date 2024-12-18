@@ -2,7 +2,8 @@ import 'package:inventoryappflutter/Constant/error_messages.dart';
 
 class FieldValidator {
   static String? validateItemCode(String? value) {
-    if (value == null || value.isEmpty) {
+    if ( value?.isEmpty ?? false) {
+      print(value);
       return ErrorValidationMessages.itemCode; // "Item Code is required."
     }
     return null;

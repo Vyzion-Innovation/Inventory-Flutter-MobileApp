@@ -17,7 +17,7 @@ class SupplierDetails extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: const AppText(
-          Strings.customer,
+          Strings.supplier,
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
@@ -44,7 +44,7 @@ class SupplierDetails extends StatelessWidget {
                     children: [
                       _buildDetailRow(
                         icon: Icons.person,
-                        label: "Customer Name",
+                        label: "Supplier Name",
                         value: supplier.name ?? 'N/A',
                       ),
                       const Divider(),
@@ -52,12 +52,12 @@ class SupplierDetails extends StatelessWidget {
                         context: context,
                         icon: Icons.phone,
                         label: "Phone",
-                        value: supplier.phone ?? 'N/A',
+                        value: '+91-${supplier.phone ?? ''}',
                       ),
                       const Divider(),
                       _buildDetailRow(
                         icon: Icons.location_on,
-                        label: "Billing Address",
+                        label: "Address",
                         value: supplier.supplierAddress ?? 'N/A',
                       ),
                       const Divider(),

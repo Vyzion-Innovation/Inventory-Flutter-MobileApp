@@ -1,23 +1,24 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:inventoryappflutter/Constant/appStrings.dart';
 import 'package:inventoryappflutter/Model/customer_model.dart';
+import 'package:inventoryappflutter/Model/profile_model.dart';
+import 'package:inventoryappflutter/Model/supplier_model.dart';
 import 'package:inventoryappflutter/common/app_common_appbar.dart';
 import 'package:inventoryappflutter/common/app_text.dart';
 
-class CustomerDetailsScreen extends StatelessWidget {
-  final CustomerModel customer;
+class ProfileDetails extends StatelessWidget {
+  final ProfileModel profile;
 
-  const CustomerDetailsScreen({Key? key, required this.customer}) : super(key: key);
+  const ProfileDetails({Key? key, required this.profile}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         title: const AppText(
-          Strings.customer,
+          Strings.supplier,
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
@@ -26,7 +27,7 @@ class CustomerDetailsScreen extends StatelessWidget {
       body: Column(
         children: [
           // Gradient header
-         
+
           const SizedBox(height: 16),
           // Customer details card
           Expanded(
@@ -44,27 +45,37 @@ class CustomerDetailsScreen extends StatelessWidget {
                     children: [
                       _buildDetailRow(
                         icon: Icons.person,
-                        label: "Customer Name",
-                        value: customer.name ?? 'N/A',
+                        label: "Supplier Name",
+                        value: profile.name ?? 'N/A',
                       ),
                       const Divider(),
                       _buildDetailRowWithCopy(
                         context: context,
                         icon: Icons.phone,
                         label: "Phone",
-                        value:  '+91-${customer.phone ?? ''}',
+                        value: '+91-${profile.phone ?? 'N/A'}',
+                      ),
+                       _buildDetailRow(
+                        icon: Icons.location_on,
+                        label: "Role",
+                        value: profile.role ?? 'N/A',
+                      ),
+                       _buildDetailRow(
+                        icon: Icons.location_on,
+                        label: "City",
+                        value: profile.city ?? 'N/A',
                       ),
                       const Divider(),
                       _buildDetailRow(
                         icon: Icons.location_on,
-                        label: "Billing Address",
-                        value: customer.billingAddress ?? 'N/A',
+                        label: "Address",
+                        value: profile.address ?? 'N/A',
                       ),
                       const Divider(),
                       _buildDetailRow(
                         icon: Icons.calendar_today,
                         label: "Created At",
-                        value:  formatTimestamp(customer.createdAt),
+                        value: formatTimestamp(profile.createdAt),
                       ),
                     ],
                   ),
@@ -76,15 +87,9 @@ class CustomerDetailsScreen extends StatelessWidget {
       ),
     );
   }
-String formatTimestamp(int? timestamp) {
-  if (timestamp == null) {
-    return "N/A"; // Handle null timestamp
-  }
-  final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-  return DateFormat('yyyy-MM-dd HH:mm').format(dateTime); // Customize the format
-}
 
-  Widget _buildDetailRow({required IconData icon, required String label, required String value}) {
+  Widget _buildDetailRow(
+      {required IconData icon, required String label, required String value}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Row(
@@ -103,21 +108,21 @@ String formatTimestamp(int? timestamp) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                AppText(
                   label,
-                  style: const TextStyle(
+                  
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                     color: Colors.grey,
-                  ),
+                  
                 ),
                 const SizedBox(height: 4),
-                Text(
+                AppText(
                   value,
-                  style: const TextStyle(
+                  
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                  ),
+                  
                 ),
               ],
             ),
@@ -126,6 +131,13 @@ String formatTimestamp(int? timestamp) {
       ),
     );
   }
+String formatTimestamp(int? timestamp) {
+  if (timestamp == null) {
+    return "N/A"; // Handle null timestamp
+  }
+  final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+  return DateFormat('yyyy-MM-dd').format(dateTime); // Customize the format
+}
 
   Widget _buildDetailRowWithCopy({
     required BuildContext context,
@@ -151,7 +163,7 @@ String formatTimestamp(int? timestamp) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-               AppText(
+                AppText(
                   label,
                   
                     fontWeight: FontWeight.bold,

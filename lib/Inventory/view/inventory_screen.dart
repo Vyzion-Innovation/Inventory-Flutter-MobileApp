@@ -19,6 +19,7 @@ class InventoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     controller.fetchInventories();
         return Scaffold(
       appBar: CustomAppBar(
           title: const AppText(
@@ -50,6 +51,9 @@ class InventoriesScreen extends StatelessWidget {
    Widget inventoryListBuilder() {
     return Obx(() {
       final inventory = controller.inventoryList;
+       if (controller.inventoryList.isEmpty && controller.isFetching.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
       if (inventory.isEmpty && !controller.isFetching.value) {
         return const Center(child: Text('No data available'));
       }
@@ -184,7 +188,7 @@ class InventoriesScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppText(
-                    profile.status ?? "",
+                    profile.status![0].toUpperCase() +  profile.status!.substring(1) ?? "",
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                     color: profile.status?.toLowerCase() == 'stock'
@@ -256,38 +260,37 @@ class InventoriesScreen extends StatelessWidget {
 }
 
 
+  
   Widget searchBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: SizedBox(
-        height: 50,
-        child: Obx(
-          () => CustomTextField(
-            focusNode: controller.focusNode, // Use the controller's FocusNode
-            onTap: () {
-              controller.isSearchActive.value = true; // Activate search
-            },
-            MaxLine: 1,
-            hintText: inevontryTextStrings.Searchhint,
-            controller: controller.searchController,
-            borderSide:
-                const BorderSide(color: AppColors.greyColor, width: 1.0),
-            prefftext: const Icon(Icons.search),
-            suffix: controller.isSearchActive.value
-                ? IconButton(
-                    onPressed: () {
-                      // Clear search and deactivate
-                      controller.searchController.clear();
-                      controller.isSearchActive.value = false;
-                      controller.focusNode.unfocus(); // Dismiss the keyboard
-                      controller.fetchInventories();
-                    },
-                    icon: const Icon(Icons.cancel),
-                  )
-                : null,
-          ),
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    child: SizedBox(
+      height: 50,
+      child: Obx(
+        () => CustomTextField(
+          focusNode: controller.focusNode, // Use the controller's FocusNode
+          onTap: () {
+            controller.isSearchActive.value = true; // Activate search
+          },
+          MaxLine: 1,
+          hintText: inevontryTextStrings.SearchhintRepair,
+          controller: controller.searchController,
+          borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
+          prefftext: const Icon(Icons.search),
+          suffix: controller.isSearchActive.value
+              ? IconButton(
+                  onPressed: () {
+                    // Clear search and deactivate
+                    controller.searchController.clear();
+                    controller.isSearchActive.value = false;
+                    controller.focusNode.unfocus(); // Dismiss the keyboard
+                  },
+                  icon: const Icon(Icons.cancel),
+                )
+              : null,
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

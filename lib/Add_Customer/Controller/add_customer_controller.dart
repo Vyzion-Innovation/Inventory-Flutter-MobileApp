@@ -27,6 +27,7 @@ class AddCustomerController extends GetxController {
   }
 
   // Clear input fields
+  @override
   void refresh() {
     customerName.clear();
     phoneNumberController.clear();
@@ -56,7 +57,16 @@ class AddCustomerController extends GetxController {
       // Validate but do not reset fields if they fail
       if (formKey.currentState!.validate()) {
         await _saveCustomer(); // Call to save the new customer
-
+        Get.defaultDialog(
+          title: "Data Saved",
+          content: const Text("Your data has been saved successfully."),
+          confirm: ElevatedButton(
+            onPressed: () {
+              Get.back(); // Close the dialog
+            },
+            child: const Text("OK"),
+          ),
+        );
         refresh(); // Clear fields for new entry
       } else {
         isLoader.value = false; // Reset loader if validation fails
@@ -67,7 +77,6 @@ class AddCustomerController extends GetxController {
   // Save new customer
   Future<void> _saveCustomer() async {
     try {
-
       CustomerModel customer = CustomerModel(
         phone: phoneNumberController.text,
         name: customerName.text,
@@ -77,7 +86,7 @@ class AddCustomerController extends GetxController {
       );
 
       Map<String, dynamic> customerData = customer.toJson();
-       await FirestoreCollections.suppliers.add(customerData);
+      await FirestoreCollections.customers.add(customerData);
       print("Customer data saved successfully.");
     } catch (e) {
       print("Error saving customer data: $e");
@@ -88,13 +97,12 @@ class AddCustomerController extends GetxController {
 
   // Update existing customer
   Future<void> _updateCustomer() async {
-     
     try {
       if (customerToEdit == null) return; // Ensure there's a customer to update
 
       // Get the document reference using the customer's ID
-     DocumentReference supplierRef =
-          FirestoreCollections.suppliers.doc(customerToEdit!.id); // Assuming your CustomerModel has an 'id' field
+      DocumentReference supplierRef = FirestoreCollections.customers.doc(
+          customerToEdit!.id); // Assuming your CustomerModel has an 'id' field
 
       Map<String, dynamic> updatedData = {
         'phone': phoneNumberController.text,

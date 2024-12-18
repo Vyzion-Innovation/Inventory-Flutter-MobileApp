@@ -41,6 +41,23 @@ class RepairFormController extends GetxController {
       finalCostController.text = repair.finalCost ?? '';
     
   }
+   @override
+  void refresh() {
+     formKey.currentState?.reset();
+     customeNameController.clear();
+   phoneNumberController.clear();
+   issueController.clear();
+   modelNumberController.clear();
+   estimatedCostController.clear();
+   modelNumberController.clear();
+   statusController.clear();
+   descriptionController.clear();
+   dateController.clear();
+   finalCostController.clear();
+  
+   selectedStatus.value = '';
+ 
+  }
 
   // Save Data Method
   Future<void> saveData(String buttonType) async {
@@ -56,6 +73,16 @@ class RepairFormController extends GetxController {
     } else if (buttonType.toLowerCase() == 'save+next') {
       if (formKey.currentState!.validate()) {
         await _saveRepairItem(); // Save inventory data
+         Get.defaultDialog(
+          title: "Data Saved",
+          content: const Text("Your data has been saved successfully."),
+          confirm: ElevatedButton(
+            onPressed: () {
+              Get.back(); // Close the dialog
+            },
+            child: const Text("OK"),
+          ),
+        );
         refresh(); // Reset form for new entry
       }
     }
@@ -96,7 +123,7 @@ class RepairFormController extends GetxController {
   Future<void> _updateRepairItem() async {
     try {
       if (repairData == null) {
-        print("Error: Missing repair data ID for update.");
+      
         return;
       }
 
@@ -145,6 +172,6 @@ class RepairFormController extends GetxController {
   }
 
   void cancelSaving() {
-    Get.back();
+    Get.back(result: true);
   }
 }
