@@ -10,6 +10,7 @@ class InventoryFormController extends GetxController {
   // Form Key
   final formKey = GlobalKey<FormState>();
 
+
   // Text Controllers
   final itemCodeController = TextEditingController();
   final companyNameController = TextEditingController();
@@ -100,18 +101,13 @@ class InventoryFormController extends GetxController {
     selectedPaidBy.value = inventory.paidBy ?? '';
   }
 
-  @override
-  void refresh() {
-   
-    FocusManager.instance.primaryFocus?.unfocus(); 
-
-        // Reset the form after unfocusing
-        formKey.currentState?.reset();
-
+  void clearData() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  formKey.currentState?.reset();
     companyNameController.clear();
     brandController.clear();
     modelNumberController.clear();
-     itemCodeController.clear();
+    itemCodeController.clear();
     configurationController.clear();
     serialNumberController.clear();
     statusController.clear();
@@ -119,72 +115,72 @@ class InventoryFormController extends GetxController {
     purchaseAmountController.clear();
     sellDateController.clear();
     sellAmountController.clear();
-    buyerNameController.clear();
+    // buyerNameController.clear();
     buyerPhoneNumberController.clear();
     buyerAddressController.clear();
+  
+
     selectedStatus.value = '';
     selectedPaidBy.value = '';
     selectedSeller.value = null;
     selectedBuyer.value = null;
-  
-   
   }
 
   // Save Data Method
- Future<void> saveData(int buttonType) async {
-  isSaving.value = true;
+  Future<void> saveData(int buttonType) async {
+    isSaving.value = true;
 
-  try {
-    // when user tap on save button
-    if (buttonType == 1) {
-      if (formKey.currentState!.validate()) {
-        if (inventoryToEdit != null) {
-          await _updateIntemInventory();
+    try {
+      // when user tap on save button
+      if (buttonType == 1) {
+        if (formKey.currentState!.validate()) {
+          if (inventoryToEdit != null) {
+            await _updateIntemInventory();
 
-          // Show success dialog after the update
+            // Show success dialog after the update
+            await Get.defaultDialog(
+              title: "Inventory Updated",
+              content: const Text("Your data has been updated successfully."),
+              confirm: ElevatedButton(
+                onPressed: () {
+                  Get.back(); // Close the dialog
+                  Get.back(result: true); // Close the screen and pass success
+                },
+                child: const Text("OK"),
+              ),
+            );
+          } else {
+            await _saveInventory();
+            Get.back(result: true); // Close screen and pass success
+          }
+        }
+      } else if (buttonType == 2) {
+        // when user tap on save+next button
+        if (formKey.currentState!.validate()) {
+          await _saveInventory();
+
           await Get.defaultDialog(
-            title: "Inventory Updated",
-            content: const Text("Your data has been updated successfully."),
+            title: "Inventory Saved",
+            content: const Text("Your data has been saved successfully."),
             confirm: ElevatedButton(
               onPressed: () {
+
                 Get.back(); // Close the dialog
-                Get.back(result: true); // Close the screen and pass success
               },
               child: const Text("OK"),
             ),
           );
-        } else {
-          await _saveInventory();
-          Get.back(result: true); // Close screen and pass success
+                          clearData();
+
         }
+
       }
-    } else if (buttonType == 2) {
-       // when user tap on save+next button
-      if (formKey.currentState!.validate()) {
-        await _saveInventory();
-        refresh();
-
-                await Get.defaultDialog(
-          title: "Inventory Saved",
-          content: const Text("Your data has been saved successfully."),
-          confirm: ElevatedButton(
-            onPressed: () {
-              Get.back(); // Close the dialog
-            },
-            child: const Text("OK"),
-          ),
-        );
- formKey.currentState?.reset();
-             }
+    } catch (e) {
+      print("Error saving inventory: $e");
+    } finally {
+      isSaving.value = false; // Ensure isSaving is set back to false
     }
-  } catch (e) {
-    print("Error saving inventory: $e");
-  } finally {
-    isSaving.value = false; // Ensure isSaving is set back to false
   }
-}
-
-
 
   // Save inventory data to Firestore
   Future<void> _saveInventory() async {

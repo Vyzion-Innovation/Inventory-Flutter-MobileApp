@@ -112,7 +112,7 @@ class RepairFormScreen extends StatelessWidget {
                     onChanged: (value) {
                   controller.selectedStatus.value = value ?? '';
                   // Trigger validation manually
-                  controller.formKey.currentState?.validate();
+                  // controller.formKey.currentState?.validate();
                 },
                     validator: (value) =>
                         value == null || value.isEmpty ? "Required" : null,
