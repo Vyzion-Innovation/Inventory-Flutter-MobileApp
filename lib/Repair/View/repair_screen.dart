@@ -177,7 +177,7 @@ class RepairScreen extends StatelessWidget {
                         fontSize: 14,
                       ),
                       AppText(
-                           profile.estimatedCost ?? "",
+                           'Rs.${profile.estimatedCost ?? ""}',
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),

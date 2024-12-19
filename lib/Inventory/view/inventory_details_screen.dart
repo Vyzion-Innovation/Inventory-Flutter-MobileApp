@@ -64,6 +64,12 @@ class InventoryDetailsScreen extends StatelessWidget {
                       label: "Configuration",
                       value: inventory.configuration ?? 'N/A',
                     ),
+                       const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.signal_wifi_statusbar_null_sharp,
+                      label: "Status",
+                      value: inventory.status ?? 'N/A',
+                    ),
                      const Divider(),
                      _buildDetailRowWithCopy(
                       context: context,
@@ -71,25 +77,25 @@ class InventoryDetailsScreen extends StatelessWidget {
                       label: "Serial Number",
                       value: inventory.serialNumber ?? 'N/A',
                     ),
-                     const Divider(),
-                    _buildDetailRow(
-                      icon: Icons.money,
-                      label: "Purchase Amount",
-                      value: inventory.purchaseAmount ?? 'N/A',
-                    ),
-                     const Divider(),
-                    _buildDetailRow(
-                      icon: Icons.money,
-                      label: "Sell Amount",
-                      value: inventory.sellAmount ?? 'N/A',
-                    ),
-                     const Divider(),
+                      const Divider(),
                     _buildDetailRow(
                       icon: Icons.person_2_sharp,
                       label: "Seller Name",
                       value: inventory.seller?.name ?? 'N/A',
                     ),
-          
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.money,
+                      label: "Purchase Amount",
+                      value: 'Rs.${inventory.purchaseAmount ?? '00'}',
+                    ),
+                     const Divider(),
+                    _buildDetailRow(
+                      icon: Icons.calendar_today,
+                      label: "Purchase Date",
+                      value: inventory.purchaseDate ?? 'N/A',
+                    ),
+
                      const Divider(),
                     _buildDetailRow(
                       icon: Icons.person,
@@ -98,16 +104,17 @@ class InventoryDetailsScreen extends StatelessWidget {
                     ),
                      const Divider(),
                     _buildDetailRow(
-                      icon: Icons.signal_wifi_statusbar_null_sharp,
-                      label: "Status",
-                      value: inventory.status ?? 'N/A',
+                      icon: Icons.money,
+                      label: "Sell Amount",
+                      value: 'Rs.${inventory.sellAmount ?? '00'}' ,
                     ),
-                     const Divider(),
+                    const Divider(),
                     _buildDetailRow(
                       icon: Icons.calendar_today,
-                      label: "Purchase Date",
-                      value: inventory.purchaseDate ?? 'N/A',
+                      label: "Sell Date",
+                      value: inventory.sellDate ?? 'N/A',
                     ),
+                              
                     const Divider(),
                     _buildDetailRow(
                       icon: Icons.calendar_today,

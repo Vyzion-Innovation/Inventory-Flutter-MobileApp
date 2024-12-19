@@ -110,6 +110,11 @@ class InventoryFormScreen extends StatelessWidget {
                       validator: FieldValidator.validateSerialNumber,
                       cap: TextCapitalization
                           .characters, // Ensures keyboard starts in uppercase
+                          inputFormatters: [
+    FilteringTextInputFormatter.deny(
+      RegExp(r'\s'), // Disallows spaces
+    ),
+  ],
                     ),
                     const SizedBox(height: 20),
                     Obx(() => CommonDropDownTextField(

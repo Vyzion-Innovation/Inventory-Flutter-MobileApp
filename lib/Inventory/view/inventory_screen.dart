@@ -171,7 +171,7 @@ class InventoriesScreen extends StatelessWidget {
                         Expanded(
                           // Wrap with Expanded to prevent overflow
                           child: AppText(
-                            profile.purchaseAmount ?? "",
+                           'Rs.${ profile.purchaseAmount ?? ""}',
                             fontWeight: FontWeight.normal,
                             fontSize: 14,
                           ),
