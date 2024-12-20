@@ -81,6 +81,7 @@ class AddSupplierScreen extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       title: controller.supplierToEdit == null ? Strings.save : 'Update',
+                         color: AppColors.primaryColor,
                       onTap: () {
                         controller.saveData('save');
                       },
@@ -91,6 +92,7 @@ class AddSupplierScreen extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       title: Strings.saveNext,
+                         color: AppColors.primaryColor,
                       onTap: () {
                         controller.saveData('save+next');
                       },
@@ -101,6 +103,7 @@ class AddSupplierScreen extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       title: Strings.cancel,
+                         color: AppColors.secondaryColor,
                       onTap: () {
                        controller.cancelSaving();
                         

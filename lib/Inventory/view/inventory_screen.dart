@@ -171,18 +171,18 @@ class InventoriesScreen extends StatelessWidget {
                         Expanded(
                           // Wrap with Expanded to prevent overflow
                           child: AppText(
-                            profile.purchaseAmount ?? "",
+                           'Rs.${ profile.purchaseAmount ?? ""}',
                             fontWeight: FontWeight.normal,
                             fontSize: 14,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    // const SizedBox(height: 8),
                   ],
                 ),
               ),
-              const SizedBox(width: 12),
+           
               // Right column for action buttons
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -224,7 +224,7 @@ class InventoriesScreen extends StatelessWidget {
                         },
                       );
                     },
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    // padding: const EdgeInsets.symmetric(vertical: 8.0),
                   ),
                 ],
               ),
@@ -273,7 +273,7 @@ class InventoriesScreen extends StatelessWidget {
             controller.isSearchActive.value = true; // Activate search
           },
           MaxLine: 1,
-          hintText: inevontryTextStrings.SearchhintRepair,
+          hintText: inevontryTextStrings.Searchhint,
           controller: controller.searchController,
           borderSide: const BorderSide(color: AppColors.greyColor, width: 1.0),
           prefftext: const Icon(Icons.search),

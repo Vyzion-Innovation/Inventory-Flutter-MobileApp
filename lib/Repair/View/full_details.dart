@@ -81,14 +81,14 @@ class RepairDetailsScreen extends StatelessWidget {
                     _buildDetailRow(
                       icon: Icons.monetization_on,
                       label: "Estimated Cost",
-                      value: repair.estimatedCost ?? 'N/A',
+                      value: 'Rs.${repair.estimatedCost ?? '00'}',
                     ),
           
                      const Divider(),
                     _buildDetailRow(
                       icon: Icons.monetization_on,
                       label: "final Cost",
-                      value: repair.finalCost ?? 'N/A',
+                      value: 'Rs.${repair.finalCost ?? '00'}',
                     ),
                      const Divider(),
                     _buildDetailRow(

@@ -107,6 +107,7 @@ class ProfileScreen extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       title: controller.adminProfileData != null ? 'Update' : Strings.saveProfile,
+                      color: AppColors.primaryColor,
                       onTap: () {
                        controller.saveData();
                       },
@@ -117,6 +118,7 @@ class ProfileScreen extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       title: Strings.cancel,
+                        color: AppColors.secondaryColor,
                       onTap: () {
                         controller.cancelsaving();
                       },

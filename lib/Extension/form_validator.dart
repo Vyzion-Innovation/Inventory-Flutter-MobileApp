@@ -2,8 +2,8 @@ import 'package:inventoryappflutter/Constant/error_messages.dart';
 
 class FieldValidator {
   static String? validateItemCode(String? value) {
-    if ( value?.isEmpty ?? false) {
-      print(value);
+    if ( value == null || value.isEmpty) {
+      print('zdfdfgdg ${value}');
       return ErrorValidationMessages.itemCode; // "Item Code is required."
     }
     return null;
@@ -126,5 +126,11 @@ class FieldValidator {
     }
     return null;
   }
+  static String? validateDropdownStatus(String? value) {
+  if (value == null || value.isEmpty) {
+    return "Required"; // Return error message if no value is selected
+  }
+  return null; // No error
+}
 
 }

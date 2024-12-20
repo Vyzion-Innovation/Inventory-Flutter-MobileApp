@@ -52,7 +52,8 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20),
               _buildQuickActions(),
               const SizedBox(height: 20),
-              inventoryListBuilder()
+              inventoryListBuilder(),
+               const SizedBox(height: 20),
             ],
           ),
         ),
@@ -183,60 +184,59 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget inventoryListBuilder() {
-    return Obx(() {
-      final inventory = dashboardController.inventoryList;
+ Widget inventoryListBuilder() {
+  return Obx(() {
+    final inventory = dashboardController.inventoryList;
 
-      if (inventory.isEmpty) {
-        return const Center(
-          child: Text(
-            'No data available',
-            style: TextStyle(fontSize: 16),
-          ),
-        );
-      }
-
-      return Card(
-        elevation: 2, // Add elevation for a shadow effect
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8), // Rounded corners
-        ),
-        color: AppColors.infoColor,
-        // margin: const EdgeInsets.all(12), // Margin around the card
-        child: Padding(
-          padding: const EdgeInsets.all(8.0), // Padding inside the card
-          // Provide a fixed height for the ListView
-            child: Column(
-              children: [
-                AppText('Recent Sales List', fontSize: 20, fontWeight: FontWeight.bold,),
-                 SizedBox(
-            height: 400,
-               child:  ListView.builder(
-                  itemCount: inventory.length, // Add 1 for the loader
-                  itemBuilder: (context, index) {
-                    // if (index == inventory.length) {
-                    //   // Display loading indicator at the end
-                
-                    // }
-                
-                    var profile = inventory[index];
-                    return inventoryItemCard(profile, index);
-                  },
-                ),
-                 )
-              ],
-            
-          ),
+    if (inventory.isEmpty) {
+      return const Center(
+        child: Text(
+          'No data available',
+          style: TextStyle(fontSize: 16),
         ),
       );
-    });
-  }
+    }
+
+    return Card(
+      elevation: 2, // Add elevation for a shadow effect
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8), // Rounded corners
+      ),
+      color: AppColors.secondaryColor,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0), // Padding inside the card
+        child: Column(
+          children: [
+            AppText(
+              'Recent Sales List',
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            SizedBox(
+              // Use a dynamic height based on the number of items
+              height: inventory.length * 105.0, // Example item height is 80.0
+              child: ListView.builder(
+                shrinkWrap: true, // Allow ListView to size based on its content
+                physics: const NeverScrollableScrollPhysics(), // Disable scrolling for the ListView
+                itemCount: inventory.length,
+                itemBuilder: (context, index) {
+                  var profile = inventory[index];
+                  return inventoryItemCard(profile, index);
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  });
+}
 
   Widget inventoryItemCard(InventoryModel profile, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CommonCard(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         color: AppColors.lightColor,
         onTap: () {
           Get.to(() => InventoryDetailsScreen(inventory: profile));

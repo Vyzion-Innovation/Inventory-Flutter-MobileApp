@@ -65,6 +65,16 @@ class RepairFormController extends GetxController {
       if (formKey.currentState!.validate()) {
         if (repairData != null) {
           await _updateRepairItem(); // Call to update the existing customer
+          await Get.defaultDialog(
+          title: "Repair list updated",
+          content: const Text("Your data has been updated successfully."),
+          confirm: ElevatedButton(
+            onPressed: () {
+              Get.back(); // Close the dialog
+            },
+            child: const Text("OK"),
+          ),
+        );
         } else {
           await _saveRepairItem(); // Call to save the new customer
         }
